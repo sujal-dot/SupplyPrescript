@@ -1,0 +1,101 @@
+product_id,product_name,category,unit_cost,weight_kg,base_demand
+PROD001,STM32 Microcontroller IC,Electronics,45.0,0.15,650
+PROD002,High-Voltage Power Supply 24V,Electronics,125.0,1.8,380
+PROD003,Multi-Layer PCB Board Assembly,Electronics,85.0,0.45,520
+PROD004,Industrial Optical Sensor 50m,Electronics,160.0,0.35,290
+PROD005,TFT LCD Display Module 7-inch,Electronics,110.0,0.65,410
+PROD006,Heavy-Duty Amphenol Connector,Electronics,28.0,0.25,850
+PROD007,Lithium Iron Phosphate Cell Pack,Electronics,240.0,4.2,220
+PROD008,Solid State Relay 40A,Electronics,55.0,0.4,580
+PROD009,Pure Sine Wave Inverter 1kVA,Electronics,320.0,6.5,180
+PROD010,Electrolytic Capacitor 450V Pack,Electronics,35.0,0.5,750
+PROD011,Toroidal Power Transformer,Electronics,145.0,5.0,240
+PROD012,ARM Cortex Edge Computing Kit,Electronics,380.0,0.85,160
+PROD013,Digital Temperature Transmitter,Electronics,195.0,0.9,210
+PROD014,Brushless DC Motor Driver 48V,Electronics,175.0,1.2,270
+PROD015,Industrial Ethernet Switch 8-Port,Electronics,290.0,2.1,190
+PROD016,Hydraulic Disc Brake Caliper,Automotive,145.0,6.2,320
+PROD017,Heavy-Duty Alternator 120A,Automotive,260.0,8.5,210
+PROD018,Common Rail Fuel Injector,Automotive,185.0,1.4,380
+PROD019,Aluminum Engine Radiator Core,Automotive,210.0,7.8,250
+PROD020,Iridium Spark Plug 4-Pack,Automotive,42.0,0.45,950
+PROD021,EPDM Serpentine Drive Belt,Automotive,32.0,0.8,820
+PROD022,Tempered Steel Suspension Spring,Automotive,88.0,11.5,340
+PROD023,Ceramic Friction Clutch Plate,Automotive,175.0,5.4,280
+PROD024,Power Steering Rack Assembly,Automotive,420.0,14.0,140
+PROD025,Spin-On Engine Oil Filter,Automotive,18.0,0.6,1600
+PROD026,LED Matrix Headlight Assembly,Automotive,310.0,4.5,190
+PROD027,Cast Iron Exhaust Manifold,Automotive,195.0,12.8,170
+PROD028,Front Wheel Hub Bearing Kit,Automotive,115.0,4.2,420
+PROD029,Variable Valve Timing Solenoid,Automotive,95.0,0.75,460
+PROD030,Automotive Turbocharger Cartridge,Automotive,580.0,9.2,110
+PROD031,Double-Acting Hydraulic Cylinder,Industrial,480.0,28.0,120
+PROD032,Pneumatic Control Valve 2-inch,Industrial,240.0,6.5,260
+PROD033,Cast Iron Centrifugal Slurry Pump,Industrial,850.0,55.0,85
+PROD034,Deep Groove Ball Bearing 120mm,Industrial,75.0,3.2,540
+PROD035,Reinforced Rubber Conveyor Belt 20m,Industrial,620.0,72.0,70
+PROD036,Spiral Wound Metallic Gasket 50-Pk,Industrial,65.0,2.1,620
+PROD037,Helical Bevel Speed Reducer,Industrial,1150.0,88.0,50
+PROD038,Digital Pressure Gauge 600 Bar,Industrial,185.0,1.1,310
+PROD039,Explosion-Proof Solenoid Valve,Industrial,295.0,4.8,190
+PROD040,Wire-Braided Hydraulic Hose 50m,Industrial,340.0,32.0,150
+PROD041,Electromagnetic Flow Meter DN80,Industrial,720.0,16.5,95
+PROD042,Forged Carbon Steel Flange ANSI 300,Industrial,110.0,9.5,380
+PROD043,Pneumatic Actuator Rotary 90-Deg,Industrial,360.0,12.0,140
+PROD044,Mechanical Face Seal Cartridge,Industrial,215.0,2.8,280
+PROD045,Vibration Damper Mount Set,Industrial,90.0,5.0,410
+PROD046,Airtight Food Storage Container Set,Consumer Goods,18.5,1.2,1400
+PROD047,Ultra-Clean Laundry Detergent 5L,Consumer Goods,14.0,5.4,2100
+PROD048,Stainless Steel Cutlery Set 24-Pc,Consumer Goods,28.0,1.8,950
+PROD049,Energy Efficient LED Bulb 12W 10-Pk,Consumer Goods,22.0,0.9,1850
+PROD050,Heavy-Duty Storage Crate 60L,Consumer Goods,26.0,3.1,1100
+PROD051,Tempered Glass Drinkware 6-Pc,Consumer Goods,16.0,2.2,1300
+PROD052,Ceramic Coffee Mug 4-Pack,Consumer Goods,12.5,1.5,1500
+PROD053,Absorbent Paper Towel 12-Rolls,Consumer Goods,15.0,2.8,2200
+PROD054,BPA-Free Tritan Water Bottle 1L,Consumer Goods,9.5,0.35,2600
+PROD055,Multipurpose Kitchen Cleaner 1L,Consumer Goods,6.5,1.1,2800
+PROD056,Automatic Soap Dispenser Sensor,Consumer Goods,24.0,0.65,1250
+PROD057,Modular Wardrobe Organizer Rack,Consumer Goods,42.0,4.8,720
+PROD058,Microfiber Dusting Cloth 10-Pk,Consumer Goods,8.0,0.4,3100
+PROD059,Non-Stick Aluminium Fry Pan 28cm,Consumer Goods,34.0,1.4,880
+PROD060,Thermal Insulated Lunch Bag,Consumer Goods,17.0,0.55,1650
+PROD061,Paracetamol Active Ingredient 25kg,Pharmaceutical,185.0,26.0,380
+PROD062,Amoxicillin Trihydrate Powder 10kg,Pharmaceutical,320.0,10.5,240
+PROD063,Sterile Normal Saline 500ml 24-Pk,Pharmaceutical,36.0,13.0,920
+PROD064,Recombinant Human Insulin Vials 10-Pk,Pharmaceutical,450.0,0.8,410
+PROD065,Ibuprofen Granules Bulk 20kg,Pharmaceutical,210.0,20.8,310
+PROD066,Antitussive Cough Syrup 100ml 50-Pk,Pharmaceutical,68.0,8.5,780
+PROD067,Ciprofloxacin Blister Pack 100-Tabs,Pharmaceutical,52.0,0.45,1150
+PROD068,Nitrile Examination Gloves 1000-Ct,Pharmaceutical,75.0,5.2,850
+PROD069,Povidone Iodine Antiseptic 5L,Pharmaceutical,48.0,5.6,680
+PROD070,Ascorbic Acid Vitamin C 25kg,Pharmaceutical,165.0,25.5,450
+PROD071,Premium Basmati Rice Bag 25kg,Food,38.0,25.2,1400
+PROD072,Refined Sunflower Cooking Oil 15L,Food,32.0,14.5,1650
+PROD073,Stone-Ground Whole Wheat Atta 20kg,Food,18.0,20.1,2200
+PROD074,Refined Plantation Sugar 50kg,Food,35.0,50.2,1250
+PROD075,Skimmed Milk Powder Bulk 25kg,Food,85.0,25.4,620
+PROD076,Organic Garam Masala Blend 5kg,Food,54.0,5.2,850
+PROD077,Assam CTC Black Tea Bulk 20kg,Food,95.0,20.3,540
+PROD078,Arabica Roasted Coffee Beans 10kg,Food,140.0,10.2,410
+PROD079,Split Red Lentils Masoor Dal 25kg,Food,29.0,25.1,1550
+PROD080,Aseptic Tomato Puree Paste Drum 50kg,Food,62.0,52.0,480
+PROD081,Combed Cotton Yarn Cone 24-Pk,Textile,92.0,24.5,480
+PROD082,Dyed Polyester Knitted Fabric 50m,Textile,115.0,18.0,410
+PROD083,Raw Heavy Denim Indigo Bolt 30m,Textile,145.0,26.0,320
+PROD084,Pure Mulberry Silk Yarn Spool,Textile,280.0,2.5,190
+PROD085,Bonded Nylon Sewing Thread 10-Spools,Textile,38.0,3.2,820
+PROD086,Single Jersey Cotton Roll 25kg,Textile,88.0,25.3,530
+PROD087,Merino Wool Blend Suiting 20m,Textile,240.0,12.0,210
+PROD088,High-Tenacity Webbing Strap 100m,Textile,64.0,8.5,610
+PROD089,Natural Washed Linen Fabric 30m,Textile,175.0,10.5,290
+PROD090,Heavy Waterproof Canvas Roll 25m,Textile,130.0,22.0,360
+PROD091,CNC Lathe Hydraulic Chuck 10-inch,Machinery,850.0,45.0,85
+PROD092,Three-Phase Induction Motor 15kW,Machinery,1250.0,95.0,60
+PROD093,Rotary Screw Air Compressor 10HP,Machinery,2800.0,220.0,35
+PROD094,Industrial Centrifugal Blower 5.5kW,Machinery,980.0,68.0,75
+PROD095,Tungsten Carbide Milling Cutter Set,Machinery,620.0,8.5,140
+PROD096,Vertical Hydraulic Press Ram 30-Ton,Machinery,3800.0,380.0,20
+PROD097,Multi-Process Inverter Welder 400A,Machinery,1450.0,38.0,55
+PROD098,Heavy-Duty Planetary Gearhead,Machinery,1950.0,110.0,45
+PROD099,Industrial Scroll Chiller Pump Unit,Machinery,2200.0,160.0,40
+PROD100,Fiber Laser Cutting Precision Head,Machinery,4200.0,24.0,25

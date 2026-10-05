@@ -1,0 +1,51 @@
+supplier_id,supplier_name,origin,supplier_reliability,base_lead_time,capacity
+SUP001,Apex Micro Electronics,Bengaluru,0.95,5,23000
+SUP002,Havells Industrial Components,Noida,0.8,3,20000
+SUP003,Siemens Energy Electricals,Gurugram,0.95,2,8000
+SUP004,ABB Power Automation,Bengaluru,0.9,5,34000
+SUP005,Delta Circuit Systems,Chennai,0.84,3,25000
+SUP006,Beltron Electronics Ltd,Pune,0.79,5,43000
+SUP007,Bharat Precision Forge,Pune,0.71,5,13000
+SUP008,Mahindra Auto Ancillaries,Nashik,0.78,5,14000
+SUP009,Sundram Fasteners Works,Chennai,0.87,3,22000
+SUP010,Motherson Sumi Components,Noida,0.93,4,31000
+SUP011,Bosch India Engineering,Bengaluru,0.79,3,21000
+SUP012,Minda Auto Controls,Gurugram,0.91,2,20000
+SUP013,TVS Dynamic Castings,Chennai,0.94,6,44000
+SUP014,Tata Metaliks Industrial,Kolkata,0.89,4,25000
+SUP015,Larsen Hydraulic Systems,Mumbai,0.85,7,18000
+SUP016,Kirloskar Fluid Pumps,Pune,0.98,5,17000
+SUP017,Jindal Steel Extrusions,Nagpur,0.94,4,35000
+SUP018,JSW Industrial Coils,Mumbai,0.93,3,11000
+SUP019,Hindalco Alloy Works,Surat,0.89,6,11000
+SUP020,Thermax Boiler Solutions,Pune,0.88,4,34000
+SUP021,Godrej Consumer Hardware,Mumbai,0.94,3,15000
+SUP022,Wipro Consumer Packaging,Bengaluru,0.97,4,28000
+SUP023,Marico Polymer Containers,Ahmedabad,0.86,6,14000
+SUP024,Dabur Essentials Supply,Delhi,0.95,5,26000
+SUP025,ITC Paperboards Division,Kolkata,0.9,4,35000
+SUP026,Crompton Appliances Supply,Vadodara,0.95,4,13000
+SUP027,Sun Pharma Bulk Actives,Vadodara,0.95,4,30000
+SUP028,Cipla Formulation Labs,Mumbai,0.94,2,36000
+SUP029,Dr Reddys API Works,Hyderabad,0.9,2,23000
+SUP030,Aurobindo Pharma Bulk,Hyderabad,0.88,4,15000
+SUP031,Lupin Generics Supply,Pune,0.93,2,20000
+SUP032,Torrent Pharma Chemicals,Ahmedabad,0.95,2,14000
+SUP033,Britannia Foods Logistics,Kolkata,0.97,3,30000
+SUP034,Adani Wilmar Edible Oils,Ahmedabad,0.97,6,45000
+SUP035,Amul Dairy Ingredients,Vadodara,0.72,4,30000
+SUP036,Tata Consumer Products,Mumbai,0.87,4,19000
+SUP037,Patanjali Agro Supplies,Delhi,0.92,7,8000
+SUP038,Vadilal Agro Processors,Surat,0.93,4,25000
+SUP039,Arvind Denim & Textiles,Ahmedabad,0.75,3,37000
+SUP040,Raymond Fabric Mills,Nashik,0.98,4,33000
+SUP041,Vardhman Synthetic Yarns,Jaipur,0.86,6,26000
+SUP042,Welspun Global Home,Surat,0.98,4,28000
+SUP043,Alok Industries Cotton,Mumbai,0.97,3,25000
+SUP044,Sutlej Spinning Mills,Indore,0.99,3,28000
+SUP045,BHEL Heavy Engineering,Nagpur,0.97,4,27000
+SUP046,Escorts Heavy Equipment,Delhi,0.75,3,21000
+SUP047,Voltas Industrial Machinery,Mumbai,0.93,6,39000
+SUP048,Blue Star Heavy Chillers,Ahmedabad,0.79,3,19000
+SUP049,Cummins Diesel Engines,Pune,0.9,2,29000
+SUP050,Action Construction Equip,Jaipur,0.82,4,12000
