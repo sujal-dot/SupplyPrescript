@@ -1,0 +1,28 @@
+{
+  "pipeline_run_at": "2026-10-06T10:04:48.589981",
+  "rows_removed_total": 0,
+  "rows_retained": 15000,
+  "rows_before": 15000,
+  "rows_after": 15000,
+  "missing_id_rows_removed": 0,
+  "rows_removed_bad_dates": 0,
+  "orphan_suppliers_removed": 0,
+  "orphan_products_removed": 0,
+  "missing_values_handled": {
+    "categorical_filled_unknown": {},
+    "numeric_imputed": {}
+  },
+  "duplicate_records_removed": 0,
+  "duplicate_shipment_ids_deduplicated": 0,
+  "invalid_dates_corrected": 0,
+  "negative_quantities_corrected": 0,
+  "numeric_corrections": {},
+  "categorical_corrections": {},
+  "lead_time_corrections": 0,
+  "delay_days_corrections": 0,
+  "coercion_errors": {},
+  "features_count_before": 19,
+  "features_count_after": 32,
+  "features_added": 12,
+  "lead_time_outliers_flagged": 674
+}
