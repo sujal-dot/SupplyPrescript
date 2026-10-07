@@ -1,7 +1,7 @@
 {
   "input_file": "/Users/sujal/Desktop/SupplyPrescript/data/synthetic/shipments.csv",
   "output_file": "/Users/sujal/Desktop/SupplyPrescript/data/processed/shipments_processed.csv",
-  "pipeline_run_at": "2026-10-06T10:04:48.589508",
+  "pipeline_run_at": "2026-10-07T10:16:36.642144",
   "rows_before": 15000,
   "rows_after": 15000,
   "columns_before": 19,
