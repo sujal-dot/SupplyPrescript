@@ -138,11 +138,81 @@ npm run dev
 
 ---
 
+## API Documentation
+
+Swagger Interactive UI:
+[http://localhost:8000/docs](http://localhost:8000/docs)
+
+OpenAPI Specification JSON:
+[http://localhost:8000/openapi.json](http://localhost:8000/openapi.json)
+
+### Available Endpoints
+
+#### 1. Suppliers
+- `GET /api/suppliers`
+- **Pagination**: `page` (default 1, minimum 1), `page_size` (default 20, 1-100).
+- **Filtering**:
+  - `origin`: Filter by origin city (e.g. `?origin=Mumbai`)
+  - `min_reliability`: Filter by minimum reliability (e.g. `?min_reliability=0.90`)
+- **Example**:
+  ```bash
+  curl "http://localhost:8000/api/suppliers?page=1&page_size=20&origin=Mumbai&min_reliability=0.90"
+  ```
+
+#### 2. Shipments
+- `GET /api/shipments`
+- **Pagination**: `page` (default 1, minimum 1), `page_size` (default 50, 1-100).
+- **Filtering**:
+  - `supplier_id`: Filter by supplier ID (e.g. `?supplier_id=SUP001`)
+  - `product_id`: Filter by product ID (e.g. `?product_id=PROD001`)
+  - `priority`: Filter by priority (`Low`, `Medium`, `High`, `Critical`)
+  - `transport_mode`: Filter by transport mode (`Road`, `Rail`, `Air`, `Sea`)
+  - `is_delayed`: Filter by delay status (`true` or `false`)
+  - `start_date` / `end_date`: Filter by `order_date` range (YYYY-MM-DD, e.g. `?start_date=2024-01-01&end_date=2024-03-31`)
+- **Sorting**:
+  - `sort_by`: Field allowlist (`order_date`, `quantity`, `shipping_cost`, `lead_time`, `delay_days`)
+  - `sort_order`: Direction (`asc` or `desc`)
+- **Example**:
+  ```bash
+  curl "http://localhost:8000/api/shipments?page=1&page_size=50&is_delayed=true&transport_mode=Road&sort_by=delay_days&sort_order=desc"
+  ```
+
+#### 3. Inventory
+- `GET /api/inventory`
+- **Pagination**: `page` (default 1, minimum 1), `page_size` (default 20, 1-100).
+- **Filtering**:
+  - `product_id`: Filter by product ID (e.g. `?product_id=PROD001`)
+  - `inventory_status`: Filter by status (`Healthy`, `Low`, `Critical`, `Out of Stock`)
+- **Example**:
+  ```bash
+  curl "http://localhost:8000/api/inventory?page=1&page_size=20&inventory_status=Critical"
+  ```
+
+#### 4. Dashboard
+- `GET /api/dashboard`
+- **Description**: Returns database-aggregated supply-chain KPIs, status breakdowns, and top delayed suppliers computed directly inside PostgreSQL.
+- **Example**:
+  ```bash
+  curl "http://localhost:8000/api/dashboard"
+  ```
+
+---
+
 ## Running Tests
 
-Run the backend integration and health check test suite:
+Run the full automated test suite:
 
 ```bash
-source backend/.venv/bin/activate
-pytest tests/backend -v
+pytest -v
 ```
+
+Or target specific modules:
+
+```bash
+pytest tests/api -v         # Day 5 API endpoints test suite
+pytest tests/backend -v     # Health and DB connectivity
+pytest tests/database -v    # Day 4 Database schema & relationships
+pytest tests/data -v        # Day 3 Data cleaning pipeline
+pytest tests/test_dataset.py -v # Day 2 Synthetic dataset integrity
+```
+

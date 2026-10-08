@@ -1,5 +1,6 @@
-from datetime import date, datetime
+from datetime import date
 from decimal import Decimal
+from typing import Optional
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
@@ -37,8 +38,14 @@ class ShipmentCreate(ShipmentBase):
 
 
 class ShipmentResponse(ShipmentBase):
-    id: int
-    created_at: datetime
-    updated_at: datetime
+    id: Optional[int] = None
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class ShipmentListResponse(BaseModel):
+    data: list[ShipmentResponse]
+    total: int
+    page: int
+    page_size: int
+    total_pages: int

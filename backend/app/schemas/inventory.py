@@ -1,5 +1,5 @@
-from datetime import date, datetime
-from typing import Literal
+from datetime import date
+from typing import Literal, Optional
 from pydantic import BaseModel, ConfigDict, Field
 
 InventoryStatusType = Literal["Healthy", "Low", "Critical", "Out of Stock"]
@@ -20,8 +20,14 @@ class InventoryCreate(InventoryBase):
 
 
 class InventoryResponse(InventoryBase):
-    id: int
-    created_at: datetime
-    updated_at: datetime
+    id: Optional[int] = None
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class InventoryListResponse(BaseModel):
+    data: list[InventoryResponse]
+    total: int
+    page: int
+    page_size: int
+    total_pages: int

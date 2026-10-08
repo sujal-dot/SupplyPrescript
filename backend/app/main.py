@@ -2,10 +2,14 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.api.routes.health import router as health_router
+from app.api.routes.suppliers import router as suppliers_router
+from app.api.routes.shipments import router as shipments_router
+from app.api.routes.inventory import router as inventory_router
+from app.api.routes.dashboard import router as dashboard_router
 
 app = FastAPI(
-    title=settings.PROJECT_NAME,
-    description="Supply Chain Analytics & Prescription Platform API",
+    title="SupplyPrescript API",
+    description="Supply chain analytics and prescription API",
     version="0.1.0",
     docs_url="/docs",
     redoc_url="/redoc",
@@ -27,5 +31,9 @@ def root():
     return {"message": "SupplyPrescript API is running"}
 
 
-# Include health routes (/health, /health/db)
+# Include routes
 app.include_router(health_router)
+app.include_router(suppliers_router)
+app.include_router(shipments_router)
+app.include_router(inventory_router)
+app.include_router(dashboard_router)
