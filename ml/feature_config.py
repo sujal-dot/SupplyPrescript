@@ -41,6 +41,11 @@ REPORTS_DIR = ML_DIR / "reports"
 CLASSIFICATION_REPORTS_DIR = REPORTS_DIR / "classification"
 REGRESSION_REPORTS_DIR = REPORTS_DIR / "regression"
 
+MODELS_ROOT_DIR = PROJECT_ROOT / "models"
+MODEL_VERSIONS_DIR = MODELS_ROOT_DIR / "versions"
+PRIMARY_COMPATIBILITY_MODEL_PATH = MODELS_ROOT_DIR / "xgboost_delay_model.pkl"
+ACTIVE_VERSION_POINTER_PATH = MODEL_VERSIONS_DIR / "active.json"
+
 # ---------------------------------------------------------------------------
 # Feature Lists & Schema Definitions
 # ---------------------------------------------------------------------------

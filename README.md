@@ -251,12 +251,33 @@ python -m ml.train --model classification
 python -m ml.train --model regression
 ```
 
-### Artifacts and Reports
+### Evaluate Models & Manage Model Versioning (Day 8)
+
+```bash
+# Evaluate models on the untouched chronological test set
+python -m ml.evaluate
+
+# Evaluate and register a release version (e.g. v1.0)
+python -m ml.evaluate --register-version v1.0
+
+# Manage model versions via the registry CLI
+python -m ml.model_registry --list
+python -m ml.model_registry --active
+python -m ml.model_registry --verify v1.0
+python -m ml.model_registry --promote v1.0
+```
+
+### Artifacts and Versioning Layout
 
 Model artifacts and evaluation diagnostics are saved automatically:
-- Artifacts: `ml/artifacts/classification/`, `ml/artifacts/regression/` (`model.joblib`, `preprocessor.joblib`, `metadata.json`)
-- Visual Reports: `ml/reports/classification/` (`confusion_matrix.png`, `roc_curve.png`, `precision_recall_curve.png`)
-- Visual Reports: `ml/reports/regression/` (`actual_vs_predicted.png`, `residuals.png`)
+- Primary Compatibility Artifact: `models/xgboost_delay_model.pkl` (production `XGBClassifier`)
+- Release Versions: `models/versions/v1.0/` (`classifier.pkl`, `regressor.pkl`, `preprocessor.pkl`, `metadata.json`, `metrics.json`)
+- Active Pointer: `models/versions/active.json`
+- Legacy Single-Task Artifacts: `ml/artifacts/classification/`, `ml/artifacts/regression/`
+- Visual Diagnostic Reports:
+  - `ml/reports/classification/` (`confusion_matrix.png`, `roc_curve.png`, `precision_recall_curve.png`, `classification_report.json`)
+  - `ml/reports/regression/` (`actual_vs_predicted.png`, `residuals.png`, `metrics.json`)
+- Detailed Documentation: [`docs/ml_evaluation.md`](docs/ml_evaluation.md)
 
 ---
 

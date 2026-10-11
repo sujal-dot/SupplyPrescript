@@ -1,20 +1,21 @@
 {
-  "validation_metrics": {
-    "mae": 1.5528,
-    "rmse": 2.6645,
-    "r2_score": -0.0807,
-    "median_absolute_error": 0.9574,
-    "max_error": 23.0505,
-    "mean_actual_delay": 0.952,
-    "mean_predicted_delay": 1.1011
+  "mae": 2.0369,
+  "rmse": 2.9089,
+  "r2_score": -0.155,
+  "r2_reason": null,
+  "median_absolute_error": 1.7822,
+  "max_error": 22.7797,
+  "sample_count": 2250,
+  "target_distribution": {
+    "mean": 1.0151,
+    "std": 2.7067,
+    "min": 0.0,
+    "max": 24.0
   },
-  "test_metrics": {
-    "mae": 1.5961,
-    "rmse": 2.7642,
-    "r2_score": -0.043,
-    "median_absolute_error": 0.984,
-    "max_error": 22.4775,
-    "mean_actual_delay": 1.0151,
-    "mean_predicted_delay": 1.1432
+  "prediction_distribution": {
+    "mean": 1.7361,
+    "std": 0.8319,
+    "min": 0.0,
+    "max": 3.9633
   }
 }

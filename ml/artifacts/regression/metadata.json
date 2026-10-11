@@ -3,7 +3,7 @@
   "task": "regression",
   "model_type": "XGBRegressor",
   "model_version": "1.0.0",
-  "trained_at_utc": "2026-10-11T05:39:22.311360+00:00",
+  "trained_at_utc": "2026-10-11T05:48:57.298396+00:00",
   "random_seed": 42,
   "framework_versions": {
     "xgboost": "2.0.3",
@@ -76,19 +76,43 @@
       "mae": 1.7538,
       "rmse": 2.0821,
       "r2_score": 0.083,
+      "r2_reason": null,
       "median_absolute_error": 1.575,
       "max_error": 4.3267,
-      "mean_actual_delay": 1.85,
-      "mean_predicted_delay": 1.5824
+      "sample_count": 20,
+      "target_distribution": {
+        "mean": 1.85,
+        "std": 2.1743,
+        "min": 0.0,
+        "max": 5.0
+      },
+      "prediction_distribution": {
+        "mean": 1.5824,
+        "std": 0.8499,
+        "min": 0.2345,
+        "max": 3.1672
+      }
     },
     "test": {
       "mae": 1.853,
       "rmse": 2.108,
       "r2_score": 0.0913,
+      "r2_reason": null,
       "median_absolute_error": 1.8164,
       "max_error": 3.4213,
-      "mean_actual_delay": 2.1,
-      "mean_predicted_delay": 1.401
+      "sample_count": 20,
+      "target_distribution": {
+        "mean": 2.1,
+        "std": 2.2113,
+        "min": 0.0,
+        "max": 5.0
+      },
+      "prediction_distribution": {
+        "mean": 1.401,
+        "std": 0.6108,
+        "min": 0.2571,
+        "max": 2.2629
+      }
     }
   },
   "artifact_paths": {

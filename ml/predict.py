@@ -1,8 +1,9 @@
 """
 SupplyPrescript — Inference and Prediction Engine
 =================================================
-High-performance, leak-free prediction service for shipment delay probability
-and delay duration estimation using registered XGBoost models.
+Production prediction service for shipment delay probability and duration estimation.
+Loads and caches the active registered model version (e.g. 'v1.0') from models/versions/.
+Provides single, batch, and API-ready inference with input validation and non-negative clipping.
 """
 
 from __future__ import annotations
@@ -16,32 +17,92 @@ import pandas as pd
 
 from ml.feature_config import APPROVED_FEATURES
 from ml.leakage_checks import check_feature_matrix_for_leakage
-from ml.model_registry import load_registered_model
+from ml.model_registry import (
+    get_active_model_version,
+    load_model_version,
+    load_registered_model,
+)
 from ml.preprocess import transform_features
 
 logger = logging.getLogger("ml.predict")
 
-# In-memory cache for loaded model artifacts to prevent repeated disk I/O
-_MODEL_CACHE: Dict[str, Dict[str, Any]] = {}
+# In-memory bundle cache for active registered model artifacts
+_ACTIVE_BUNDLE: Optional[Dict[str, Any]] = None
+_LEGACY_CACHE: Dict[str, Dict[str, Any]] = {}
+
+
+def get_active_bundle() -> Dict[str, Any]:
+    """
+    Retrieve and cache the active registered model version bundle in memory.
+    Reloads if the active version pointer has changed.
+    """
+    global _ACTIVE_BUNDLE
+    active_version = get_active_model_version()
+
+    if _ACTIVE_BUNDLE is None or _ACTIVE_BUNDLE.get("version") != active_version:
+        try:
+            _ACTIVE_BUNDLE = load_model_version(active_version)
+            logger.info("Loaded active model version '%s' into inference memory.", active_version)
+        except Exception as e:
+            logger.warning(
+                "Could not load active model version '%s' from models/versions/ (%s). "
+                "Attempting fallback to legacy artifact storage.",
+                active_version, e,
+            )
+            cls_model, cls_prep, cls_meta = load_registered_model("classification")
+            reg_model, reg_prep, reg_meta = load_registered_model("regression")
+            _ACTIVE_BUNDLE = {
+                "classifier": cls_model,
+                "regressor": reg_model,
+                "preprocessor": cls_prep,
+                "metadata": cls_meta,
+                "metrics": {},
+                "version": active_version,
+            }
+
+    return _ACTIVE_BUNDLE
+
+
+def reload_active_model() -> str:
+    """
+    Force reload the active model bundle into memory, clearing any cached artifacts.
+    Returns the newly active version string.
+    """
+    global _ACTIVE_BUNDLE
+    _ACTIVE_BUNDLE = None
+    _LEGACY_CACHE.clear()
+    bundle = get_active_bundle()
+    return str(bundle["version"])
+
+
+def clear_model_cache() -> None:
+    """Clear in-memory model caches."""
+    global _ACTIVE_BUNDLE
+    _ACTIVE_BUNDLE = None
+    _LEGACY_CACHE.clear()
 
 
 def get_cached_model(task: str) -> Dict[str, Any]:
     """
-    Load and cache model, preprocessor, and metadata in memory.
+    Backward-compatible task-specific bundle getter.
     """
-    if task not in _MODEL_CACHE:
-        model, preprocessor, metadata = load_registered_model(task)
-        _MODEL_CACHE[task] = {
-            "model": model,
-            "preprocessor": preprocessor,
-            "metadata": metadata,
+    bundle = get_active_bundle()
+    if task.lower() in ("classification", "cls"):
+        return {
+            "model": bundle["classifier"],
+            "preprocessor": bundle["preprocessor"],
+            "metadata": bundle["metadata"],
+            "version": bundle["version"],
         }
-    return _MODEL_CACHE[task]
-
-
-def clear_model_cache() -> None:
-    """Clear in-memory model cache."""
-    _MODEL_CACHE.clear()
+    elif task.lower() in ("regression", "reg"):
+        return {
+            "model": bundle["regressor"],
+            "preprocessor": bundle["preprocessor"],
+            "metadata": bundle["metadata"],
+            "version": bundle["version"],
+        }
+    else:
+        raise ValueError(f"Unknown task '{task}'. Expected 'classification' or 'regression'.")
 
 
 def prepare_input_dataframe(
@@ -80,17 +141,17 @@ def predict_delay_probability(
     shipment_features: Union[Dict[str, Any], List[Dict[str, Any]], pd.DataFrame],
 ) -> np.ndarray:
     """
-    Predict probability of shipment delay (between 0.0 and 1.0).
+    Predict probability of shipment delay (between 0.0 and 1.0) using the active model.
     Returns 1D numpy array of probabilities.
     """
-    bundle = get_cached_model("classification")
-    model = bundle["model"]
+    bundle = get_active_bundle()
+    clf = bundle["classifier"]
     preprocessor = bundle["preprocessor"]
 
     X_df = prepare_input_dataframe(shipment_features)
     X_trans = transform_features(preprocessor, X_df)
 
-    probs = model.predict_proba(X_trans)[:, 1]
+    probs = clf.predict_proba(X_trans)[:, 1]
     return np.clip(probs, 0.0, 1.0)
 
 
@@ -98,17 +159,17 @@ def predict_delay_days(
     shipment_features: Union[Dict[str, Any], List[Dict[str, Any]], pd.DataFrame],
 ) -> np.ndarray:
     """
-    Predict number of delay days (non-negative float, clipped at 0).
+    Predict number of delay days (non-negative float, clipped at 0) using the active model.
     Returns 1D numpy array of delay day estimates.
     """
-    bundle = get_cached_model("regression")
-    model = bundle["model"]
+    bundle = get_active_bundle()
+    reg = bundle["regressor"]
     preprocessor = bundle["preprocessor"]
 
     X_df = prepare_input_dataframe(shipment_features)
     X_trans = transform_features(preprocessor, X_df)
 
-    raw_preds = model.predict(X_trans)
+    raw_preds = reg.predict(X_trans)
     return np.clip(raw_preds, 0.0, None)
 
 
@@ -117,43 +178,47 @@ def predict_shipment(
     custom_threshold: Optional[float] = None,
 ) -> Union[Dict[str, Any], List[Dict[str, Any]]]:
     """
-    Generate unified, structured prediction using both classification and regression models.
+    Generate unified prediction using both classification and regression models
+    from the active registered model version (e.g. 'v1.0').
     Supports single shipment (dict) or batch shipments (list/DataFrame).
     """
     is_single_dict = isinstance(shipment_features, dict)
     X_df = prepare_input_dataframe(shipment_features)
 
-    # Classification inference
-    cls_bundle = get_cached_model("classification")
-    cls_model = cls_bundle["model"]
-    cls_prep = cls_bundle["preprocessor"]
-    cls_meta = cls_bundle["metadata"]
-    default_thresh = float(cls_meta.get("target", {}).get("classification_threshold", 0.5))
+    bundle = get_active_bundle()
+    cls_model = bundle["classifier"]
+    reg_model = bundle["regressor"]
+    prep = bundle["preprocessor"]
+    meta = bundle.get("metadata", {})
+    active_version = bundle.get("version", "v1.0")
+
+    # Threshold: custom override > metadata threshold > fallback 0.150
+    default_thresh = float(
+        meta.get("classification_threshold")
+        or meta.get("target", {}).get("classification_threshold")
+        or 0.150
+    )
     threshold = custom_threshold if custom_threshold is not None else default_thresh
 
-    X_cls = transform_features(cls_prep, X_df)
-    probs = np.clip(cls_model.predict_proba(X_cls)[:, 1], 0.0, 1.0)
+    # Preprocessing
+    X_trans = transform_features(prep, X_df)
+
+    # Classification
+    probs = np.clip(cls_model.predict_proba(X_trans)[:, 1], 0.0, 1.0)
     binary_preds = (probs >= threshold).astype(bool)
 
-    # Regression inference
-    reg_bundle = get_cached_model("regression")
-    reg_model = reg_bundle["model"]
-    reg_prep = reg_bundle["preprocessor"]
-    reg_meta = reg_bundle["metadata"]
-
-    X_reg = transform_features(reg_prep, X_df)
-    pred_days = np.clip(reg_model.predict(X_reg), 0.0, None)
+    # Regression with non-negative guarantee
+    raw_days = reg_model.predict(X_trans)
+    pred_days = np.clip(raw_days, 0.0, None)
 
     timestamp_utc = datetime.now(timezone.utc).isoformat()
-    cls_version = cls_meta.get("model_version", "1.0.0")
-    reg_version = reg_meta.get("model_version", "1.0.0")
 
     results: List[Dict[str, Any]] = []
     for is_del, prob, days in zip(binary_preds, probs, pred_days):
         prob_val = round(float(prob), 4)
         days_val = round(float(days), 2)
 
-        # Disagreement check
+        # Disagreement check between classification and regression
         disagreement_warning: Optional[str] = None
         if not is_del and days_val > 0.5:
             disagreement_warning = (
@@ -171,7 +236,7 @@ def predict_shipment(
             "delay_probability": prob_val,
             "predicted_delay_days": days_val,
             "classification_threshold": threshold,
-            "model_version": f"cls:{cls_version}/reg:{reg_version}",
+            "model_version": active_version,
             "disagreement_warning": disagreement_warning,
             "prediction_timestamp": timestamp_utc,
         })
