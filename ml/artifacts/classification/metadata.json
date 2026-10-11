@@ -1,0 +1,187 @@
+{
+  "model_name": "supplyprescript_classification_xgbclassifier",
+  "task": "classification",
+  "model_type": "XGBClassifier",
+  "model_version": "1.0.0",
+  "trained_at_utc": "2026-10-11T05:39:21.817147+00:00",
+  "random_seed": 42,
+  "framework_versions": {
+    "xgboost": "2.0.3",
+    "scikit_learn": "1.3.2"
+  },
+  "features": {
+    "feature_names": [
+      "supplier_reliability",
+      "historical_avg_delay",
+      "lead_time",
+      "inventory_level",
+      "demand",
+      "quantity",
+      "shipping_cost",
+      "distance",
+      "transport_mode",
+      "season",
+      "priority"
+    ],
+    "feature_count": 11,
+    "transformed_feature_names": [
+      "num__supplier_reliability",
+      "num__historical_avg_delay",
+      "num__lead_time",
+      "num__inventory_level",
+      "num__demand",
+      "num__quantity",
+      "num__shipping_cost",
+      "num__distance",
+      "cat__transport_mode_Air",
+      "cat__transport_mode_Rail",
+      "cat__transport_mode_Road",
+      "cat__transport_mode_Sea",
+      "cat__season_Monsoon",
+      "cat__season_Post-Monsoon",
+      "cat__season_Summer",
+      "cat__season_Winter",
+      "cat__priority_Critical",
+      "cat__priority_High",
+      "cat__priority_Low",
+      "cat__priority_Medium"
+    ]
+  },
+  "target": {
+    "target_name": "delayed",
+    "classification_threshold": 0.17
+  },
+  "dataset_tracking": {
+    "source_path": "/Users/sujal/Desktop/SupplyPrescript/data/processed/shipments_processed.csv",
+    "fingerprint": "584afbd14ba28462",
+    "row_counts": {
+      "train": 60,
+      "validation": 20,
+      "test": 20,
+      "total": 100
+    }
+  },
+  "hyperparameters": {
+    "n_estimators": 400,
+    "max_depth": 6,
+    "learning_rate": 0.05,
+    "subsample": 0.8,
+    "colsample_bytree": 0.8,
+    "objective": "binary:logistic",
+    "eval_metric": "logloss",
+    "random_state": 42,
+    "n_jobs": -1
+  },
+  "metrics": {
+    "validation": {
+      "accuracy": 0.7,
+      "precision": 0.6667,
+      "recall": 0.9091,
+      "f1_score": 0.7692,
+      "roc_auc": 0.6364,
+      "pr_auc": 0.6611,
+      "brier_score": 0.3028,
+      "threshold": 0.17,
+      "confusion_matrix": {
+        "true_negatives": 4,
+        "false_positives": 5,
+        "false_negatives": 1,
+        "true_positives": 10,
+        "matrix": [
+          [
+            4,
+            5
+          ],
+          [
+            1,
+            10
+          ]
+        ]
+      },
+      "classification_report": {
+        "0": {
+          "precision": 0.8,
+          "recall": 0.4444444444444444,
+          "f1-score": 0.5714285714285714,
+          "support": 9.0
+        },
+        "1": {
+          "precision": 0.6666666666666666,
+          "recall": 0.9090909090909091,
+          "f1-score": 0.7692307692307692,
+          "support": 11.0
+        },
+        "accuracy": 0.7,
+        "macro avg": {
+          "precision": 0.7333333333333334,
+          "recall": 0.6767676767676767,
+          "f1-score": 0.6703296703296703,
+          "support": 20.0
+        },
+        "weighted avg": {
+          "precision": 0.7266666666666667,
+          "recall": 0.7,
+          "f1-score": 0.6802197802197801,
+          "support": 20.0
+        }
+      }
+    },
+    "test": {
+      "accuracy": 0.5,
+      "precision": 0.5,
+      "recall": 0.9,
+      "f1_score": 0.6429,
+      "roc_auc": 0.56,
+      "pr_auc": 0.5003,
+      "brier_score": 0.3163,
+      "threshold": 0.17,
+      "confusion_matrix": {
+        "true_negatives": 1,
+        "false_positives": 9,
+        "false_negatives": 1,
+        "true_positives": 9,
+        "matrix": [
+          [
+            1,
+            9
+          ],
+          [
+            1,
+            9
+          ]
+        ]
+      },
+      "classification_report": {
+        "0": {
+          "precision": 0.5,
+          "recall": 0.1,
+          "f1-score": 0.16666666666666669,
+          "support": 10.0
+        },
+        "1": {
+          "precision": 0.5,
+          "recall": 0.9,
+          "f1-score": 0.6428571428571429,
+          "support": 10.0
+        },
+        "accuracy": 0.5,
+        "macro avg": {
+          "precision": 0.5,
+          "recall": 0.5,
+          "f1-score": 0.40476190476190477,
+          "support": 20.0
+        },
+        "weighted avg": {
+          "precision": 0.5,
+          "recall": 0.5,
+          "f1-score": 0.40476190476190477,
+          "support": 20.0
+        }
+      }
+    }
+  },
+  "artifact_paths": {
+    "model": "/Users/sujal/Desktop/SupplyPrescript/ml/artifacts/classification/model.joblib",
+    "preprocessor": "/Users/sujal/Desktop/SupplyPrescript/ml/artifacts/classification/preprocessor.joblib"
+  }
+}

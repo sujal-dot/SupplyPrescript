@@ -1,0 +1,20 @@
+{
+  "validation_metrics": {
+    "mae": 1.5528,
+    "rmse": 2.6645,
+    "r2_score": -0.0807,
+    "median_absolute_error": 0.9574,
+    "max_error": 23.0505,
+    "mean_actual_delay": 0.952,
+    "mean_predicted_delay": 1.1011
+  },
+  "test_metrics": {
+    "mae": 1.5961,
+    "rmse": 2.7642,
+    "r2_score": -0.043,
+    "median_absolute_error": 0.984,
+    "max_error": 22.4775,
+    "mean_actual_delay": 1.0151,
+    "mean_predicted_delay": 1.1432
+  }
+}

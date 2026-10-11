@@ -196,6 +196,68 @@ OpenAPI Specification JSON:
   curl "http://localhost:8000/api/dashboard"
   ```
 
+#### 5. ML Shipment Delay Prediction
+- `POST /api/predictions/shipment-delay`
+- **Description**: Real-time dual XGBoost model inference returning delay risk probability, classification alert (with tuned threshold `0.150`), and expected delay duration in days (clipped $\ge 0$).
+- **Request Body**:
+  ```json
+  {
+    "supplier_reliability": 0.85,
+    "historical_avg_delay": 1.2,
+    "lead_time": 7,
+    "inventory_level": 350,
+    "demand": 400,
+    "quantity": 150,
+    "shipping_cost": 120.0,
+    "distance": 450.0,
+    "transport_mode": "Road",
+    "season": "Monsoon",
+    "priority": "High"
+  }
+  ```
+- **Response**:
+  ```json
+  {
+    "task": "dual",
+    "model_version": "1.0.0",
+    "delay_probability": 0.2854,
+    "predicted_delayed": 1,
+    "classification_threshold": 0.150,
+    "predicted_delay_days": 1.62,
+    "disagreement_warning": null
+  }
+  ```
+
+---
+
+## Machine Learning Engine
+
+SupplyPrescript features a leak-free predictive ML engine for shipment delay intelligence:
+
+1. **Classification Model (`XGBClassifier`):** Predicts binary delay event risk `delayed` $\in \{0, 1\}$.
+   - Evaluated on test split: ROC-AUC: `0.6197`, PR-AUC: `0.3291`, Recall: `0.7725`, F1: `0.4073` (at optimal threshold `0.150`).
+2. **Regression Model (`XGBRegressor`):** Predicts expected delay magnitude in days `delay_days` $\ge 0$.
+   - Evaluated on test split: MAE: `1.5961` days, Median AE: `0.9840` days, RMSE: `2.7642` days.
+3. **Leakage Protection:** Strictly order-creation features (`lead_time` is planned lead time `(expected - order).days`, never realized transit duration).
+
+### Train Models via CLI
+
+```bash
+# Train both classification and regression models
+python -m ml.train --model all
+
+# Train individual models
+python -m ml.train --model classification
+python -m ml.train --model regression
+```
+
+### Artifacts and Reports
+
+Model artifacts and evaluation diagnostics are saved automatically:
+- Artifacts: `ml/artifacts/classification/`, `ml/artifacts/regression/` (`model.joblib`, `preprocessor.joblib`, `metadata.json`)
+- Visual Reports: `ml/reports/classification/` (`confusion_matrix.png`, `roc_curve.png`, `precision_recall_curve.png`)
+- Visual Reports: `ml/reports/regression/` (`actual_vs_predicted.png`, `residuals.png`)
+
 ---
 
 ## Running Tests
@@ -206,9 +268,11 @@ Run the full automated test suite:
 pytest -v
 ```
 
-Or target specific modules:
+Target specific test modules:
 
 ```bash
+pytest tests/ml -v          # Day 7 ML pipeline, training, inference, persistence, and leakage
+pytest ml/tests -v          # Day 6 Feature engineering, validation, and leakage tests
 pytest tests/api -v         # Day 5 API endpoints test suite
 pytest tests/backend -v     # Health and DB connectivity
 pytest tests/database -v    # Day 4 Database schema & relationships

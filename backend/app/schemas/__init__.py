@@ -6,7 +6,13 @@ from app.schemas.shipment import ShipmentBase, ShipmentCreate, ShipmentResponse,
 from app.schemas.inventory import InventoryBase, InventoryCreate, InventoryResponse, InventoryListResponse
 from app.schemas.dashboard import DashboardResponse, DashboardMetrics, TopDelayedSupplier
 from app.schemas.model_version import ModelVersionBase, ModelVersionCreate, ModelVersionResponse
-from app.schemas.prediction import PredictionBase, PredictionCreate, PredictionResponse
+from app.schemas.prediction import (
+    PredictionBase,
+    PredictionCreate,
+    PredictionResponse,
+    ShipmentPredictionRequest,
+    ShipmentPredictionResult,
+)
 from app.schemas.recommendation import RecommendationBase, RecommendationCreate, RecommendationResponse
 from app.schemas.decision import DecisionBase, DecisionCreate, DecisionResponse
 from app.schemas.outcome import OutcomeBase, OutcomeCreate, OutcomeResponse
@@ -36,6 +42,8 @@ __all__ = [
     "PredictionBase",
     "PredictionCreate",
     "PredictionResponse",
+    "ShipmentPredictionRequest",
+    "ShipmentPredictionResult",
     "RecommendationBase",
     "RecommendationCreate",
     "RecommendationResponse",

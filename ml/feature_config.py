@@ -33,6 +33,14 @@ FEATURE_REPORT_PATH = METADATA_DIR / "feature_report.json"
 SPLIT_METADATA_PATH = METADATA_DIR / "split_metadata.json"
 LEAKAGE_REPORT_PATH = METADATA_DIR / "leakage_report.json"
 
+ARTIFACTS_DIR = ML_DIR / "artifacts"
+CLASSIFICATION_ARTIFACTS_DIR = ARTIFACTS_DIR / "classification"
+REGRESSION_ARTIFACTS_DIR = ARTIFACTS_DIR / "regression"
+
+REPORTS_DIR = ML_DIR / "reports"
+CLASSIFICATION_REPORTS_DIR = REPORTS_DIR / "classification"
+REGRESSION_REPORTS_DIR = REPORTS_DIR / "regression"
+
 # ---------------------------------------------------------------------------
 # Feature Lists & Schema Definitions
 # ---------------------------------------------------------------------------
