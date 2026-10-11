@@ -1,0 +1,147 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-10-11T10:54:20.484355",
+  "input_dataset": "/Users/sujal/Desktop/SupplyPrescript/data/processed/shipments_processed.csv",
+  "approved_feature_count": 11,
+  "features": [
+    {
+      "feature_name": "supplier_reliability",
+      "type": "numeric",
+      "data_type": "float64",
+      "source": "suppliers / historical performance",
+      "derivation": "Direct recorded supplier reliability score in [0.0, 1.0]",
+      "availability": "Available at order creation",
+      "approved_for_training": true,
+      "business_meaning": "Supplier historical score indicating baseline reliability.",
+      "missing_value_handling": "Imputed via group/global median if missing."
+    },
+    {
+      "feature_name": "historical_avg_delay",
+      "type": "numeric",
+      "data_type": "float64",
+      "source": "historical shipment records (causal prior-only)",
+      "derivation": "Expanding mean of delay_days from previous shipments of the supplier (shift(1))",
+      "availability": "Available at order creation (strictly prior shipments)",
+      "approved_for_training": true,
+      "business_meaning": "Supplier empirical track record of average delay days up to this order.",
+      "missing_value_handling": "Neutral training fallback (0.0 days) for suppliers with no prior history."
+    },
+    {
+      "feature_name": "lead_time",
+      "type": "numeric",
+      "data_type": "int64",
+      "source": "order scheduling / expected_delivery_date",
+      "derivation": "(expected_delivery_date - order_date).days (Planned lead time)",
+      "availability": "Available at order creation",
+      "approved_for_training": true,
+      "business_meaning": "Planned delivery transit days scheduled at order placement.",
+      "missing_value_handling": "Calculated deterministically from order and expected delivery dates."
+    },
+    {
+      "feature_name": "inventory_level",
+      "type": "numeric",
+      "data_type": "int64",
+      "source": "warehouse ERP inventory records",
+      "derivation": "Inventory units on hand at origin/distribution node at order time",
+      "availability": "Available at order creation",
+      "approved_for_training": true,
+      "business_meaning": "Stock availability to fulfill demand and absorb supply shocks.",
+      "missing_value_handling": "Non-negative integer validation."
+    },
+    {
+      "feature_name": "demand",
+      "type": "numeric",
+      "data_type": "int64",
+      "source": "sales forecasting / customer order demand",
+      "derivation": "Projected market demand for product SKU at order placement",
+      "availability": "Available at order creation",
+      "approved_for_training": true,
+      "business_meaning": "Demand pressure on the supply chain node.",
+      "missing_value_handling": "Non-negative integer validation."
+    },
+    {
+      "feature_name": "quantity",
+      "type": "numeric",
+      "data_type": "int64",
+      "source": "shipment purchase order",
+      "derivation": "Ordered units in shipment",
+      "availability": "Available at order creation",
+      "approved_for_training": true,
+      "business_meaning": "Batch size of the shipment.",
+      "missing_value_handling": "Strictly positive integer validation."
+    },
+    {
+      "feature_name": "shipping_cost",
+      "type": "numeric",
+      "data_type": "float64",
+      "source": "carrier freight booking rate",
+      "derivation": "Known contracted shipping freight cost",
+      "availability": "Available at order creation / dispatch booking",
+      "approved_for_training": true,
+      "business_meaning": "Logistics expenditure allocated to shipment.",
+      "missing_value_handling": "Non-negative float validation."
+    },
+    {
+      "feature_name": "distance",
+      "type": "numeric",
+      "data_type": "float64",
+      "source": "origin and destination geographical coordinates",
+      "derivation": "Haversine great-circle formula between hubs + 1.25 highway circuity factor",
+      "availability": "Available at order creation",
+      "approved_for_training": true,
+      "business_meaning": "Estimated route distance in kilometers between origin and destination.",
+      "missing_value_handling": "Fallback to intra-city minimum (35 km) if hubs match or coordinates missing."
+    },
+    {
+      "feature_name": "transport_mode",
+      "type": "categorical",
+      "data_type": "object / string",
+      "source": "freight contract logistics channel",
+      "derivation": "Modality chosen: Road, Rail, Air, or Sea",
+      "availability": "Available at order creation",
+      "approved_for_training": true,
+      "business_meaning": "Logistical mode of transit.",
+      "missing_value_handling": "One-hot encoded with handle_unknown='ignore'."
+    },
+    {
+      "feature_name": "season",
+      "type": "categorical",
+      "data_type": "object / string",
+      "source": "order_date month calendar",
+      "derivation": "Indian seasonal mapping (Winter, Summer, Monsoon, Post-Monsoon)",
+      "availability": "Available at order creation",
+      "approved_for_training": true,
+      "business_meaning": "Weather and seasonal monsoon demand cycle.",
+      "missing_value_handling": "Derived deterministically from order_date."
+    },
+    {
+      "feature_name": "priority",
+      "type": "categorical",
+      "data_type": "object / string",
+      "source": "order dispatch urgency specification",
+      "derivation": "Urgency rating: Low, Medium, High, or Critical",
+      "availability": "Available at order creation",
+      "approved_for_training": true,
+      "business_meaning": "Priority level influencing carrier dispatch speed.",
+      "missing_value_handling": "One-hot encoded with handle_unknown='ignore'."
+    }
+  ],
+  "targets": [
+    {
+      "target_name": "delay_days",
+      "task": "regression",
+      "type": "numeric",
+      "data_type": "int64",
+      "derivation": "max(0, actual_delivery_date - expected_delivery_date)",
+      "business_meaning": "Non-negative delay in days (0 indicates on-time arrival)."
+    },
+    {
+      "target_name": "delayed",
+      "task": "classification",
+      "type": "binary",
+      "data_type": "int64",
+      "derivation": "1 if delay_days > 0 else 0",
+      "business_meaning": "Binary delay status (0 = On-Time, 1 = Delayed)."
+    }
+  ]
+}
