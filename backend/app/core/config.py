@@ -22,6 +22,11 @@ class Settings(BaseSettings):
         "http://localhost:3000",
     ]
 
+    # ML & Risk Thresholds
+    RISK_THRESHOLD_LOW: float = 0.30
+    RISK_THRESHOLD_HIGH: float = 0.70
+    ACTIVE_MODEL_VERSION: str = "v1.0"
+
     model_config = SettingsConfigDict(
         env_file=("../.env", ".env"),
         env_file_encoding="utf-8",

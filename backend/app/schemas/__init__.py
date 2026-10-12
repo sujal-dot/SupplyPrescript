@@ -12,6 +12,10 @@ from app.schemas.prediction import (
     PredictionResponse,
     ShipmentPredictionRequest,
     ShipmentPredictionResult,
+    PredictRequest,
+    PredictResponse,
+    RiskCategory,
+    determine_risk_category,
 )
 from app.schemas.recommendation import RecommendationBase, RecommendationCreate, RecommendationResponse
 from app.schemas.decision import DecisionBase, DecisionCreate, DecisionResponse
@@ -44,6 +48,10 @@ __all__ = [
     "PredictionResponse",
     "ShipmentPredictionRequest",
     "ShipmentPredictionResult",
+    "PredictRequest",
+    "PredictResponse",
+    "RiskCategory",
+    "determine_risk_category",
     "RecommendationBase",
     "RecommendationCreate",
     "RecommendationResponse",
