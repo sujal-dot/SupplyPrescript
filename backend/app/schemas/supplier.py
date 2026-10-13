@@ -18,6 +18,9 @@ class SupplierCreate(SupplierBase):
 
 class SupplierResponse(SupplierBase):
     id: Optional[int] = None
+    total_shipments: Optional[int] = None
+    historical_avg_delay: Optional[float] = None
+    delayed_shipment_count: Optional[int] = None
 
     model_config = ConfigDict(from_attributes=True)
 

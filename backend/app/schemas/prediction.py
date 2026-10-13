@@ -231,3 +231,29 @@ class PredictResponse(BaseModel):
             }
         }
     )
+
+
+class StoredPredictionItem(BaseModel):
+    id: int
+    prediction_id: str
+    shipment_id: str
+    supplier_id: Optional[str] = None
+    product_id: Optional[str] = None
+    prediction_type: str
+    predicted_value: float
+    prediction_probability: Optional[float] = None
+    risk: str
+    model_version: str
+    prediction_status: str
+    prediction_date: datetime
+    created_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class StoredPredictionListResponse(BaseModel):
+    data: list[StoredPredictionItem]
+    total: int
+    page: int
+    page_size: int
+    total_pages: int

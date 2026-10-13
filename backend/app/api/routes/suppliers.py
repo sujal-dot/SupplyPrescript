@@ -21,6 +21,9 @@ def get_suppliers(
     page_size: int = Query(20, ge=1, le=100, description="Items per page (1 to 100)"),
     origin: Optional[str] = Query(None, description="Filter by origin city"),
     min_reliability: Optional[Decimal] = Query(None, ge=0, le=1, description="Filter by minimum supplier reliability (0.0 to 1.0)"),
+    search: Optional[str] = Query(None, description="Search supplier name or ID"),
+    sort_by: Optional[str] = Query("supplier_id", description="Sort by supplier_id, reliability, or supplier_name"),
+    sort_order: Optional[str] = Query("asc", description="Sort direction asc or desc"),
     db: Session = Depends(get_db),
 ):
     """
@@ -33,6 +36,9 @@ def get_suppliers(
             page_size=page_size,
             origin=origin,
             min_reliability=min_reliability,
+            search=search,
+            sort_by=sort_by,
+            sort_order=sort_order,
         )
         return {
             "data": suppliers,

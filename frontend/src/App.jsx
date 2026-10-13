@@ -2,6 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Navbar from './components/Navbar';
+// 5 Core Day 10 Pages
+import Dashboard from './pages/Dashboard';
+import Predictions from './pages/Predictions';
+import Shipments from './pages/Shipments';
+import Suppliers from './pages/Suppliers';
+import Inventory from './pages/Inventory';
+
+// Supporting and Legacy Pages
 import DashboardPage from './pages/DashboardPage';
 import ForecastingPage from './pages/ForecastingPage';
 import InventoryPage from './pages/InventoryPage';
@@ -71,13 +79,23 @@ export default function App() {
 
           <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
             <Routes>
-              <Route path="/" element={<DashboardPage />} />
+              {/* 5 Core Day 10 Pages */}
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/predictions" element={<Predictions />} />
+              <Route path="/shipments" element={<Shipments />} />
+              <Route path="/suppliers" element={<Suppliers />} />
+              <Route path="/inventory" element={<Inventory />} />
+
+              {/* System Health */}
+              <Route path="/health" element={<HealthPage />} />
+
+              {/* Supporting and Legacy Pages */}
               <Route path="/forecasting" element={<ForecastingPage />} />
-              <Route path="/inventory" element={<InventoryPage />} />
-              <Route path="/shipments" element={<ShipmentsPage />} />
               <Route path="/prescriptions" element={<PrescriptionsPage />} />
               <Route path="/data" element={<DataPage />} />
-              <Route path="/health" element={<HealthPage />} />
+              <Route path="/legacy/dashboard" element={<DashboardPage />} />
+              <Route path="/legacy/shipments" element={<ShipmentsPage />} />
+              <Route path="/legacy/inventory" element={<InventoryPage />} />
             </Routes>
           </main>
 

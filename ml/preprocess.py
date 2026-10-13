@@ -220,18 +220,30 @@ def transform_features(
     # Verify input has required features in correct order
     X_subset = X[APPROVED_FEATURES].copy()
     check_feature_matrix_for_leakage(X_subset)
-    return preprocessor.transform(X_subset)
+    try:
+        return preprocessor.transform(X_subset)
+    except (AttributeError, TypeError):
+        # Compatibility with ColumnTransformer unpickled across scikit-learn versions
+        num_vals = X_subset[NUMERICAL_FEATURES].to_numpy(dtype=float)
+        cat_encoder = getattr(preprocessor, "named_transformers_", {}).get("cat")
+        if cat_encoder is not None:
+            cat_vals = cat_encoder.transform(X_subset[CATEGORICAL_FEATURES])
+            return np.hstack([num_vals, cat_vals])
+        raise
 
 
 def get_transformed_feature_names(preprocessor: ColumnTransformer) -> List[str]:
     """
     Get output feature names after one-hot encoding transformation.
     """
-    if hasattr(preprocessor, "get_feature_names_out"):
-        return list(preprocessor.get_feature_names_out())
+    try:
+        if hasattr(preprocessor, "get_feature_names_out"):
+            return list(preprocessor.get_feature_names_out())
+    except (AttributeError, TypeError):
+        pass
     # Fallback derivation
-    names = list(NUMERICAL_FEATURES)
-    cat_encoder = preprocessor.named_transformers_.get("cat")
+    names = [f"num__{col}" for col in NUMERICAL_FEATURES]
+    cat_encoder = getattr(preprocessor, "named_transformers_", {}).get("cat")
     if cat_encoder and hasattr(cat_encoder, "categories_"):
         for feat_name, cats in zip(CATEGORICAL_FEATURES, cat_encoder.categories_):
             for cat in cats:

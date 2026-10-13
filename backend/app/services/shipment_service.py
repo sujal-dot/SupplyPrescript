@@ -31,12 +31,16 @@ class ShipmentService:
         end_date: Optional[date] = None,
         sort_by: Optional[str] = "order_date",
         sort_order: Optional[str] = "asc",
+        search: Optional[str] = None,
     ) -> Tuple[List[Shipment], int, int]:
         """
         Query shipments with pagination, filtering, date range, and sorting.
         Returns: (shipments, total_count, total_pages)
         """
         query = db.query(Shipment)
+
+        if search:
+            query = query.filter(Shipment.shipment_id.ilike(f"%{search.strip()}%"))
 
         if supplier_id:
             query = query.filter(Shipment.supplier_id == supplier_id.strip())
@@ -74,5 +78,22 @@ class ShipmentService:
 
         offset = (page - 1) * page_size
         shipments = query.offset(offset).limit(page_size).all()
+
+        for s in shipments:
+            if hasattr(s, "predictions") and s.predictions:
+                latest_pred = s.predictions[-1]
+                prob = float(latest_pred.prediction_probability) if latest_pred.prediction_probability is not None else 0.0
+                s.prediction_probability = prob
+                s.predicted_delay_days = float(latest_pred.predicted_value)
+                if prob < 0.30:
+                    s.risk_level = "LOW"
+                elif prob < 0.70:
+                    s.risk_level = "MEDIUM"
+                else:
+                    s.risk_level = "HIGH"
+            else:
+                s.prediction_probability = None
+                s.predicted_delay_days = None
+                s.risk_level = None
 
         return shipments, total_count, total_pages

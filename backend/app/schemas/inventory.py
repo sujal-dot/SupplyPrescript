@@ -21,6 +21,7 @@ class InventoryCreate(InventoryBase):
 
 class InventoryResponse(InventoryBase):
     id: Optional[int] = None
+    product_name: Optional[str] = None
 
     model_config = ConfigDict(from_attributes=True)
 

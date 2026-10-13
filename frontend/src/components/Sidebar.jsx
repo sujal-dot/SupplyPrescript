@@ -6,6 +6,7 @@ import {
   Package,
   Truck,
   Sparkles,
+  Building2,
   Database,
   Activity,
   ChevronLeft,
@@ -17,12 +18,11 @@ import {
 import { getBackendHealth } from '../services/api';
 
 const navItems = [
-  { path: '/', label: 'Overview Dashboard', icon: LayoutDashboard },
-  { path: '/forecasting', label: 'Demand Forecasting', icon: TrendingUp },
-  { path: '/inventory', label: 'Inventory Optimization', icon: Package },
-  { path: '/shipments', label: 'Shipments & Logistics', icon: Truck },
-  { path: '/prescriptions', label: 'Prescriptive Analytics', icon: Sparkles, badge: 'AI' },
-  { path: '/data', label: 'Data Management', icon: Database },
+  { path: '/', label: 'Dashboard', icon: LayoutDashboard },
+  { path: '/predictions', label: 'Predictions', icon: Sparkles, badge: 'ML' },
+  { path: '/shipments', label: 'Shipments', icon: Truck },
+  { path: '/suppliers', label: 'Suppliers', icon: Building2 },
+  { path: '/inventory', label: 'Inventory', icon: Package },
   { path: '/health', label: 'System Health', icon: Activity },
 ];
 

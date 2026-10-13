@@ -194,9 +194,7 @@ def register_model_version(
             "feature_names": APPROVED_FEATURES,
             "feature_count": len(APPROVED_FEATURES),
             "transformed_feature_names": (
-                list(preprocessor.get_feature_names_out())
-                if hasattr(preprocessor, "get_feature_names_out")
-                else []
+                __import__("ml.preprocess", fromlist=["get_transformed_feature_names"]).get_transformed_feature_names(preprocessor)
             ),
         },
         "targets": {
@@ -317,7 +315,8 @@ def verify_model_artifacts(version: str) -> Dict[str, Any]:
             "priority": "High",
         }])
 
-        X_trans = prep.transform(dummy_df)
+        from ml.preprocess import transform_features
+        X_trans = transform_features(prep, dummy_df)
         prob = clf.predict_proba(X_trans)[:, 1]
         days = reg.predict(X_trans)
 

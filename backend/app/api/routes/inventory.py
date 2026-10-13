@@ -20,6 +20,9 @@ def get_inventory(
     page_size: int = Query(20, ge=1, le=100, description="Items per page (1 to 100)"),
     product_id: Optional[str] = Query(None, description="Filter by product ID (e.g. PROD001)"),
     inventory_status: Optional[str] = Query(None, description="Filter by status (Healthy, Low, Critical, Out of Stock)"),
+    search: Optional[str] = Query(None, description="Search product ID or product name"),
+    sort_by: Optional[str] = Query("product_id", description="Sort by product_id, inventory_level, demand, or reorder_point"),
+    sort_order: Optional[str] = Query("asc", description="Sort direction asc or desc"),
     db: Session = Depends(get_db),
 ):
     """
@@ -32,6 +35,9 @@ def get_inventory(
             page_size=page_size,
             product_id=product_id,
             inventory_status=inventory_status,
+            search=search,
+            sort_by=sort_by,
+            sort_order=sort_order,
         )
         return {
             "data": inventory_records,

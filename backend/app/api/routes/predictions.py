@@ -7,15 +7,23 @@ and backward-compatible Day 7 endpoint (POST /api/predictions/shipment-delay).
 """
 
 import logging
-from fastapi import APIRouter, Depends, status
+import math
+from typing import Optional
+from fastapi import APIRouter, Depends, Query, status
 from sqlalchemy.orm import Session
 
 from app.database.connection import get_db
+from app.models.prediction import Prediction
+from app.models.shipment import Shipment
+from app.models.model_version import ModelVersion
 from app.schemas.prediction import (
     PredictRequest,
     PredictResponse,
     ShipmentPredictionRequest,
     ShipmentPredictionResult,
+    StoredPredictionListResponse,
+    StoredPredictionItem,
+    determine_risk_category,
 )
 from app.services.prediction_service import PredictionService
 
@@ -85,3 +93,68 @@ def predict_shipment_delay(
     Direct inference using pre-computed feature payload.
     """
     return PredictionService.predict_shipment_delay(request)
+
+
+@router.get(
+    "/api/predictions",
+    response_model=StoredPredictionListResponse,
+    status_code=status.HTTP_200_OK,
+    summary="List stored predictions with pagination and filtering",
+    description="Retrieve stored ML predictions from PostgreSQL with associated shipment details.",
+)
+def get_predictions(
+    page: int = Query(1, ge=1, description="Page number (1-indexed)"),
+    page_size: int = Query(20, ge=1, le=100, description="Items per page"),
+    risk: Optional[str] = Query(None, description="Filter by risk tier (LOW, MEDIUM, HIGH)"),
+    shipment_id: Optional[str] = Query(None, description="Filter by shipment ID"),
+    db: Session = Depends(get_db),
+) -> StoredPredictionListResponse:
+    query = db.query(Prediction, Shipment, ModelVersion).outerjoin(
+        Shipment, Prediction.shipment_id == Shipment.shipment_id
+    ).outerjoin(
+        ModelVersion, Prediction.model_version_id == ModelVersion.id
+    )
+
+    if shipment_id:
+        query = query.filter(Prediction.shipment_id.ilike(f"%{shipment_id.strip()}%"))
+
+    all_rows = query.order_by(Prediction.created_at.desc()).all()
+
+    items = []
+    for pred, ship, mv in all_rows:
+        prob = float(pred.prediction_probability) if pred.prediction_probability is not None else 0.0
+        r_tier = determine_risk_category(prob)
+        if risk and r_tier.upper() != risk.strip().upper():
+            continue
+
+        items.append(
+            StoredPredictionItem(
+                id=pred.id,
+                prediction_id=pred.prediction_id,
+                shipment_id=pred.shipment_id,
+                supplier_id=ship.supplier_id if ship else None,
+                product_id=ship.product_id if ship else None,
+                prediction_type=pred.prediction_type,
+                predicted_value=float(pred.predicted_value),
+                prediction_probability=prob,
+                risk=r_tier,
+                model_version=mv.version if mv else "v1.0",
+                prediction_status=pred.prediction_status,
+                prediction_date=pred.prediction_date,
+                created_at=pred.created_at,
+            )
+        )
+
+    total = len(items)
+    total_pages = math.ceil(total / page_size) if total > 0 else 0
+    offset = (page - 1) * page_size
+    paginated_items = items[offset : offset + page_size]
+
+    return StoredPredictionListResponse(
+        data=paginated_items,
+        total=total,
+        page=page,
+        page_size=page_size,
+        total_pages=total_pages,
+    )
+

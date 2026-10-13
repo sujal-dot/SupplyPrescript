@@ -28,6 +28,7 @@ def get_shipments(
     end_date: Optional[date] = Query(None, description="Filter orders placed on or before end_date (YYYY-MM-DD)"),
     sort_by: Optional[str] = Query("order_date", description="Field to sort by (order_date, quantity, shipping_cost, lead_time, delay_days)"),
     sort_order: Optional[str] = Query("asc", description="Sort direction (asc or desc)"),
+    search: Optional[str] = Query(None, description="Search by shipment ID"),
     db: Session = Depends(get_db),
 ):
     """
@@ -67,6 +68,7 @@ def get_shipments(
             end_date=end_date,
             sort_by=sort_by,
             sort_order=sort_order,
+            search=search,
         )
         return {
             "data": shipments,

@@ -39,6 +39,9 @@ class ShipmentCreate(ShipmentBase):
 
 class ShipmentResponse(ShipmentBase):
     id: Optional[int] = None
+    predicted_delay_days: Optional[float] = None
+    prediction_probability: Optional[float] = None
+    risk_level: Optional[str] = None
 
     model_config = ConfigDict(from_attributes=True)
 
