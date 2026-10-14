@@ -1,0 +1,25 @@
+# SupplyPrescript — Optimization Engine Scenario Configuration
+# Baseline Scenario Defaults
+scenario_name: baseline_supply_chain
+
+budget:
+  max_total_cost: 50000
+  currency: USD
+
+inventory:
+  minimum_required_units: 1000
+  holding_cost_rate: 0.05
+  shortage_penalty_rate: 1.5
+
+delivery:
+  maximum_acceptable_delay_days: 7
+  daily_delay_penalty: 25.0
+
+supplier:
+  default_max_capacity_units: 5000
+
+optimization:
+  objective: minimize_total_cost
+  solver: pulp
+  time_limit_seconds: 60
+  random_seed: 42
