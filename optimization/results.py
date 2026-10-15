@@ -42,12 +42,21 @@ class DecisionAllocation(BaseModel):
     quantity: float
     unit_cost: float
     shipping_cost_per_unit: float
-    expected_delay_days: float
-    expected_delay_probability: float
-    total_procurement_cost: float
-    total_shipping_cost: float
-    expected_delay_cost: float
-    total_cost: float
+    expected_delay_days: float = 0.0
+    expected_delay_probability: float = 0.0
+    predicted_delay: Optional[float] = None
+    total_procurement_cost: float = 0.0
+    total_shipping_cost: float = 0.0
+    expected_delay_cost: float = 0.0
+    expected_risk_cost: float = 0.0
+    total_cost: float = 0.0
+    estimated_cost: Optional[float] = None
+
+    def model_post_init(self, __context: Any) -> None:
+        if self.predicted_delay is None:
+            self.predicted_delay = self.expected_delay_days
+        if self.estimated_cost is None:
+            self.estimated_cost = self.total_cost
 
 
 class InventoryResult(BaseModel):
@@ -87,22 +96,47 @@ class InfeasibilityReport(BaseModel):
 
 
 class OptimizationResult(BaseModel):
-    scenario_name: str
-    status: str = Field(..., description="Solver outcome status (OPTIMAL, INFEASIBLE, UNBOUNDED, TIME_LIMIT, ERROR)")
-    solver_name: str
-    solve_time_seconds: float = 0.0
-    objective: ObjectiveSummary
-    constraints: ConstraintSummary
+    status: str = Field(..., description="Solver outcome status (OPTIMAL, FEASIBLE, INFEASIBLE, UNBOUNDED, TIME_LIMIT, ERROR)")
+    scenario_id: str = Field("baseline", description="Unique scenario identifier")
+    scenario_name: str = Field("baseline", description="Human-readable scenario name")
+    objective_value: Optional[float] = Field(None, description="Total minimized cost computed by solver (null if infeasible/failed)")
+    currency: str = Field("USD", description="Currency code (e.g. USD)")
+    cost_breakdown: Dict[str, Optional[float]] = Field(
+        default_factory=lambda: {
+            "procurement_cost": None,
+            "shipping_cost": None,
+            "inventory_cost": None,
+            "delay_penalty": None,
+            "risk_cost": None,
+            "shortage_cost": None,
+        },
+        description="Granular component costs computed by the engine",
+    )
     decisions: List[DecisionAllocation] = Field(default_factory=list)
-    inventory_summary: List[InventoryResult] = Field(default_factory=list)
     constraint_checks: List[ConstraintCheckResult] = Field(default_factory=list)
+    warnings: List[str] = Field(default_factory=list)
+    model_metadata: Dict[str, Any] = Field(
+        default_factory=lambda: {
+            "solver": None,
+            "model_version": None,
+        },
+        description="Solver engine, active ML version, solve duration, and execution metadata",
+    )
+
+    # Backwards-compatible fields for Day 11 callers
+    solver_name: str = "Unknown"
+    solve_time_seconds: float = 0.0
+    objective: ObjectiveSummary = Field(default_factory=ObjectiveSummary)
+    constraints: Optional[ConstraintSummary] = None
+    inventory_summary: List[InventoryResult] = Field(default_factory=list)
     supplier_utilization: List[SupplierCapacityUtilization] = Field(default_factory=list)
     budget_utilization_pct: Optional[float] = None
-    warnings: List[str] = Field(default_factory=list)
     infeasibility_diagnostics: Optional[InfeasibilityReport] = None
 
     def is_optimal(self) -> bool:
+        """Only returns True when solver confirms mathematical optimality."""
         return self.status.upper() == "OPTIMAL"
 
     def to_dict(self) -> Dict[str, Any]:
+        """Convert result to dictionary matching Day 12 structured JSON specifications."""
         return self.model_dump()

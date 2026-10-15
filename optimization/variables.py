@@ -41,6 +41,10 @@ class CandidateOption:
     predicted_delay_days: float
     expected_delay_cost_per_unit: float
     supplier_capacity: float
+    supplier_reliability: float = 1.0
+    expected_risk_cost_per_unit: float = 0.0
+    minimum_order_quantity: float = 0.0
+    maximum_order_quantity: Optional[float] = None
     origin: str = "OriginHub"
     destination: str = "Delhi"
     distance_km: float = 1000.0
@@ -65,8 +69,15 @@ class ProductData:
 class OptimizationVariables:
     """
     Container for PuLP decision variables created for a specific optimization problem instance.
+    - x[s, p]: Units purchased from supplier s for product p (non-negative)
+    - q[s, p, m]: Units shipped from supplier s for product p via transport mode m (non-negative)
+    - I[p]: Ending inventory of product p (non-negative)
+    - u[p]: Unmet demand for product p (non-negative)
     """
-    # q[s, p, m] -> Quantity procured from supplier s for product p via transport mode m
+    # x[s, p] -> Units purchased from supplier s for product p
+    x: Dict[Tuple[str, str], pulp.LpVariable] = field(default_factory=dict)
+
+    # q[s, p, m] -> Quantity shipped from supplier s for product p via transport mode m
     q: Dict[Tuple[str, str, str], pulp.LpVariable] = field(default_factory=dict)
 
     # I[p] -> Ending inventory of product p
@@ -76,6 +87,7 @@ class OptimizationVariables:
     u: Dict[str, pulp.LpVariable] = field(default_factory=dict)
 
     # Metadata tracking
+    procurement_keys: List[Tuple[str, str]] = field(default_factory=list)
     candidate_keys: List[Tuple[str, str, str]] = field(default_factory=list)
     product_ids: List[str] = field(default_factory=list)
     supplier_ids: List[str] = field(default_factory=list)
@@ -88,6 +100,26 @@ class OptimizationVariables:
 
     def get_procured_from_supplier(self, supplier_id: str) -> pulp.LpAffineExpression:
         """Sum of all procured quantities from supplier s across all products and modes."""
+        matching = [var for (s, p, m), var in self.q.items() if s == supplier_id]
+        return pulp.lpSum(matching) if matching else 0.0
+
+    def get_purchased_for_product(self, product_id: str) -> pulp.LpAffineExpression:
+        """Sum of units purchased for product p across suppliers x[s, p]."""
+        matching = [var for (s, p), var in self.x.items() if p == product_id]
+        return pulp.lpSum(matching) if matching else 0.0
+
+    def get_purchased_from_supplier(self, supplier_id: str) -> pulp.LpAffineExpression:
+        """Sum of units purchased from supplier s across products x[s, p]."""
+        matching = [var for (s, p), var in self.x.items() if s == supplier_id]
+        return pulp.lpSum(matching) if matching else 0.0
+
+    def get_shipped_for_product(self, product_id: str) -> pulp.LpAffineExpression:
+        """Sum of units shipped for product p across suppliers and transport modes q[s, p, m]."""
+        matching = [var for (s, p, m), var in self.q.items() if p == product_id]
+        return pulp.lpSum(matching) if matching else 0.0
+
+    def get_shipped_from_supplier(self, supplier_id: str) -> pulp.LpAffineExpression:
+        """Sum of units shipped from supplier s across products and transport modes q[s, p, m]."""
         matching = [var for (s, p, m), var in self.q.items() if s == supplier_id]
         return pulp.lpSum(matching) if matching else 0.0
 
@@ -106,6 +138,11 @@ def create_decision_variables(
     """
     Instantiate decision variables in the given PuLP problem instance.
     Ensures non-negativity and adheres to configured variable categories (Integer vs Continuous).
+    Creates:
+    - x[s, p]: procurement variables
+    - q[s, p, m]: shipment allocation variables
+    - I[p]: ending inventory buffer variables
+    - u[p]: unmet demand shortage variables
     """
     cat = "Integer" if config.optimization.integer_quantities else "Continuous"
 
@@ -113,17 +150,32 @@ def create_decision_variables(
     supplier_set: Set[str] = set()
     product_set: Set[str] = set()
     mode_set: Set[str] = set()
+    procurement_pairs: Dict[Tuple[str, str], float] = {}
 
-    # 1. Procurement and Shipping Variables q[s, p, m]
+    # 1. Procurement Variables x[s, p]
+    for opt in candidate_options:
+        proc_key = (opt.supplier_id, opt.product_id)
+        current_cap = procurement_pairs.get(proc_key, 0.0)
+        procurement_pairs[proc_key] = max(current_cap, opt.supplier_capacity)
+
+    for (s_id, p_id), cap in procurement_pairs.items():
+        var_name = f"x_{s_id}_{p_id}".replace("-", "_").replace(" ", "_")
+        up_bound = cap if cap > 0 else None
+        if hasattr(problem, "add_variable"):
+            var_x = problem.add_variable(var_name, lowBound=0, upBound=up_bound, cat=cat)
+        else:
+            var_x = pulp.LpVariable(var_name, lowBound=0, upBound=up_bound, cat=cat)
+        variables.x[(s_id, p_id)] = var_x
+        variables.procurement_keys.append((s_id, p_id))
+
+    # 2. Shipping Variables q[s, p, m]
     for opt in candidate_options:
         key = (opt.supplier_id, opt.product_id, opt.transport_mode)
-        # Variable name cleaned for solver syntax compatibility
         var_name = f"q_{opt.supplier_id}_{opt.product_id}_{opt.transport_mode}".replace("-", "_").replace(" ", "_")
-
-        # Upper bound by individual supplier capacity if available
         up_bound = opt.supplier_capacity if opt.supplier_capacity > 0 else None
+        if opt.maximum_order_quantity and opt.maximum_order_quantity > 0:
+            up_bound = min(up_bound or float("inf"), opt.maximum_order_quantity)
 
-        # Create variable on problem (PuLP 4.0 / 3.x compatible)
         if hasattr(problem, "add_variable"):
             var = problem.add_variable(var_name, lowBound=0, upBound=up_bound, cat=cat)
         else:

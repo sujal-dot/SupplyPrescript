@@ -123,6 +123,12 @@ def validate_optimization_inputs(
             errors.append(f"Option ({opt.supplier_id}, {opt.product_id}, {opt.transport_mode}) has negative shipping cost: {opt.shipping_cost_per_unit}")
         if opt.supplier_capacity < 0:
             errors.append(f"Supplier '{opt.supplier_id}' has negative capacity: {opt.supplier_capacity}")
+        if not (0.0 <= opt.predicted_delay_probability <= 1.0):
+            errors.append(f"Option ({opt.supplier_id}, {opt.product_id}, {opt.transport_mode}) has invalid delay probability outside [0, 1]: {opt.predicted_delay_probability}")
+        if hasattr(opt, "supplier_reliability") and not (0.0 <= opt.supplier_reliability <= 1.0):
+            errors.append(f"Supplier '{opt.supplier_id}' has invalid reliability score outside [0, 1]: {opt.supplier_reliability}")
+        if opt.predicted_delay_days < 0:
+            errors.append(f"Option ({opt.supplier_id}, {opt.product_id}, {opt.transport_mode}) has negative predicted delay days: {opt.predicted_delay_days}")
 
         if opt.supplier_id not in supplier_capacities:
             supplier_capacities[opt.supplier_id] = opt.supplier_capacity

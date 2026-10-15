@@ -168,7 +168,11 @@ def apply_business_constraints(
 
     for s_id in variables.supplier_ids:
         cap_val = supplier_capacities.get(s_id, config.supplier.default_max_capacity_units)
-        supplier_procured_expr = variables.get_procured_from_supplier(s_id)
+        supplier_procured_expr = (
+            variables.get_purchased_from_supplier(s_id)
+            if variables.x
+            else variables.get_procured_from_supplier(s_id)
+        )
 
         # Apply constraint only if supplier has candidate variables
         if not isinstance(supplier_procured_expr, (int, float)):
@@ -219,13 +223,35 @@ def apply_business_constraints(
                     category="DeliveryDeadline",
                     expression=delay_c,
                     rhs=0.0,
-                    description=f"Option {key} prohibited due to {reason}",
+                    description=f"Option {key} prohibited due to {reason} (prediction-based upper bound)",
                 )
             )
             registry.delay_pruned_options.append(f"{opt.supplier_id}-{opt.product_id}-{opt.transport_mode}: {reason}")
 
     # -------------------------------------------------------------------------
-    # 6. Demand Fulfillment / Shortage Limits
+    # 6. Shipment and Procurement Consistency Constraints
+    # -------------------------------------------------------------------------
+    # Shipments across modes must not exceed units purchased: sum_m q[s, p, m] == x[s, p]
+    if variables.x:
+        for (s_id, p_id), var_x in variables.x.items():
+            matching_q = [var for (s, p, m), var in variables.q.items() if s == s_id and p == p_id]
+            if matching_q:
+                ship_expr = pulp.lpSum(matching_q)
+                consistency_c = ship_expr == var_x
+                c_name = f"Constraint_Shipment_Consistency_{s_id}_{p_id}".replace("-", "_")
+                problem += consistency_c, c_name
+                registry.constraints.append(
+                    AppliedConstraint(
+                        name=c_name,
+                        category="ShipmentConsistency",
+                        expression=consistency_c,
+                        rhs=0.0,
+                        description=f"Total shipments of product {p_id} from supplier {s_id} must equal purchased units x[{s_id}, {p_id}]",
+                    )
+                )
+
+    # -------------------------------------------------------------------------
+    # 7. Demand Fulfillment / Shortage Limits
     # -------------------------------------------------------------------------
     for prod in products:
         p_id = prod.product_id

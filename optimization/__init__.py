@@ -11,6 +11,7 @@ from optimization.config import (
     BudgetConfig,
     DeliveryConfig,
     InventoryConfig,
+    RiskConfig,
     ScenarioConfig,
     SolverConfig,
     SupplierConfig,
@@ -36,12 +37,21 @@ from optimization.results import (
     SupplierCapacityUtilization,
 )
 from optimization.scenarios import (
+    compare_scenarios,
     create_scenario,
     get_baseline_scenario,
     get_budget_constrained_scenario,
+    get_delay_sensitive_scenario,
     get_expedited_service_scenario,
     get_inventory_buffering_scenario,
+    get_risk_averse_scenario,
     list_available_scenarios,
+)
+from optimization.solver import (
+    build_optimization_problem,
+    enrich_candidate_options_with_ml,
+    solve_optimization_problem,
+    solve_supply_chain,
 )
 from optimization.validation import (
     InfeasibilityDiagnostic,
@@ -62,6 +72,7 @@ __all__ = [
     "BudgetConfig",
     "DeliveryConfig",
     "InventoryConfig",
+    "RiskConfig",
     "ScenarioConfig",
     "SolverConfig",
     "SupplierConfig",
@@ -86,7 +97,9 @@ __all__ = [
     "diagnose_infeasibility",
     # Problem & Solver
     "build_optimization_problem",
+    "solve_supply_chain",
     "solve_optimization_problem",
+    "enrich_candidate_options_with_ml",
     "load_optimization_data_from_db",
     # Results
     "OptimizationResult",
@@ -100,22 +113,27 @@ __all__ = [
     # Scenarios
     "get_baseline_scenario",
     "get_budget_constrained_scenario",
+    "get_delay_sensitive_scenario",
+    "get_risk_averse_scenario",
     "get_expedited_service_scenario",
     "get_inventory_buffering_scenario",
     "list_available_scenarios",
     "create_scenario",
+    "compare_scenarios",
 ]
 
 
 def __getattr__(name: str):
-    if name in ("build_optimization_problem", "solve_optimization_problem", "load_optimization_data_from_db"):
+    if name in ("build_optimization_problem", "solve_optimization_problem", "solve_supply_chain", "load_optimization_data_from_db"):
         from optimization.problem import (
             build_optimization_problem,
             load_optimization_data_from_db,
             solve_optimization_problem,
+            solve_supply_chain,
         )
         mapping = {
             "build_optimization_problem": build_optimization_problem,
+            "solve_supply_chain": solve_supply_chain,
             "solve_optimization_problem": solve_optimization_problem,
             "load_optimization_data_from_db": load_optimization_data_from_db,
         }

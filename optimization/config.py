@@ -32,6 +32,14 @@ class BudgetConfig(BaseModel):
         max_length=3,
         description="Currency code (e.g. USD, EUR, INR)",
     )
+    include_expected_delay_penalty: bool = Field(
+        True,
+        description="If True, expected delay penalties draw down available cash budget",
+    )
+    include_risk_cost: bool = Field(
+        False,
+        description="If True, operational risk costs draw down available cash budget",
+    )
 
     @field_validator("currency")
     @classmethod
@@ -122,6 +130,18 @@ class SolverConfig(BaseModel):
     )
 
 
+class RiskConfig(BaseModel):
+    operational_risk_cost_rate: float = Field(
+        0.0,
+        ge=0,
+        description="Explicit monetary operational risk penalty rate ($/unit) multiplied by supplier unreliability (1 - reliability)",
+    )
+    enabled: bool = Field(
+        True,
+        description="If True, include operational risk cost in the objective function",
+    )
+
+
 class ScenarioConfig(BaseModel):
     scenario_name: str = Field(
         "baseline_supply_chain",
@@ -136,7 +156,12 @@ class ScenarioConfig(BaseModel):
     inventory: InventoryConfig = Field(default_factory=InventoryConfig)
     delivery: DeliveryConfig = Field(default_factory=DeliveryConfig)
     supplier: SupplierConfig = Field(default_factory=SupplierConfig)
+    risk: RiskConfig = Field(default_factory=RiskConfig)
     optimization: SolverConfig = Field(default_factory=SolverConfig)
+
+    @property
+    def scenario_id(self) -> str:
+        return self.scenario_name
 
 
 def load_scenario_config(
@@ -193,6 +218,7 @@ def get_baseline_scenario() -> ScenarioConfig:
         inventory=InventoryConfig(minimum_required_units=1000.0, holding_cost_rate=0.05, shortage_penalty_rate=1.5),
         delivery=DeliveryConfig(maximum_acceptable_delay_days=7.0, daily_delay_penalty=25.0),
         supplier=SupplierConfig(default_max_capacity_units=5000.0, use_individual_capacities=True),
+        risk=RiskConfig(operational_risk_cost_rate=0.0, enabled=True),
         optimization=SolverConfig(
             objective="minimize_total_cost",
             solver="pulp",
