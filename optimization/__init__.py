@@ -66,6 +66,39 @@ from optimization.variables import (
     ProductData,
     create_decision_variables,
 )
+from optimization.decision_schemas import (
+    AlternativeOption,
+    BaselineSummary,
+    ConstraintViolation,
+    FeasibilityStatus,
+    RecommendationStatus,
+    RiskLevel,
+    SolutionValidationReport,
+    AlternativeEvaluationResponse,
+    AlternativeGenerationRequest,
+    OptimizationRequest,
+    OptimizationResponse,
+    OptimizationOption,
+    OptimizationPredictionSummary,
+    OptimizationConstraintCheck,
+    OptimizationMetadata,
+)
+from optimization.alternatives import (
+    generate_alternatives_for_shipment,
+    generate_option_a_air_freight,
+    generate_option_b_secondary_supplier,
+    generate_option_c_delay_launch,
+    build_baseline_summary,
+)
+from optimization.alternative_evaluator import (
+    evaluate_alternatives,
+    validate_optimization_solution,
+    is_recommendation_eligible,
+    calculate_objective_cost,
+)
+from optimization.decision_ranker import (
+    rank_alternatives,
+)
 
 __all__ = [
     # Config
@@ -95,6 +128,9 @@ __all__ = [
     "InfeasibilityDiagnostic",
     "validate_optimization_inputs",
     "diagnose_infeasibility",
+    "validate_optimization_solution",
+    "is_recommendation_eligible",
+    "SolutionValidationReport",
     # Problem & Solver
     "build_optimization_problem",
     "solve_supply_chain",
@@ -120,6 +156,30 @@ __all__ = [
     "list_available_scenarios",
     "create_scenario",
     "compare_scenarios",
+    # Day 13 Prescriptive Decisions
+    "AlternativeOption",
+    "BaselineSummary",
+    "ConstraintViolation",
+    "FeasibilityStatus",
+    "RecommendationStatus",
+    "RiskLevel",
+    "AlternativeEvaluationResponse",
+    "AlternativeGenerationRequest",
+    "generate_alternatives_for_shipment",
+    "generate_option_a_air_freight",
+    "generate_option_b_secondary_supplier",
+    "generate_option_c_delay_launch",
+    "build_baseline_summary",
+    "evaluate_alternatives",
+    "calculate_objective_cost",
+    "rank_alternatives",
+    # Day 14 Optimization API Schemas
+    "OptimizationRequest",
+    "OptimizationResponse",
+    "OptimizationOption",
+    "OptimizationPredictionSummary",
+    "OptimizationConstraintCheck",
+    "OptimizationMetadata",
 ]
 
 

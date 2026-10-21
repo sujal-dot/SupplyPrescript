@@ -269,3 +269,23 @@ def diagnose_infeasibility(
         root_causes=root_causes,
         suggested_actions=suggestions,
     )
+
+
+def validate_optimization_solution(
+    solution: Any,
+    constraints: ScenarioConfig,
+    tolerance: float = 1e-6,
+):
+    """Re-export from alternative_evaluator for independent solution audits."""
+    from optimization.alternative_evaluator import validate_optimization_solution as _val
+    return _val(solution, constraints, tolerance)
+
+
+def is_recommendation_eligible(
+    solution: Any,
+    validation_report: Any,
+) -> bool:
+    """Re-export from alternative_evaluator for recommendation safety gating."""
+    from optimization.alternative_evaluator import is_recommendation_eligible as _gate
+    return _gate(solution, validation_report)
+

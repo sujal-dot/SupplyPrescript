@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Sparkles, 
   CheckCircle2, 
@@ -11,17 +11,50 @@ import {
   Sliders,
   Send,
   Zap,
-  Check
+  Check,
+  Search,
+  Layers,
 } from 'lucide-react';
-import { predictShipmentDelay } from '../services/api';
+import { 
+  predictShipmentDelay, 
+  getOptimizationAlternatives, 
+  generateOptimizationAlternatives, 
+  formatApiError 
+} from '../services/api';
 import PageHeader from '../components/ui/PageHeader';
 import GlassCard from '../components/ui/GlassCard';
 import GlassPanel from '../components/ui/GlassPanel';
 import GlassButton from '../components/ui/GlassButton';
 import { GlassInput, GlassSelect } from '../components/ui/GlassInput';
 import StatusBadge from '../components/ui/StatusBadge';
+import RecommendedAlternatives from '../components/prescriptions/RecommendedAlternatives';
 
 export default function PrescriptionsPage() {
+  // Day 13 Prescriptive Alternative Engine State
+  const [targetShipmentId, setTargetShipmentId] = useState('SHIP001');
+  const [altData, setAltData] = useState(null);
+  const [altLoading, setAltLoading] = useState(false);
+  const [altError, setAltError] = useState(null);
+
+  const fetchAlternatives = async (shipId) => {
+    const sId = (shipId || targetShipmentId || 'SHIP001').trim();
+    setAltLoading(true);
+    setAltError(null);
+    try {
+      const res = await getOptimizationAlternatives(sId);
+      setAltData(res);
+    } catch (err) {
+      console.warn('Alternative generation error:', err);
+      setAltError(formatApiError(err));
+    } finally {
+      setAltLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchAlternatives('SHIP001');
+  }, []);
+
   // Recommendation state
   const [recommendations, setRecommendations] = useState([
     {
@@ -131,13 +164,49 @@ export default function PrescriptionsPage() {
         title="Prescriptive Analytics & Autonomous Intelligence"
         subtitle="AI-recommended decision paths, real-time risk hedging, and direct XGBoost machine learning inference execution."
         breadcrumbs={[{ label: 'Prescriptive Analytics' }]}
+        actions={
+          <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-1.5 bg-white/[0.04] border border-white/[0.08] px-3 py-1.5 rounded-xl">
+              <span className="text-xs font-mono text-slate-400">Shipment ID:</span>
+              <input
+                type="text"
+                value={targetShipmentId}
+                onChange={(e) => setTargetShipmentId(e.target.value)}
+                placeholder="SHIP001"
+                className="bg-transparent text-xs font-mono text-cyan-300 font-bold focus:outline-none w-24"
+              />
+            </div>
+            <GlassButton
+              variant="primary"
+              size="md"
+              icon={Search}
+              loading={altLoading}
+              onClick={() => fetchAlternatives(targetShipmentId)}
+            >
+              Evaluate Alternatives
+            </GlassButton>
+          </div>
+        }
       />
+
+      {/* Day 13 Prescriptive Optimization Engine: 3 Alternative Decisions */}
+      <GlassPanel
+        title="Prescriptive Optimization Engine — Alternative Decisions"
+        subtitle="When ML predicts delay, automatically generate 3 alternatives, compare trade-offs, and recommend the best feasible action"
+        icon={Sparkles}
+      >
+        <RecommendedAlternatives
+          data={altData}
+          loading={altLoading}
+          error={altError}
+        />
+      </GlassPanel>
 
       {/* Recommended Prescriptions Workspace */}
       <GlassPanel
-        title="Active Prescriptive Recommendations"
+        title="Active Prescriptive Recommendations Log"
         subtitle="Algorithmic operational decisions prioritized by expected value and delivery SLA resilience"
-        icon={Sparkles}
+        icon={ShieldCheck}
       >
         <div className="space-y-4">
           {recommendations.map((rec) => (

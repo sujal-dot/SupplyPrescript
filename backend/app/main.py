@@ -8,6 +8,7 @@ from app.api.routes.inventory import router as inventory_router
 from app.api.routes.dashboard import router as dashboard_router
 from app.api.routes.predictions import router as predictions_router
 from app.api.routes.products import router as products_router
+from app.api.routes.optimization import router as optimization_router
 
 app = FastAPI(
     title="SupplyPrescript API",
@@ -41,3 +42,4 @@ app.include_router(inventory_router)
 app.include_router(dashboard_router)
 app.include_router(predictions_router)
 app.include_router(products_router)
+app.include_router(optimization_router)

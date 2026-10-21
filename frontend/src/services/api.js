@@ -78,6 +78,24 @@ export const predictShipmentDelay = async (payload) => {
   return response.data;
 };
 
+/**
+ * Prescriptive Decision Alternatives (Day 13)
+ */
+export const getOptimizationAlternatives = async (shipmentId, params = {}) => {
+  const response = await apiClient.get(`/api/optimization/alternatives/${shipmentId}`, { params });
+  return response.data;
+};
+
+export const generateOptimizationAlternatives = async (payload) => {
+  const response = await apiClient.post('/api/optimization/alternatives', payload);
+  return response.data;
+};
+
+export const optimizeSupplyChain = async (scenarioOverrides = {}) => {
+  const response = await apiClient.post('/api/optimize', scenarioOverrides);
+  return response.data;
+};
+
 export const measureApiLatency = async () => {
   const start = performance.now();
   try {
