@@ -44,6 +44,7 @@ class ConstraintViolation(BaseModel):
 class AlternativeOption(BaseModel):
     option_id: str = Field(..., description="Alternative identifier (e.g. 'A', 'B', 'C')")
     name: str = Field(..., description="Name of alternative (e.g. 'Air Freight', 'Secondary Supplier', 'Delay Product Launch')")
+    strategy: Optional[str] = Field(None, description="Strategy category: AIR_FREIGHT, SECONDARY_SUPPLIER, or DELAY_LAUNCH")
     feasibility: FeasibilityStatus = Field(..., description="Operational feasibility status")
     estimated_total_cost: Optional[float] = Field(None, description="Total supply-chain expenditure under this option ($)")
     additional_cost: Optional[float] = Field(None, description="Incremental cost relative to baseline ($)")
@@ -193,3 +194,161 @@ class OptimizationResponse(BaseModel):
     warnings: List[str] = Field(default_factory=list, description="Audit warnings or missing data notices")
     optimization_metadata: OptimizationMetadata = Field(default_factory=OptimizationMetadata, description="Execution telemetry")
 
+
+# ===========================================================================
+# Day 16 Proposed Decision Schemas (POST /api/optimization/propose-decision)
+# ===========================================================================
+
+class ProposeDecisionRequest(BaseModel):
+    shipment_id: str = Field(..., min_length=1, description="Target shipment identifier")
+    option_id: str = Field(..., description="Selected strategic option identifier ('A', 'B', 'C')")
+    option_name: str = Field(..., description="Descriptive name of selected option")
+    decision_reason: Optional[str] = Field(None, description="Operational justification or trade-off rationale")
+    notes: Optional[str] = Field(None, description="Operator notes or review remarks")
+    proposed_by: Optional[str] = Field("Operations Manager", description="User or role submitting proposal")
+
+
+class ProposeDecisionResponse(BaseModel):
+    decision_id: str = Field(..., description="Unique generated decision record ID")
+    recommendation_id: Optional[str] = Field(None, description="Associated recommendation ID")
+    shipment_id: str = Field(..., description="Target shipment identifier")
+    option_id: str = Field(..., description="Selected option ID ('A', 'B', 'C')")
+    status: str = Field("Pending", description="Decision lifecycle state: Pending, Approved, Rejected")
+    message: str = Field(..., description="Operational status message")
+    recorded_at: str = Field(..., description="ISO 8601 recording timestamp")
+
+
+
+
+# ===========================================================================
+# Day 17 & 18 Execution & Write-Back Governance Schemas (POST/GET /api/decisions)
+# ===========================================================================
+
+class ExecuteDecisionRequest(BaseModel):
+    shipment_id: str = Field(
+        ...,
+        min_length=1,
+        description="Target shipment identifier (e.g. 'SHP1023' or 'SHIP000005')",
+        examples=["SHP1023", "SHIP000005"],
+    )
+    option_id: str = Field(
+        ...,
+        min_length=1,
+        max_length=10,
+        description="Selected alternative identifier ('A', 'B', 'C')",
+        examples=["A", "B"],
+    )
+    recommendation: Optional[str] = Field(
+        None,
+        description="Selected recommendation or strategy category: AIR_FREIGHT, SECONDARY_SUPPLIER, or DELAY_LAUNCH",
+        examples=["AIR_FREIGHT"],
+    )
+    strategy: Optional[str] = Field(
+        None,
+        description="Strategy category alias: AIR_FREIGHT, SECONDARY_SUPPLIER, or DELAY_LAUNCH",
+        examples=["AIR_FREIGHT"],
+    )
+    user_id: Optional[str] = Field(
+        None,
+        max_length=100,
+        description="ID of operating user executing the decision (in dev unauthenticated mode, derived from principal/header)",
+        examples=["usr_ops_manager"],
+    )
+    optimization_run_id: Optional[str] = Field(
+        None,
+        description="Optional tracking identifier for the associated optimization run",
+    )
+    idempotency_key: Optional[str] = Field(
+        None,
+        max_length=100,
+        description="Client-provided unique key preventing duplicate execution records upon network retries",
+    )
+    notes: Optional[str] = Field(
+        None,
+        max_length=1000,
+        description="Operator remarks, context, or business justification",
+    )
+    approved_by: Optional[str] = Field(
+        "Operations Manager",
+        max_length=100,
+        description="Authorized user or role executing the decision",
+    )
+
+
+class ExecuteDecisionResponse(BaseModel):
+    """Schema for POST /api/decisions and GET /api/decisions/{id} response (Day 18 Write-Back Contract)."""
+
+    decision_id: str = Field(..., description="Unique generated decision record ID in database")
+    shipment_id: str = Field(..., description="Authoritative target shipment identifier")
+    user_id: str = Field("usr_ops_manager", description="ID of the user who made the decision")
+    recommendation: str = Field(..., description="Selected recommendation or strategy")
+    predicted_cost: str = Field(..., description="Estimated cost associated with the selected recommendation ($)")
+    predicted_delay: float = Field(..., description="Estimated delay in days (not total transit duration)")
+    decision_time: str = Field(..., description="ISO 8601 timezone-aware timestamp when decision was recorded")
+    status: str = Field("RECORDED", description="Decision lifecycle state: RECORDED, APPROVED, REJECTED")
+
+    # Day 17 fields preserved for backwards-compatibility
+    option_id: Optional[str] = Field(None, description="Executed option identifier ('A', 'B', 'C')")
+    strategy: Optional[str] = Field(None, description="Authoritative strategy applied")
+    estimated_total_cost: Optional[float] = Field(None, description="Authoritative server-side estimated cost ($)")
+    currency: str = Field("USD", description="Currency denomination")
+    estimated_delivery_days: Optional[float] = Field(None, description="Authoritative server-side estimated transit days")
+    delay_probability: Optional[float] = Field(None, description="Authoritative ML predicted delay probability")
+    constraint_validation: Dict[str, str] = Field(
+        default_factory=lambda: {
+            "budget": "PASS",
+            "inventory": "PASS",
+            "supplier_capacity": "PASS",
+            "delivery": "PASS",
+        },
+        description="Day 15 hard constraint verification audit results",
+    )
+    external_action_status: str = Field(
+        "NOT_EXECUTED",
+        description="Real-world external execution status (freight dispatch/purchase order issuance)",
+    )
+    message: str = Field(
+        "Decision recorded successfully. No external booking was made.",
+        description="Operational confirmation message clarifying external execution status",
+    )
+    recorded_at: Optional[str] = Field(None, description="ISO 8601 recording timestamp")
+    idempotency_key: Optional[str] = Field(None, description="Applied idempotency key")
+
+
+# Type alias for Write-Back contract
+DecisionResponse = ExecuteDecisionResponse
+
+
+class DecisionHistoryItem(BaseModel):
+    """Single decision audit record in GET /api/decisions list."""
+
+    decision_id: str = Field(..., description="Unique decision ID")
+    shipment_id: str = Field(..., description="Target shipment ID")
+    user_id: str = Field("usr_ops_manager", description="ID of user who made the decision")
+    recommendation: str = Field(..., description="Selected recommendation or strategy")
+    predicted_cost: str = Field(..., description="Estimated cost ($)")
+    predicted_delay: float = Field(0.0, description="Estimated delay in days (not total transit time)")
+    decision_time: str = Field(..., description="ISO 8601 timezone-aware timestamp of decision")
+    status: str = Field(..., description="Lifecycle status: RECORDED, Approved, Pending, etc.")
+
+    # Day 17 fields preserved for backwards-compatibility
+    option_id: Optional[str] = Field(None, description="Option identifier ('A', 'B', 'C')")
+    strategy: Optional[str] = Field(None, description="Strategy name")
+    decision: str = Field(..., description="Summary action label")
+    decision_reason: Optional[str] = Field(None, description="Operational justification")
+    estimated_total_cost: Optional[float] = Field(None, description="Estimated cost ($)")
+    currency: str = Field("USD", description="Currency")
+    estimated_delivery_days: Optional[float] = Field(None, description="Estimated arrival days")
+    external_action_status: str = Field("NOT_EXECUTED", description="External dispatch status")
+    approved_by: Optional[str] = Field(None, description="Authorizing user/role")
+    created_at: str = Field(..., description="Timestamp of recording")
+
+
+class DecisionHistoryResponse(BaseModel):
+    """Schema for GET /api/decisions response supporting both Day 18 and Day 17 pagination contracts."""
+
+    items: List[DecisionHistoryItem] = Field(default_factory=list, description="Paginated decision history items (Day 18)")
+    decisions: List[DecisionHistoryItem] = Field(default_factory=list, description="Decision history items (Day 17)")
+    total: int = Field(..., description="Total decision records matching query")
+    limit: int = Field(20, description="Maximum items per page")
+    offset: int = Field(0, description="Items skipped for pagination")

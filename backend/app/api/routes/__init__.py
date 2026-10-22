@@ -4,6 +4,8 @@ from .shipments import router as shipments_router
 from .inventory import router as inventory_router
 from .dashboard import router as dashboard_router
 from .predictions import router as predictions_router
+from .decisions import router as decisions_router
+from .outcomes import router as outcomes_router
 
 __all__ = [
     "health_router",
@@ -12,4 +14,6 @@ __all__ = [
     "inventory_router",
     "dashboard_router",
     "predictions_router",
+    "decisions_router",
+    "outcomes_router",
 ]

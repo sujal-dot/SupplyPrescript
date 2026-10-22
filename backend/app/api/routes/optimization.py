@@ -44,6 +44,8 @@ from optimization.decision_schemas import (
     OptimizationPredictionSummary,
     OptimizationRequest,
     OptimizationResponse,
+    ProposeDecisionRequest,
+    ProposeDecisionResponse,
     RecommendationStatus,
 )
 
@@ -74,15 +76,24 @@ def _resolve_shipment_dict(shipment_id: str, db: Session) -> Dict[str, Any]:
     Prevents N+1 queries by executing targeted single-row lookups.
     """
     clean_id = shipment_id.strip()
-    # Query shipment by string ID, uppercase, or zero-padded numeric string
+    candidate_ids = {clean_id, clean_id.upper()}
+    
+    # Only zero-pad if input is all digits, or starts with SHIP/SHP followed immediately by digits
+    import re
+    match = re.match(r'^(?:SHIP|SHP)?(\d+)$', clean_id, re.IGNORECASE)
+    if match:
+        try:
+            num = int(match.group(1))
+            candidate_ids.add(f"SHIP{num:06d}")
+            candidate_ids.add(f"SHIP{num:03d}")
+            candidate_ids.add(f"SHP{num:04d}")
+            candidate_ids.add(f"SHP{num:03d}")
+        except ValueError:
+            pass
+
     shipment = (
         db.query(Shipment)
-        .filter(
-            (Shipment.shipment_id == clean_id)
-            | (Shipment.shipment_id == clean_id.upper())
-            | (Shipment.shipment_id == f"SHIP{clean_id:0>3}" if clean_id.isdigit() else False)
-            | (Shipment.shipment_id == f"SHP{clean_id:0>3}" if clean_id.isdigit() else False)
-        )
+        .filter(Shipment.shipment_id.in_(list(candidate_ids)))
         .first()
     )
 
@@ -558,3 +569,102 @@ def get_alternatives_by_shipment_endpoint(
 
     config = load_scenario_config(overrides=overrides if overrides else None)
     return _run_alternative_pipeline(shipment_dict, config, db, save_to_database=False)
+
+
+@router.post(
+    "/api/optimization/propose-decision",
+    response_model=ProposeDecisionResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Propose and record an authorized prescriptive decision (Safe Workflow)",
+    description=(
+        "Records the operator's choice of alternative as a 'Pending' decision in PostgreSQL. "
+        "Enforces the Day 16 safe execution workflow: marks the decision as proposed awaiting managerial "
+        "sign-off without executing automated real-world purchases or freight dispatches."
+    ),
+)
+def propose_decision_endpoint(
+    request: ProposeDecisionRequest,
+    db: Session = Depends(get_db),
+) -> ProposeDecisionResponse:
+    """POST /api/optimization/propose-decision handler."""
+    shipment_dict = _resolve_shipment_dict(request.shipment_id, db)
+    clean_shipment_id = shipment_dict["shipment_id"]
+
+    from app.models.prediction import Prediction
+    from app.models.recommendation import Recommendation
+    from app.models.decision import Decision
+
+    # Lookup latest prediction for shipment
+    pred = (
+        db.query(Prediction)
+        .filter(Prediction.shipment_id == clean_shipment_id)
+        .order_by(Prediction.created_at.desc())
+        .first()
+    )
+
+    rec_id_str = f"REC-{uuid.uuid4().hex[:8].upper()}"
+    rec_record = None
+
+    if pred:
+        # Check if recommendation already exists for this prediction
+        existing_rec = (
+            db.query(Recommendation)
+            .filter(Recommendation.prediction_id == pred.id)
+            .order_by(Recommendation.created_at.desc())
+            .first()
+        )
+        if existing_rec:
+            rec_record = existing_rec
+            rec_id_str = existing_rec.recommendation_id
+        else:
+            rec_type = "Expedite Shipment" if request.option_id == "A" else ("Change Supplier" if request.option_id == "B" else "Monitor Supplier")
+            rec_record = Recommendation(
+                recommendation_id=rec_id_str,
+                prediction_id=pred.id,
+                recommendation_type=rec_type,
+                recommendation_text=request.decision_reason or f"Adopt Option {request.option_id}: {request.option_name}",
+                recommended_action=f"Adopt Option {request.option_id}: {request.option_name}",
+                priority="High",
+                confidence_score=0.9200,
+                status="Active",
+            )
+            db.add(rec_record)
+            db.commit()
+            db.refresh(rec_record)
+
+    # Create Decision record with status 'Pending'
+    dec_id = f"DEC-PROP-{uuid.uuid4().hex[:8].upper()}"
+    new_dec = Decision(
+        decision_id=dec_id,
+        recommendation_id=rec_record.id if rec_record else 1,
+        decision=f"Proposed: Option {request.option_id} — {request.option_name}",
+        decision_reason=request.decision_reason or f"Operator proposed Option {request.option_id}",
+        decision_source="Optimization",
+        approved_by=request.proposed_by,
+        status="Pending",
+    )
+
+    try:
+        db.add(new_dec)
+        db.commit()
+        db.refresh(new_dec)
+    except Exception as exc:
+        db.rollback()
+        logger.warning("Could not persist proposed decision to DB: %s", exc)
+        dec_id = f"DEC-LOCAL-{uuid.uuid4().hex[:8].upper()}"
+
+    now_iso = datetime.now(timezone.utc).isoformat()
+    return ProposeDecisionResponse(
+        decision_id=dec_id,
+        recommendation_id=rec_id_str if rec_record else None,
+        shipment_id=clean_shipment_id,
+        option_id=request.option_id,
+        status="Pending",
+        message=(
+            f"Prescriptive decision for Option {request.option_id} ({request.option_name}) "
+            f"has been recorded as 'Pending'. Awaiting managerial authorization; "
+            f"no real-world purchase or dispatch has been executed."
+        ),
+        recorded_at=now_iso,
+    )
+

@@ -4,6 +4,7 @@ import Sidebar from './components/Sidebar';
 import Navbar from './components/Navbar';
 // 5 Core Day 10 Pages
 import Dashboard from './pages/Dashboard';
+import CommandCenter from './pages/CommandCenter';
 import Predictions from './pages/Predictions';
 import Shipments from './pages/Shipments';
 import Suppliers from './pages/Suppliers';
@@ -81,6 +82,7 @@ export default function App() {
             <Routes>
               {/* 5 Core Day 10 Pages */}
               <Route path="/" element={<Dashboard />} />
+              <Route path="/command-center" element={<CommandCenter />} />
               <Route path="/predictions" element={<Predictions />} />
               <Route path="/shipments" element={<Shipments />} />
               <Route path="/suppliers" element={<Suppliers />} />

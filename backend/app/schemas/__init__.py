@@ -19,7 +19,15 @@ from app.schemas.prediction import (
 )
 from app.schemas.recommendation import RecommendationBase, RecommendationCreate, RecommendationResponse
 from app.schemas.decision import DecisionBase, DecisionCreate, DecisionResponse
-from app.schemas.outcome import OutcomeBase, OutcomeCreate, OutcomeResponse
+from app.schemas.outcome import (
+    OutcomeBase,
+    OutcomeCreate,
+    OutcomeResponse,
+    RecordOutcomeRequest,
+    OutcomeRecordResponse,
+    OutcomeComparisonResponse,
+    OutcomeListResponse,
+)
 
 __all__ = [
     "SupplierBase",
@@ -61,4 +69,8 @@ __all__ = [
     "OutcomeBase",
     "OutcomeCreate",
     "OutcomeResponse",
+    "RecordOutcomeRequest",
+    "OutcomeRecordResponse",
+    "OutcomeComparisonResponse",
+    "OutcomeListResponse",
 ]

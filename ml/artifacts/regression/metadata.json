@@ -3,7 +3,7 @@
   "task": "regression",
   "model_type": "XGBRegressor",
   "model_version": "1.0.0",
-  "trained_at_utc": "2026-10-13T06:14:08.489784+00:00",
+  "trained_at_utc": "2026-10-22T06:32:07.437924+00:00",
   "random_seed": 42,
   "framework_versions": {
     "xgboost": "3.4.1",

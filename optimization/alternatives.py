@@ -242,6 +242,7 @@ def generate_option_a_air_freight(
     return AlternativeOption(
         option_id="A",
         name="Air Freight",
+        strategy="AIR_FREIGHT",
         feasibility=feasibility,
         estimated_total_cost=total_cost_a,
         additional_cost=additional_cost,
@@ -457,6 +458,7 @@ def generate_option_b_secondary_supplier(
     return AlternativeOption(
         option_id="B",
         name="Secondary Supplier",
+        strategy="SECONDARY_SUPPLIER",
         feasibility=feasibility_b,
         estimated_total_cost=total_cost_b,
         additional_cost=additional_cost_b,
@@ -556,6 +558,7 @@ def generate_option_c_delay_launch(
     return AlternativeOption(
         option_id="C",
         name="Delay Product Launch",
+        strategy="DELAY_LAUNCH",
         feasibility=feasibility_c,
         estimated_total_cost=total_cost_c,
         additional_cost=additional_cost_c,
@@ -609,6 +612,7 @@ def generate_alternatives_for_shipment(
         opt_a = AlternativeOption(
             option_id="A",
             name="Air Freight",
+            strategy="AIR_FREIGHT",
             feasibility=FeasibilityStatus.ERROR,
             explanation=f"Error evaluating air freight: {str(e)}",
         )
@@ -622,6 +626,7 @@ def generate_alternatives_for_shipment(
         opt_b = AlternativeOption(
             option_id="B",
             name="Secondary Supplier",
+            strategy="SECONDARY_SUPPLIER",
             feasibility=FeasibilityStatus.ERROR,
             explanation=f"Error evaluating secondary supplier: {str(e)}",
         )
@@ -635,6 +640,7 @@ def generate_alternatives_for_shipment(
         opt_c = AlternativeOption(
             option_id="C",
             name="Delay Product Launch",
+            strategy="DELAY_LAUNCH",
             feasibility=FeasibilityStatus.ERROR,
             explanation=f"Error evaluating launch delay: {str(e)}",
         )

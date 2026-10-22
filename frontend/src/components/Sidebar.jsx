@@ -19,6 +19,7 @@ import { getBackendHealth } from '../services/api';
 
 const navItems = [
   { path: '/', label: 'Dashboard', icon: LayoutDashboard },
+  { path: '/command-center', label: 'Command Center', icon: Layers, badge: 'Opt' },
   { path: '/predictions', label: 'Predictions', icon: Sparkles, badge: 'ML' },
   { path: '/shipments', label: 'Shipments', icon: Truck },
   { path: '/suppliers', label: 'Suppliers', icon: Building2 },
