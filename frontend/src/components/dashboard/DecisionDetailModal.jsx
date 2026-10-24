@@ -17,12 +17,14 @@ import {
   Check,
   PlusCircle,
   BarChart3,
+  TrendingUp,
 } from 'lucide-react';
 import GlassButton from '../ui/GlassButton';
-import { getDecisionById, getOutcome } from '../../services/decisionService';
+import { getDecisionById, getOutcome, getDecisionROI } from '../../services/decisionService';
 import PredictedActualComparison from '../outcomes/PredictedActualComparison';
 import OutcomeEntryModal from '../outcomes/OutcomeEntryModal';
 import OutcomeStatusBadge from '../outcomes/OutcomeStatusBadge';
+import DecisionROISummary from '../roi/DecisionROISummary';
 
 export default function DecisionDetailModal({
   isOpen,
@@ -42,9 +44,29 @@ export default function DecisionDetailModal({
   const [loadingOutcome, setLoadingOutcome] = useState(false);
   const [outcomeEntryOpen, setOutcomeEntryOpen] = useState(false);
 
+  // Day 20 Decision ROI Engine State
+  const [roiData, setRoiData] = useState(null);
+  const [loadingROI, setLoadingROI] = useState(false);
+  const [roiError, setRoiError] = useState(null);
+
   useEffect(() => {
     setActiveTab(initialTab);
   }, [initialTab, isOpen]);
+
+  const fetchROI = async () => {
+    if (!decisionId) return;
+    setLoadingROI(true);
+    setRoiError(null);
+    try {
+      const res = await getDecisionROI(decisionId);
+      setRoiData(res);
+    } catch (err) {
+      console.warn('Failed to fetch decision ROI data:', err);
+      setRoiError(err.response?.data?.detail || err.message || 'Failed to calculate decision ROI');
+    } finally {
+      setLoadingROI(false);
+    }
+  };
 
   useEffect(() => {
     if (!isOpen || !decisionId) return;
@@ -89,8 +111,27 @@ export default function DecisionDetailModal({
       }
     };
 
+    const loadROI = async () => {
+      setLoadingROI(true);
+      setRoiError(null);
+      try {
+        const res = await getDecisionROI(decisionId);
+        if (mounted) {
+          setRoiData(res);
+        }
+      } catch (err) {
+        if (mounted) {
+          console.warn('Failed to fetch decision ROI data:', err);
+          setRoiError(err.response?.data?.detail || err.message || 'Failed to calculate decision ROI');
+        }
+      } finally {
+        if (mounted) setLoadingROI(false);
+      }
+    };
+
     fetchDetail();
     fetchOutcomeComparison();
+    loadROI();
 
     return () => {
       mounted = false;
@@ -138,9 +179,9 @@ export default function DecisionDetailModal({
   const userId = current.user_id || current.approved_by || 'usr_ops_manager';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-md animate-in fade-in duration-200">
       <div
-        className="glass-card w-full max-w-3xl rounded-2xl border border-white/[0.12] shadow-2xl overflow-hidden bg-slate-900/95"
+        className="glass-card w-full max-w-3xl rounded-[28px] border border-white/[0.16] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8),inset_0_1px_1.5px_rgba(255,255,255,0.35)] overflow-hidden"
         role="dialog"
         aria-modal="true"
         aria-labelledby="decision-detail-title"
@@ -148,7 +189,7 @@ export default function DecisionDetailModal({
         {/* Header */}
         <div className="p-5 border-b border-white/[0.08] flex items-center justify-between bg-white/[0.02]">
           <div className="flex items-center space-x-3">
-            <div className="p-2.5 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+            <div className="p-2.5 rounded-2xl bg-red-500/20 text-red-300 border border-red-500/30 shadow-[inset_0_1px_1px_rgba(255,255,255,0.25)]">
               <FileText className="h-5 w-5" />
             </div>
             <div>
@@ -156,7 +197,7 @@ export default function DecisionDetailModal({
                 <h3 id="decision-detail-title" className="text-base font-bold text-white tracking-tight">
                   Decision Record Details
                 </h3>
-                <span className="font-mono text-xs px-2 py-0.5 rounded bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
+                <span className="font-mono text-xs px-2.5 py-0.5 rounded-full bg-red-500/20 text-red-200 border border-white/15 shadow-[inset_0_1px_0.5px_rgba(255,255,255,0.30)]">
                   {current.decision_id || decisionId}
                 </span>
               </div>
@@ -167,45 +208,62 @@ export default function DecisionDetailModal({
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/[0.06] transition-colors"
+            className="p-1.5 rounded-full text-slate-400 hover:text-white hover:bg-white/[0.08] border border-transparent hover:border-white/15 transition-all"
             aria-label="Close modal"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
-        {/* Tab Navigation */}
-        <div className="flex items-center space-x-1 px-5 pt-3 border-b border-white/[0.06] bg-white/[0.01]">
-          <button
-            onClick={() => setActiveTab('details')}
-            className={`px-3 py-2 text-xs font-semibold rounded-t-lg transition-colors flex items-center space-x-1.5 border-b-2 ${
-              activeTab === 'details'
-                ? 'border-cyan-400 text-cyan-300 bg-white/[0.04]'
-                : 'border-transparent text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            <Layers className="h-3.5 w-3.5" />
-            <span>Decision Write-Back Record</span>
-          </button>
+        {/* Apple Segmented Pill Tab Navigation */}
+        <div className="px-5 pt-3 pb-2 border-b border-white/[0.06] bg-white/[0.01]">
+          <div className="inline-flex p-1 rounded-full bg-black/40 border border-white/10 shadow-[inset_0_1px_2px_rgba(0,0,0,0.5)] backdrop-blur-md">
+            <button
+              onClick={() => setActiveTab('details')}
+              className={`px-3.5 py-1.5 text-xs font-semibold rounded-full transition-all flex items-center space-x-1.5 ${
+                activeTab === 'details'
+                  ? 'bg-white/15 text-white border border-white/20 shadow-[inset_0_1px_1px_rgba(255,255,255,0.30),0_2px_8px_rgba(0,0,0,0.3)]'
+                  : 'text-slate-400 hover:text-white border border-transparent'
+              }`}
+            >
+              <Layers className="h-3.5 w-3.5" />
+              <span>Decision Write-Back Record</span>
+            </button>
 
-          <button
-            onClick={() => setActiveTab('outcome')}
-            className={`px-3 py-2 text-xs font-semibold rounded-t-lg transition-colors flex items-center space-x-1.5 border-b-2 ${
-              activeTab === 'outcome'
-                ? 'border-cyan-400 text-cyan-300 bg-white/[0.04]'
-                : 'border-transparent text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            <BarChart3 className="h-3.5 w-3.5" />
-            <span>Closed-Loop Outcome Tracking</span>
-            {outcomeComparison?.actual ? (
-              <span className="ml-1 w-2 h-2 rounded-full bg-emerald-400 inline-block" />
-            ) : (
-              <span className="ml-1 text-[9px] px-1 py-0.2 rounded bg-white/[0.06] text-slate-400">
-                Pending
-              </span>
-            )}
-          </button>
+            <button
+              onClick={() => setActiveTab('outcome')}
+              className={`px-3.5 py-1.5 text-xs font-semibold rounded-full transition-all flex items-center space-x-1.5 ${
+                activeTab === 'outcome'
+                  ? 'bg-white/15 text-white border border-white/20 shadow-[inset_0_1px_1px_rgba(255,255,255,0.30),0_2px_8px_rgba(0,0,0,0.3)]'
+                  : 'text-slate-400 hover:text-white border border-transparent'
+              }`}
+            >
+              <BarChart3 className="h-3.5 w-3.5" />
+              <span>Closed-Loop Outcome Tracking</span>
+              {outcomeComparison?.actual ? (
+                <span className="ml-1 w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.8)] inline-block" />
+              ) : (
+                <span className="ml-1 text-[9px] px-1.5 py-0.2 rounded-full bg-white/[0.08] text-slate-400">
+                  Pending
+                </span>
+              )}
+            </button>
+
+            <button
+              onClick={() => setActiveTab('roi')}
+              className={`px-3.5 py-1.5 text-xs font-semibold rounded-full transition-all flex items-center space-x-1.5 ${
+                activeTab === 'roi'
+                  ? 'bg-white/15 text-white border border-white/20 shadow-[inset_0_1px_1px_rgba(255,255,255,0.30),0_2px_8px_rgba(0,0,0,0.3)]'
+                  : 'text-slate-400 hover:text-white border border-transparent'
+              }`}
+            >
+              <TrendingUp className="h-3.5 w-3.5" />
+              <span>Decision ROI Engine</span>
+              {roiData?.roi?.status === 'CALCULATED' ? (
+                <span className="ml-1 w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.8)] inline-block" />
+              ) : null}
+            </button>
+          </div>
         </div>
 
         {/* Content */}
@@ -214,7 +272,7 @@ export default function DecisionDetailModal({
             <>
               {loading && !data ? (
                 <div className="py-12 text-center text-xs text-slate-400 space-y-2">
-                  <RefreshCw className="h-6 w-6 animate-spin mx-auto text-cyan-400" />
+                  <RefreshCw className="h-6 w-6 animate-spin mx-auto text-red-400" />
                   <p>Fetching immutable record from PostgreSQL...</p>
                 </div>
               ) : error && !data ? (
@@ -242,7 +300,7 @@ export default function DecisionDetailModal({
 
                     <div>
                       <div className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">Predicted Delay</div>
-                      <div className="mt-1 text-sm font-mono font-bold text-cyan-300">
+                      <div className="mt-1 text-sm font-mono font-bold text-red-300">
                         {predictedDelay != null ? `${Number(predictedDelay).toFixed(1)} days` : '0.0 days'}
                       </div>
                     </div>
@@ -250,7 +308,7 @@ export default function DecisionDetailModal({
                     <div>
                       <div className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">External Dispatch</div>
                       <div className="mt-1 inline-flex items-center space-x-1 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-slate-800 text-slate-300 border border-slate-700">
-                        <ShieldCheck className="h-3 w-3 text-cyan-400" />
+                        <ShieldCheck className="h-3 w-3 text-red-400" />
                         <span>{current.external_action_status || 'NOT_EXECUTED'}</span>
                       </div>
                     </div>
@@ -259,7 +317,7 @@ export default function DecisionDetailModal({
                   {/* Data Contract Details */}
                   <div className="space-y-4">
                     <h4 className="text-xs font-bold text-slate-300 uppercase tracking-wider font-mono flex items-center space-x-2">
-                      <Layers className="h-4 w-4 text-cyan-400" />
+                      <Layers className="h-4 w-4 text-red-400" />
                       <span>Write-Back Schema &amp; Data Contract</span>
                     </h4>
 
@@ -268,12 +326,12 @@ export default function DecisionDetailModal({
                       <div className="p-3 rounded-lg bg-white/[0.02] border border-white/[0.05]">
                         <div className="text-[10px] text-slate-400 font-mono flex items-center justify-between">
                           <span className="flex items-center space-x-1">
-                            <Hash className="h-3 w-3 text-cyan-400" />
+                            <Hash className="h-3 w-3 text-red-400" />
                             <span>Decision ID</span>
                           </span>
                           <button
                             onClick={() => handleCopyId(current.decision_id)}
-                            className="text-cyan-400 hover:text-cyan-300 p-0.5"
+                            className="text-red-400 hover:text-red-300 p-0.5"
                             title="Copy Decision ID"
                           >
                             {copiedKey ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
@@ -287,7 +345,7 @@ export default function DecisionDetailModal({
                       {/* Target Shipment */}
                       <div className="p-3 rounded-lg bg-white/[0.02] border border-white/[0.05]">
                         <div className="text-[10px] text-slate-400 font-mono flex items-center space-x-1">
-                          <Truck className="h-3 w-3 text-cyan-400" />
+                          <Truck className="h-3 w-3 text-red-400" />
                           <span>Shipment ID</span>
                         </div>
                         <div className="mt-1 font-mono font-semibold text-white">
@@ -299,7 +357,7 @@ export default function DecisionDetailModal({
                       <div className="p-3 rounded-lg bg-white/[0.02] border border-white/[0.05]">
                         <div className="text-[10px] text-slate-400 font-mono flex items-center justify-between">
                           <span className="flex items-center space-x-1">
-                            <User className="h-3 w-3 text-cyan-400" />
+                            <User className="h-3 w-3 text-red-400" />
                             <span>User ID</span>
                           </span>
                           <span className="text-[9px] px-1 rounded bg-amber-500/10 text-amber-300 border border-amber-500/20">
@@ -319,7 +377,7 @@ export default function DecisionDetailModal({
                         </div>
                         <div className="mt-1 font-semibold text-white flex items-center space-x-1.5">
                           {current.option_id && (
-                            <span className="font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-cyan-500/15 text-cyan-300 border border-cyan-500/20">
+                            <span className="font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-red-500/15 text-red-300 border border-red-500/20">
                               {current.option_id}
                             </span>
                           )}
@@ -330,7 +388,7 @@ export default function DecisionDetailModal({
                       {/* Decision Time */}
                       <div className="p-3 rounded-lg bg-white/[0.02] border border-white/[0.05] sm:col-span-2">
                         <div className="text-[10px] text-slate-400 font-mono flex items-center space-x-1">
-                          <Clock className="h-3 w-3 text-cyan-400" />
+                          <Clock className="h-3 w-3 text-red-400" />
                           <span>Decision Timestamp (Timezone-Aware)</span>
                         </div>
                         <div className="mt-1 font-mono text-slate-200">
@@ -343,10 +401,10 @@ export default function DecisionDetailModal({
                         <div className="p-3 rounded-lg bg-white/[0.02] border border-white/[0.05] sm:col-span-2">
                           <div className="text-[10px] text-slate-400 font-mono flex items-center justify-between">
                             <span className="flex items-center space-x-1">
-                              <Key className="h-3 w-3 text-cyan-400" />
+                              <Key className="h-3 w-3 text-red-400" />
                               <span>Idempotency Key</span>
                             </span>
-                            <span className="text-[9px] px-1 rounded bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">
+                            <span className="text-[9px] px-1 rounded bg-red-500/10 text-red-300 border border-red-500/20">
                               Unique DB Index
                             </span>
                           </div>
@@ -372,7 +430,7 @@ export default function DecisionDetailModal({
 
                   {/* Safety Boundary Notice */}
                   <div className="p-3.5 rounded-xl bg-slate-800/80 border border-slate-700/80 flex items-start space-x-2.5 text-xs text-slate-300">
-                    <ShieldCheck className="h-4 w-4 text-cyan-400 flex-shrink-0 mt-0.5" />
+                    <ShieldCheck className="h-4 w-4 text-red-400 flex-shrink-0 mt-0.5" />
                     <div className="space-y-1">
                       <div className="font-semibold text-slate-200">
                         Operational Governance Safety Boundary
@@ -392,14 +450,14 @@ export default function DecisionDetailModal({
             <div className="space-y-4">
               {loadingOutcome ? (
                 <div className="py-12 text-center text-xs text-slate-400 space-y-2">
-                  <RefreshCw className="h-6 w-6 animate-spin mx-auto text-cyan-400" />
+                  <RefreshCw className="h-6 w-6 animate-spin mx-auto text-red-400" />
                   <p>Loading closed-loop outcome comparison...</p>
                 </div>
               ) : outcomeComparison?.actual ? (
                 <PredictedActualComparison comparison={outcomeComparison} />
               ) : (
                 <div className="p-8 text-center flex flex-col items-center justify-center rounded-2xl bg-white/[0.02] border border-white/[0.06] space-y-3">
-                  <div className="p-3.5 rounded-2xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                  <div className="p-3.5 rounded-2xl bg-red-500/10 text-red-400 border border-red-500/20">
                     <Clock className="h-6 w-6" />
                   </div>
                   <div>
@@ -418,6 +476,17 @@ export default function DecisionDetailModal({
                   </GlassButton>
                 </div>
               )}
+            </div>
+          )}
+          {activeTab === 'roi' && (
+            <div className="space-y-4">
+              <DecisionROISummary
+                roiData={roiData}
+                comparison={outcomeComparison}
+                loading={loadingROI}
+                error={roiError}
+                onRefresh={fetchROI}
+              />
             </div>
           )}
         </div>
@@ -449,6 +518,7 @@ export default function DecisionDetailModal({
         decision={current}
         onSuccess={(updatedComparison) => {
           setOutcomeComparison(updatedComparison);
+          fetchROI();
           setActiveTab('outcome');
         }}
       />

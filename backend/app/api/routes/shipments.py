@@ -1,13 +1,17 @@
 """Shipment API router."""
 
 import logging
+import uuid
 from datetime import date
 from typing import Optional
 from fastapi import APIRouter, Depends, Query, HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.database.connection import get_db
-from app.schemas.shipment import ShipmentListResponse
+from app.models.product import Product
+from app.models.shipment import Shipment
+from app.models.supplier import Supplier
+from app.schemas.shipment import ShipmentCreate, ShipmentListResponse, ShipmentResponse
 from app.services.shipment_service import ShipmentService, ALLOWED_SORT_FIELDS
 
 logger = logging.getLogger(__name__)
@@ -85,3 +89,84 @@ def get_shipments(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="An error occurred while fetching shipments",
         )
+
+
+@router.post(
+    "",
+    response_model=ShipmentResponse,
+    status_code=status.HTTP_201_CREATED,
+    summary="Create a new shipment record (Day 25 Integration)",
+    description="Validates supplier, product, dates, and costs before persisting to PostgreSQL operational database.",
+)
+def create_shipment(
+    payload: ShipmentCreate,
+    db: Session = Depends(get_db),
+) -> ShipmentResponse:
+    # 1. Resolve foreign keys
+    supplier = db.query(Supplier).filter(Supplier.supplier_id == payload.supplier_id).first()
+    if not supplier:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Supplier '{payload.supplier_id}' does not exist.",
+        )
+    product = db.query(Product).filter(Product.product_id == payload.product_id).first()
+    if not product:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Product '{payload.product_id}' does not exist.",
+        )
+
+    # 2. Check for unique shipment_id
+    shipment_id = payload.shipment_id.strip() if payload.shipment_id else f"SHIP-{uuid.uuid4().hex[:8].upper()}"
+    existing = db.query(Shipment).filter(Shipment.shipment_id == shipment_id).first()
+    if existing:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"Shipment with ID '{shipment_id}' already exists.",
+        )
+
+    # 3. Create model
+    actual_date = payload.actual_delivery_date or payload.expected_delivery_date
+    new_shipment = Shipment(
+        shipment_id=shipment_id,
+        supplier_id=payload.supplier_id,
+        product_id=payload.product_id,
+        origin=payload.origin,
+        destination=payload.destination,
+        order_date=payload.order_date,
+        expected_delivery_date=payload.expected_delivery_date,
+        actual_delivery_date=actual_date,
+        lead_time=payload.lead_time,
+        quantity=payload.quantity,
+        unit_cost=payload.unit_cost,
+        shipping_cost=payload.shipping_cost,
+        supplier_reliability=payload.supplier_reliability,
+        inventory_level=payload.inventory_level,
+        demand=payload.demand,
+        priority=payload.priority,
+        transport_mode=payload.transport_mode,
+        delay_days=payload.delay_days,
+    )
+    db.add(new_shipment)
+    db.commit()
+    db.refresh(new_shipment)
+    return ShipmentResponse.model_validate(new_shipment)
+
+
+@router.get(
+    "/{shipment_id}",
+    response_model=ShipmentResponse,
+    summary="Get shipment details by ID",
+    description="Retrieve a single shipment from PostgreSQL by unique shipment identifier.",
+)
+def get_shipment_by_id(
+    shipment_id: str,
+    db: Session = Depends(get_db),
+) -> ShipmentResponse:
+    shipment = db.query(Shipment).filter(Shipment.shipment_id == shipment_id.strip()).first()
+    if not shipment:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Shipment '{shipment_id}' not found.",
+        )
+    return ShipmentResponse.model_validate(shipment)

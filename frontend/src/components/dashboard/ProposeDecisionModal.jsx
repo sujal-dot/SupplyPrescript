@@ -40,12 +40,12 @@ export default function ProposeDecisionModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="glass-card w-full max-w-lg rounded-3xl border border-white/[0.12] bg-[#0c1626]/95 flex flex-col shadow-2xl shadow-cyan-950/60 overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-md animate-in fade-in duration-200">
+      <div className="glass-card w-full max-w-lg rounded-[28px] border border-white/[0.16] flex flex-col shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8),inset_0_1px_1.5px_rgba(255,255,255,0.35)] overflow-hidden">
         {/* Modal Header */}
         <div className="p-6 border-b border-white/[0.08] flex items-start justify-between">
           <div className="flex items-center space-x-3">
-            <div className="p-2.5 rounded-2xl bg-cyan-500/20 text-cyan-300 border border-cyan-400/30">
+            <div className="p-2.5 rounded-2xl bg-red-500/20 text-red-300 border border-red-500/30">
               <ShieldCheck className="h-5 w-5" />
             </div>
             <div>
@@ -79,7 +79,7 @@ export default function ProposeDecisionModal({
             </div>
             <div className="flex items-center justify-between">
               <span className="text-slate-400">Selected Alternative:</span>
-              <span className="font-mono font-bold text-cyan-300">
+              <span className="font-mono font-bold text-red-300">
                 Option {option.option_id}: {option.name || option.strategy}
               </span>
             </div>
@@ -98,14 +98,14 @@ export default function ProposeDecisionModal({
           </div>
 
           {/* Governance Notice */}
-          <div className="p-3.5 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-slate-300 space-y-1 text-[11px] leading-relaxed">
-            <strong className="text-cyan-300 flex items-center space-x-1 font-bold">
-              <ShieldCheck className="h-3.5 w-3.5 text-cyan-400" />
+          <div className="p-3.5 rounded-xl bg-red-500/10 border border-red-500/20 text-slate-300 space-y-1 text-[11px] leading-relaxed">
+            <strong className="text-red-300 flex items-center space-x-1 font-bold">
+              <ShieldCheck className="h-3.5 w-3.5 text-red-400" />
               <span>Safe Governance Protocol</span>
             </strong>
             <p>
               Submitting this proposal creates a record in the database with status{' '}
-              <strong className="text-cyan-200 font-mono">PENDING</strong>. It does not disburse company funds or trigger automated carrier dispatch without managerial approval.
+              <strong className="text-red-200 font-mono">PENDING</strong>. It does not disburse company funds or trigger automated carrier dispatch without managerial approval.
             </p>
           </div>
 
@@ -118,7 +118,7 @@ export default function ProposeDecisionModal({
               type="text"
               value={operatorRole}
               onChange={(e) => setOperatorRole(e.target.value)}
-              className="w-full bg-white/[0.04] border border-white/[0.08] focus:border-cyan-400/40 rounded-xl px-3 py-2 text-xs text-white focus:outline-none"
+              className="w-full bg-white/[0.04] border border-white/[0.08] focus:border-red-500/40 rounded-xl px-3 py-2 text-xs text-white focus:outline-none"
               required
             />
           </div>
@@ -133,7 +133,7 @@ export default function ProposeDecisionModal({
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="e.g. Approved expedite for priority customer order; verified secondary supplier capacity."
-              className="w-full bg-white/[0.04] border border-white/[0.08] focus:border-cyan-400/40 rounded-xl p-3 text-xs text-white placeholder-slate-500 focus:outline-none resize-none"
+              className="w-full bg-white/[0.04] border border-white/[0.08] focus:border-red-500/40 rounded-xl p-3 text-xs text-white placeholder-slate-500 focus:outline-none resize-none"
             />
           </div>
 

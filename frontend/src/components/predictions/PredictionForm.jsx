@@ -126,7 +126,7 @@ export default function PredictionForm({ onSubmit, loading = false, error = null
     <form onSubmit={handleSubmit} className="glass-card p-6 rounded-2xl border border-white/[0.08] space-y-6">
       <div className="flex items-center justify-between pb-3 border-b border-white/[0.08]">
         <div className="flex items-center space-x-2.5">
-          <div className="p-2 rounded-xl bg-cyan-500/15 border border-cyan-400/30 text-cyan-300">
+          <div className="p-2 rounded-xl bg-red-500/15 border border-red-500/30 text-red-300">
             <Sparkles className="h-4 w-4" />
           </div>
           <div>
@@ -142,7 +142,7 @@ export default function PredictionForm({ onSubmit, loading = false, error = null
         <button
           type="button"
           onClick={() => setShowAdvanced(!showAdvanced)}
-          className="text-xs text-slate-400 hover:text-cyan-300 flex items-center space-x-1 font-mono transition-colors"
+          className="text-xs text-slate-400 hover:text-red-300 flex items-center space-x-1 font-mono transition-colors"
         >
           <Sliders className="h-3.5 w-3.5" />
           <span>{showAdvanced ? 'Simple Mode' : 'Advanced Scenario'}</span>
@@ -170,7 +170,7 @@ export default function PredictionForm({ onSubmit, loading = false, error = null
             value={supplierId}
             onChange={(e) => setSupplierId(e.target.value)}
             disabled={fetchingDropdowns || loading}
-            className="w-full glass-input text-xs px-3 py-2.5 bg-slate-900/80 border border-white/10 rounded-xl text-white focus:border-cyan-400 focus:outline-none"
+            className="w-full glass-input text-xs px-3 py-2.5 bg-slate-900/80 border border-white/10 rounded-xl text-white focus:border-red-500 focus:outline-none"
           >
             {fetchingDropdowns ? (
               <option value="">Loading suppliers from database...</option>
@@ -201,7 +201,7 @@ export default function PredictionForm({ onSubmit, loading = false, error = null
             value={productId}
             onChange={(e) => setProductId(e.target.value)}
             disabled={fetchingDropdowns || loading}
-            className="w-full glass-input text-xs px-3 py-2.5 bg-slate-900/80 border border-white/10 rounded-xl text-white focus:border-cyan-400 focus:outline-none"
+            className="w-full glass-input text-xs px-3 py-2.5 bg-slate-900/80 border border-white/10 rounded-xl text-white focus:border-red-500 focus:outline-none"
           >
             {fetchingDropdowns ? (
               <option value="">Loading products from database...</option>
@@ -233,7 +233,7 @@ export default function PredictionForm({ onSubmit, loading = false, error = null
             onChange={(e) => setQuantity(e.target.value)}
             disabled={loading}
             placeholder="e.g. 500"
-            className="w-full glass-input text-xs px-3 py-2.5 bg-slate-900/80 border border-white/10 rounded-xl text-white focus:border-cyan-400 focus:outline-none"
+            className="w-full glass-input text-xs px-3 py-2.5 bg-slate-900/80 border border-white/10 rounded-xl text-white focus:border-red-500 focus:outline-none"
           />
           {clientErrors.quantity && (
             <p className="text-[11px] text-rose-400 mt-1">{clientErrors.quantity}</p>
@@ -252,7 +252,7 @@ export default function PredictionForm({ onSubmit, loading = false, error = null
             onChange={(e) => setInventoryLevel(e.target.value)}
             disabled={loading}
             placeholder="e.g. 1200"
-            className="w-full glass-input text-xs px-3 py-2.5 bg-slate-900/80 border border-white/10 rounded-xl text-white focus:border-cyan-400 focus:outline-none"
+            className="w-full glass-input text-xs px-3 py-2.5 bg-slate-900/80 border border-white/10 rounded-xl text-white focus:border-red-500 focus:outline-none"
           />
           {clientErrors.inventoryLevel && (
             <p className="text-[11px] text-rose-400 mt-1">{clientErrors.inventoryLevel}</p>
@@ -275,7 +275,7 @@ export default function PredictionForm({ onSubmit, loading = false, error = null
                   disabled={loading}
                   className={`py-2 px-3 rounded-xl text-xs font-medium border transition-all ${
                     isSelected
-                      ? 'bg-cyan-500/20 border-cyan-400 text-cyan-200 shadow-[0_0_15px_rgba(34,211,238,0.2)] font-bold'
+                      ? 'bg-red-500/20 border-red-500 text-red-200 shadow-[0_0_15px_rgba(239,68,68,0.2)] font-bold'
                       : 'bg-white/[0.03] border-white/[0.08] text-slate-400 hover:text-white hover:bg-white/[0.06]'
                   }`}
                 >
@@ -293,7 +293,7 @@ export default function PredictionForm({ onSubmit, loading = false, error = null
       {/* Advanced scenario inputs */}
       {showAdvanced && (
         <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] space-y-4 pt-3">
-          <div className="text-xs font-mono text-cyan-300/90 font-semibold uppercase tracking-wider">
+          <div className="text-xs font-mono text-red-300/90 font-semibold uppercase tracking-wider">
             Optional Scenario Overrides
           </div>
 

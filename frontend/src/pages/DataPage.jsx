@@ -44,7 +44,7 @@ export default function DataPage() {
 
       {/* Data Quality Indicator Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        <GlassCard interactive glow="cyan" className="rounded-2xl">
+        <GlassCard interactive glow="red" className="rounded-2xl">
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-xs font-medium uppercase tracking-wider">Completeness Score</span>
             <StatusBadge status="99.8%" variant="success" dot={false} />
@@ -87,8 +87,8 @@ export default function DataPage() {
         subtitle="Upload CSV or JSON shipment and inventory manifests for automatic schema verification"
         icon={UploadCloud}
       >
-        <div className="p-8 border-2 border-dashed border-white/15 rounded-2xl hover:border-cyan-400/40 transition-all text-center space-y-4 bg-white/[0.01]">
-          <div className="w-14 h-14 rounded-2xl bg-cyan-500/10 border border-cyan-400/20 flex items-center justify-center text-cyan-400 mx-auto">
+        <div className="p-8 border-2 border-dashed border-white/15 rounded-2xl hover:border-red-500/40 transition-all text-center space-y-4 bg-white/[0.01]">
+          <div className="w-14 h-14 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 mx-auto">
             <UploadCloud className="h-7 w-7" />
           </div>
           <div>
@@ -96,7 +96,7 @@ export default function DataPage() {
               Drag &amp; drop supply chain manifest file
             </h4>
             <p className="text-xs text-slate-400 mt-1 max-w-md mx-auto">
-              Supports .csv and .json with fields: <code className="text-cyan-300">supplier_id</code>, <code className="text-cyan-300">product_id</code>, <code className="text-cyan-300">lead_time</code>, <code className="text-cyan-300">quantity</code>.
+              Supports .csv and .json with fields: <code className="text-red-300">supplier_id</code>, <code className="text-red-300">product_id</code>, <code className="text-red-300">lead_time</code>, <code className="text-red-300">quantity</code>.
             </p>
           </div>
 
@@ -157,7 +157,7 @@ export default function DataPage() {
                 { id: 'JOB-8418', src: 'demand_forecast_features.parquet', date: '2026-10-09 21:05', rows: 2680, duration: '2.15s', status: 'Completed' },
               ].map((job, idx) => (
                 <tr key={idx} className="hover:bg-white/[0.02] transition-colors">
-                  <td className="py-3 pl-2 font-mono text-cyan-300 font-semibold">
+                  <td className="py-3 pl-2 font-mono text-red-300 font-semibold">
                     {job.id}
                   </td>
                   <td className="py-3 text-white font-medium">{job.src}</td>

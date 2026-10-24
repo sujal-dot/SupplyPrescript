@@ -1,0 +1,35 @@
+{
+  "dataset_version": "FB_DS_20261024_061118",
+  "created_at": "2026-10-24T06:11:18.392213+00:00",
+  "schema_version": "1.0",
+  "row_count": 7,
+  "total_processed": 30,
+  "eligible_count": 7,
+  "pending_count": 23,
+  "excluded_count": 0,
+  "model_versions": [
+    "v1.0.0"
+  ],
+  "source_predictions": [
+    "PRED000001",
+    "PRED000002",
+    "PRED-D22-1-70dec8",
+    "PRED-D22-2-408bf8",
+    "PRED-D22-3-4115d6",
+    "PRED000005",
+    "PRED000007"
+  ],
+  "eligibility_rules": [
+    "Prediction must exist and link to verified shipment",
+    "Model version must be documented at prediction time",
+    "Operational outcome must be DELIVERED and non-disputed",
+    "Actual delay must be valid non-negative number",
+    "Prediction error = actual_delay - predicted_delay"
+  ],
+  "metrics_summary": {
+    "mae": 200.4957,
+    "rmse": 522.2545,
+    "mean_signed_error": 195.6386
+  },
+  "checksum": "326e7f7c8dcbb00357a38a63ec63adb8052e12fe868cd258b514516a524050d6"
+}

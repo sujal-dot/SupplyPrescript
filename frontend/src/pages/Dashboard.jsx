@@ -97,7 +97,7 @@ export default function Dashboard() {
           </div>
           <button
             onClick={fetchDashboard}
-            className="text-xs font-semibold text-cyan-300 hover:underline shrink-0"
+            className="text-xs font-semibold text-red-400 hover:underline shrink-0"
           >
             Retry Connection
           </button>
@@ -113,7 +113,7 @@ export default function Dashboard() {
           subtitle="Authoritative PostgreSQL records"
           unit="orders"
           icon={Truck}
-          variant="cyan"
+          variant="red"
           loading={loading}
           empty={!totalShipments}
         />

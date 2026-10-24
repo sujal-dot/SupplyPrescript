@@ -40,7 +40,7 @@ export default function RiskMetrics({ metrics = null, loading = false }) {
         label="Total Active Shipments"
         value={totalShipments.toLocaleString()}
         icon={Truck}
-        variant="cyan"
+        variant="red"
         subtitle="PostgreSQL Registry"
       />
 
@@ -70,7 +70,7 @@ export default function RiskMetrics({ metrics = null, loading = false }) {
         label="Avg Delay Duration"
         value={`+${avgDelayDays} d`}
         icon={TrendingUp}
-        variant={Number(avgDelayDays) > 3 ? 'amber' : 'cyan'}
+        variant={Number(avgDelayDays) > 3 ? 'amber' : 'red'}
         subtitle="ML Empirical Mean"
       />
 

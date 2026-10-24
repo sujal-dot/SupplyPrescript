@@ -119,7 +119,7 @@ export default function Suppliers() {
           </div>
           <button
             onClick={fetchSuppliers}
-            className="font-semibold text-cyan-300 hover:underline shrink-0"
+            className="font-semibold text-red-300 hover:underline shrink-0"
           >
             Retry
           </button>
@@ -170,7 +170,7 @@ export default function Suppliers() {
                 <h3 className="text-base font-bold text-white">
                   {selectedSupplier.supplier_name}
                 </h3>
-                <span className="text-xs font-mono text-cyan-300">
+                <span className="text-xs font-mono text-red-300">
                   ID: {selectedSupplier.supplier_id}
                 </span>
               </div>

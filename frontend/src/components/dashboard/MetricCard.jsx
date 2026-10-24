@@ -6,7 +6,7 @@ export default function MetricCard({
   subtitle,
   unit = '',
   icon: Icon,
-  variant = 'cyan', // 'cyan', 'blue', 'amber', 'emerald', 'rose'
+  variant = 'red', // 'red', 'rose', 'amber', 'emerald', 'blue', 'cyan'
   badge,
   trend, // { value: '+2.4%', isPositive: true, label: 'vs last month' }
   loading = false,
@@ -14,17 +14,23 @@ export default function MetricCard({
   emptyText = 'No data available',
 }) {
   const variantStyles = {
+    red: {
+      border: 'hover:border-red-500/50',
+      iconBg: 'bg-red-500/20 border-red-500/35 text-red-300',
+      glow: 'group-hover:shadow-[0_0_25px_rgba(239,68,68,0.22)]',
+      textAccent: 'text-red-400',
+    },
     cyan: {
-      border: 'hover:border-cyan-400/40',
-      iconBg: 'bg-cyan-500/15 border-cyan-400/30 text-cyan-300',
-      glow: 'group-hover:shadow-[0_0_25px_rgba(34,211,238,0.15)]',
-      textAccent: 'text-cyan-400',
+      border: 'hover:border-red-500/50',
+      iconBg: 'bg-red-500/20 border-red-500/35 text-red-300',
+      glow: 'group-hover:shadow-[0_0_25px_rgba(239,68,68,0.22)]',
+      textAccent: 'text-red-400',
     },
     blue: {
-      border: 'hover:border-blue-400/40',
-      iconBg: 'bg-blue-500/15 border-blue-400/30 text-blue-300',
-      glow: 'group-hover:shadow-[0_0_25px_rgba(59,130,246,0.15)]',
-      textAccent: 'text-blue-400',
+      border: 'hover:border-rose-500/50',
+      iconBg: 'bg-rose-500/20 border-rose-500/35 text-rose-300',
+      glow: 'group-hover:shadow-[0_0_25px_rgba(244,63,94,0.22)]',
+      textAccent: 'text-rose-400',
     },
     emerald: {
       border: 'hover:border-emerald-400/40',
@@ -39,14 +45,14 @@ export default function MetricCard({
       textAccent: 'text-amber-400',
     },
     rose: {
-      border: 'hover:border-rose-400/40',
-      iconBg: 'bg-rose-500/15 border-rose-400/30 text-rose-300',
-      glow: 'group-hover:shadow-[0_0_25px_rgba(251,113,133,0.15)]',
+      border: 'hover:border-rose-400/50',
+      iconBg: 'bg-rose-500/20 border-rose-400/35 text-rose-300',
+      glow: 'group-hover:shadow-[0_0_25px_rgba(244,63,94,0.22)]',
       textAccent: 'text-rose-400',
     },
   };
 
-  const style = variantStyles[variant] || variantStyles.cyan;
+  const style = variantStyles[variant] || variantStyles.red;
 
   if (loading) {
     return (
@@ -63,15 +69,15 @@ export default function MetricCard({
 
   return (
     <div
-      className={`glass-card p-5 rounded-2xl relative overflow-hidden group transition-all duration-300 border border-white/[0.08] ${style.border} ${style.glow}`}
+      className={`glass-card p-5 rounded-[22px] relative overflow-hidden group transition-all duration-300 border border-white/[0.12] ${style.border} ${style.glow}`}
     >
       <div className="flex items-center justify-between mb-3">
-        <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+        <span className="text-xs font-semibold uppercase tracking-wider text-slate-300/80">
           {title}
         </span>
         {Icon && (
           <div
-            className={`h-9 w-9 rounded-xl flex items-center justify-center border transition-transform duration-300 group-hover:scale-105 ${style.iconBg}`}
+            className={`h-9 w-9 rounded-[14px] flex items-center justify-center border shadow-[inset_0_1px_1px_rgba(255,255,255,0.25)] transition-transform duration-300 group-hover:scale-105 ${style.iconBg}`}
           >
             <Icon className="h-4.5 w-4.5" />
           </div>
@@ -85,7 +91,7 @@ export default function MetricCard({
           </span>
         ) : (
           <>
-            <span className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white font-mono">
+            <span className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white font-mono drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">
               {value !== undefined && value !== null ? value : '—'}
             </span>
             {unit && <span className="text-xs text-slate-400 font-medium">{unit}</span>}
@@ -97,7 +103,7 @@ export default function MetricCard({
         <div className="mt-2.5 flex items-center justify-between text-xs">
           {subtitle && <span className="text-slate-400 truncate">{subtitle}</span>}
           {badge && (
-            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/[0.06] text-slate-300 border border-white/[0.08]">
+            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/[0.08] text-slate-200 border border-white/15 shadow-[inset_0_1px_0.5px_rgba(255,255,255,0.25)]">
               {badge}
             </span>
           )}

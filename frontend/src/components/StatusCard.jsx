@@ -21,17 +21,17 @@ export default function StatusCard({ title, status, details, loading, onRefresh 
           <button
             onClick={onRefresh}
             disabled={loading}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-cyan-300 hover:bg-white/[0.06] border border-transparent hover:border-white/10 transition-all duration-200 disabled:opacity-50"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-red-300 hover:bg-white/[0.06] border border-transparent hover:border-white/10 transition-all duration-200 disabled:opacity-50"
             title="Refresh status"
           >
-            <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin text-cyan-400' : ''}`} />
+            <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin text-red-400' : ''}`} />
           </button>
         )}
       </div>
 
       <div className="flex items-center space-x-3 mb-4 relative z-10">
         {loading ? (
-          <div className="h-6 w-6 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin shrink-0 shadow-lg shadow-cyan-500/30" />
+          <div className="h-6 w-6 border-2 border-red-500 border-t-transparent rounded-full animate-spin shrink-0 shadow-lg shadow-red-500/30" />
         ) : isHealthy ? (
           <div className="p-1 rounded-full bg-emerald-500/15 border border-emerald-400/30 shadow-md shadow-emerald-500/20 shrink-0">
             <CheckCircle2 className="h-5 w-5 text-emerald-400" />

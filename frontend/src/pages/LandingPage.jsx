@@ -62,13 +62,13 @@ export default function LandingPage() {
     <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-12">
       {/* Hero Section */}
       <div className="text-center max-w-3xl mx-auto relative pt-4">
-        <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full glass-pill-cyan text-cyan-300 text-xs font-semibold uppercase tracking-wider mb-8 shadow-lg shadow-cyan-500/10">
-          <Sparkles className="h-3.5 w-3.5 text-cyan-300 animate-pulse" />
+        <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full glass-pill-red text-red-300 text-xs font-semibold uppercase tracking-wider mb-8 shadow-lg shadow-red-500/10">
+          <Sparkles className="h-3.5 w-3.5 text-red-300 animate-pulse" />
           <span>Prescriptive Intelligence &bull; SupplyPrescript</span>
         </div>
         
         <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white mb-6">
-          Supply<span className="bg-gradient-to-r from-cyan-400 via-sky-300 to-blue-500 bg-clip-text text-transparent">Prescript</span>
+          Supply<span className="bg-gradient-to-r from-red-500 via-rose-400 to-red-400 bg-clip-text text-transparent">Prescript</span>
         </h1>
         
         <p className="text-xl sm:text-2xl font-medium text-slate-200/90 mb-4">
@@ -80,7 +80,7 @@ export default function LandingPage() {
         </p>
 
         {apiMessage && (
-          <div className="mt-8 inline-flex items-center space-x-2.5 text-xs font-mono text-cyan-300 glass-badge px-4 py-2 rounded-xl">
+          <div className="mt-8 inline-flex items-center space-x-2.5 text-xs font-mono text-red-300 glass-badge px-4 py-2 rounded-xl">
             <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-md shadow-emerald-400/80 animate-pulse" />
             <span>API Gateway: {apiMessage}</span>
           </div>
@@ -92,7 +92,7 @@ export default function LandingPage() {
         <div className="glass-card-interactive rounded-2xl p-5 relative overflow-hidden">
           <div className="flex items-center justify-between text-slate-400 mb-3">
             <span className="text-xs font-medium tracking-wide">Active Orders</span>
-            <div className="p-2 rounded-xl bg-cyan-500/10 border border-cyan-400/20 text-cyan-400">
+            <div className="p-2 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400">
               <Box className="h-4 w-4" />
             </div>
           </div>
@@ -108,7 +108,7 @@ export default function LandingPage() {
         <div className="glass-card-interactive rounded-2xl p-5 relative overflow-hidden">
           <div className="flex items-center justify-between text-slate-400 mb-3">
             <span className="text-xs font-medium tracking-wide">Logistics Efficiency</span>
-            <div className="p-2 rounded-xl bg-blue-500/10 border border-blue-400/20 text-blue-400">
+            <div className="p-2 rounded-xl bg-rose-500/10 border border-rose-400/20 text-rose-400">
               <TrendingUp className="h-4 w-4" />
             </div>
           </div>
@@ -130,7 +130,7 @@ export default function LandingPage() {
           </div>
           <div className="flex items-baseline space-x-2">
             <span className="text-3xl font-extrabold text-white">88%</span>
-            <span className="text-xs font-semibold text-cyan-400 bg-cyan-500/10 border border-cyan-500/20 px-1.5 py-0.5 rounded-md">
+            <span className="text-xs font-semibold text-red-400 bg-red-500/10 border border-red-500/20 px-1.5 py-0.5 rounded-md">
               Optimal
             </span>
           </div>
@@ -140,7 +140,7 @@ export default function LandingPage() {
         <div className="glass-card-interactive rounded-2xl p-5 relative overflow-hidden">
           <div className="flex items-center justify-between text-slate-400 mb-3">
             <span className="text-xs font-medium tracking-wide">Telemetry Latency</span>
-            <div className="p-2 rounded-xl bg-indigo-500/10 border border-indigo-400/20 text-indigo-400">
+            <div className="p-2 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400">
               <Activity className="h-4 w-4" />
             </div>
           </div>
@@ -158,12 +158,12 @@ export default function LandingPage() {
       <div className="max-w-4xl mx-auto space-y-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2.5">
-            <div className="w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-md shadow-cyan-400/80 animate-ping" />
+            <div className="w-2.5 h-2.5 rounded-full bg-red-400 shadow-md shadow-red-500/80 animate-ping" />
             <h2 className="text-lg font-bold text-white tracking-wide">
               System Connectivity Telemetry
             </h2>
           </div>
-          <span className="text-xs text-cyan-300/70 font-mono glass-badge px-2.5 py-1 rounded-md">
+          <span className="text-xs text-red-300/70 font-mono glass-badge px-2.5 py-1 rounded-md">
             Live Axios Polling
           </span>
         </div>
@@ -190,7 +190,7 @@ export default function LandingPage() {
         <div className="glass-card rounded-2xl p-6 sm:p-8 relative overflow-hidden">
           <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/[0.08]">
             <div className="flex items-center space-x-3">
-              <div className="p-2 rounded-xl bg-cyan-500/10 border border-cyan-400/20 text-cyan-400">
+              <div className="p-2 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400">
                 <ShieldCheck className="h-5 w-5" />
               </div>
               <div>
@@ -235,7 +235,7 @@ export default function LandingPage() {
           <div className="mt-6 pt-4 border-t border-white/[0.08] flex justify-end">
             <Link
               to="/health"
-              className="inline-flex items-center space-x-2 text-sm font-semibold text-cyan-300 hover:text-white glass-badge hover:bg-cyan-500/20 px-4 py-2 rounded-xl transition-all duration-200"
+              className="inline-flex items-center space-x-2 text-sm font-semibold text-red-300 hover:text-white glass-badge hover:bg-red-500/20 px-4 py-2 rounded-xl transition-all duration-200"
             >
               <span>View Deep Diagnostics</span>
               <ArrowRight className="h-4 w-4" />

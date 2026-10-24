@@ -44,7 +44,7 @@ export default function ShipmentRiskChart({
   const chartData = [
     { name: 'Low Risk (<30%)', key: 'LOW', value: lowCount, color: '#34D399' },
     { name: 'Medium Risk (30-69%)', key: 'MEDIUM', value: medCount, color: '#FBBF24' },
-    { name: 'High Risk (≥70%)', key: 'HIGH', value: highCount, color: '#FB7185' },
+    { name: 'High Risk (≥70%)', key: 'HIGH', value: highCount, color: '#EF4444' },
   ].filter((item) => item.value > 0);
 
   return (
@@ -113,7 +113,7 @@ export default function ShipmentRiskChart({
               dataKey="value"
             >
               {chartData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.color} stroke="#07111F" strokeWidth={2} />
+                <Cell key={`cell-${index}`} fill={entry.color} stroke="#0C0406" strokeWidth={2} />
               ))}
             </Pie>
           </PieChart>

@@ -18,7 +18,7 @@ export default function PredictedActualComparison({ comparison, loading = false 
   if (loading) {
     return (
       <div className="p-8 text-center text-xs text-slate-400 space-y-2">
-        <Clock className="h-5 w-5 animate-spin mx-auto text-cyan-400" />
+        <Clock className="h-5 w-5 animate-spin mx-auto text-red-400" />
         <p>Retrieving operational actuals and closed-loop comparison from PostgreSQL...</p>
       </div>
     );
@@ -68,7 +68,7 @@ export default function PredictedActualComparison({ comparison, loading = false 
       {/* 1. Header Banner */}
       <div className="flex flex-wrap items-center justify-between gap-3 p-4 rounded-xl bg-white/[0.03] border border-white/[0.06]">
         <div className="flex items-center space-x-3">
-          <div className="p-2 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+          <div className="p-2 rounded-xl bg-red-500/10 text-red-400 border border-red-500/20">
             <Layers className="h-5 w-5" />
           </div>
           <div>
@@ -134,7 +134,7 @@ export default function PredictedActualComparison({ comparison, loading = false 
             {/* Cost Row */}
             <tr className="hover:bg-white/[0.02] transition-colors">
               <td className="py-3 px-4 font-semibold text-slate-200 flex items-center space-x-2">
-                <DollarSign className="h-4 w-4 text-cyan-400" />
+                <DollarSign className="h-4 w-4 text-red-400" />
                 <span>Total Cost</span>
               </td>
               <td className="py-3 px-4 font-mono font-bold text-slate-300">
@@ -173,7 +173,7 @@ export default function PredictedActualComparison({ comparison, loading = false 
             {/* Delivery Date Row */}
             <tr className="hover:bg-white/[0.02] transition-colors">
               <td className="py-3 px-4 font-semibold text-slate-200 flex items-center space-x-2">
-                <Calendar className="h-4 w-4 text-cyan-400" />
+                <Calendar className="h-4 w-4 text-red-400" />
                 <span>Delivery Date</span>
               </td>
               <td className="py-3 px-4 font-mono text-slate-300">
@@ -207,10 +207,10 @@ export default function PredictedActualComparison({ comparison, loading = false 
             {/* Delay Impact Row */}
             <tr className="hover:bg-white/[0.02] transition-colors">
               <td className="py-3 px-4 font-semibold text-slate-200 flex items-center space-x-2">
-                <Clock className="h-4 w-4 text-cyan-400" />
+                <Clock className="h-4 w-4 text-red-400" />
                 <span>Schedule Delay</span>
               </td>
-              <td className="py-3 px-4 font-mono text-cyan-300">
+              <td className="py-3 px-4 font-mono text-red-300">
                 {predicted?.predicted_delay != null
                   ? `${Number(predicted.predicted_delay).toFixed(1)} days delay`
                   : '—'}
@@ -243,7 +243,7 @@ export default function PredictedActualComparison({ comparison, loading = false 
             {/* Supplier Row */}
             <tr className="hover:bg-white/[0.02] transition-colors">
               <td className="py-3 px-4 font-semibold text-slate-200 flex items-center space-x-2">
-                <Truck className="h-4 w-4 text-cyan-400" />
+                <Truck className="h-4 w-4 text-red-400" />
                 <span>Fulfilling Supplier</span>
               </td>
               <td className="py-3 px-4 font-mono text-slate-300">
@@ -276,7 +276,7 @@ export default function PredictedActualComparison({ comparison, loading = false 
             {/* Quantity Row */}
             <tr className="hover:bg-white/[0.02] transition-colors">
               <td className="py-3 px-4 font-semibold text-slate-200 flex items-center space-x-2">
-                <Package className="h-4 w-4 text-cyan-400" />
+                <Package className="h-4 w-4 text-red-400" />
                 <span>Order Quantity</span>
               </td>
               <td className="py-3 px-4 font-mono text-slate-300">
@@ -297,7 +297,7 @@ export default function PredictedActualComparison({ comparison, loading = false 
                         ? 'text-slate-300'
                         : variance.quantity_variance < 0
                         ? 'text-amber-300'
-                        : 'text-sky-300'
+                        : 'text-rose-300'
                     }`}
                   >
                     {variance.quantity_variance > 0 ? '+' : ''}
@@ -316,7 +316,7 @@ export default function PredictedActualComparison({ comparison, loading = false 
       {notes && notes.length > 0 && (
         <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.05] space-y-1.5 text-xs text-slate-400">
           <div className="text-[10px] font-mono uppercase tracking-wider text-slate-300 flex items-center space-x-1.5">
-            <Info className="h-3.5 w-3.5 text-cyan-400" />
+            <Info className="h-3.5 w-3.5 text-red-400" />
             <span>Closed-Loop Variance Observations</span>
           </div>
           <ul className="list-disc list-inside space-y-1 text-slate-300 pl-1">
@@ -329,7 +329,7 @@ export default function PredictedActualComparison({ comparison, loading = false 
 
       {/* 5. Data Governance Disclaimer */}
       <div className="p-3.5 rounded-xl bg-slate-800/60 border border-slate-700/60 flex items-start space-x-2.5 text-xs text-slate-300">
-        <ShieldCheck className="h-4 w-4 text-cyan-400 flex-shrink-0 mt-0.5" />
+        <ShieldCheck className="h-4 w-4 text-red-400 flex-shrink-0 mt-0.5" />
         <div className="space-y-1">
           <div className="font-semibold text-slate-200">
             Day 19 Closed-Loop Audit Policy
@@ -338,7 +338,7 @@ export default function PredictedActualComparison({ comparison, loading = false 
             Operational actuals may be recorded via authorized operational integrations or manual invoice reconciliation.
             Predictions recorded at decision execution time remain immutable.
             {hasActual && actual?.source && (
-              <span className="ml-1 text-cyan-300 font-mono">
+              <span className="ml-1 text-red-300 font-mono">
                 [Data Source: {actual.source}]
               </span>
             )}

@@ -40,8 +40,8 @@ export default function Navbar({ onMenuToggle }) {
           <Menu className="h-5 w-5" />
         </button>
 
-        <div className="hidden sm:flex items-center space-x-2 text-xs font-mono text-cyan-300/80 bg-white/[0.04] px-3 py-1.5 rounded-xl border border-white/[0.08]">
-          <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+        <div className="hidden sm:flex items-center space-x-2 text-xs font-mono text-red-200/90 bg-white/[0.04] px-3.5 py-1.5 rounded-full border border-white/15 shadow-[inset_0_1px_1px_rgba(255,255,255,0.18)] backdrop-blur-md">
+          <span className="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)] animate-pulse" />
           <span>Autonomous Supply Chain Control Matrix</span>
         </div>
       </div>
@@ -50,18 +50,18 @@ export default function Navbar({ onMenuToggle }) {
         {/* Latency telemetry pill */}
         <Link
           to="/health"
-          className="flex items-center space-x-2 px-3 py-1.5 rounded-xl text-xs font-mono bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] hover:border-cyan-400/30 transition-all text-slate-300"
+          className="flex items-center space-x-2 px-3.5 py-1.5 rounded-full text-xs font-mono bg-white/[0.04] hover:bg-white/[0.08] border border-white/15 hover:border-red-400/50 shadow-[inset_0_1px_1px_rgba(255,255,255,0.18)] backdrop-blur-md transition-all text-slate-200"
           title="Telemetry roundtrip latency to FastAPI backend"
         >
-          <Activity className="h-3.5 w-3.5 text-cyan-400" />
+          <Activity className="h-3.5 w-3.5 text-red-400" />
           <span className="text-slate-400 hidden xs:inline">Latency:</span>
-          <span className="text-cyan-300 font-semibold">{latency || 'Pinging...'}</span>
+          <span className="text-red-300 font-semibold">{latency || 'Pinging...'}</span>
         </Link>
 
         {/* Prescriptions Quick Action */}
         <Link
           to="/prescriptions"
-          className="glass-button-primary hidden sm:inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold text-white shadow-sm shadow-cyan-500/20"
+          className="glass-button-primary hidden sm:inline-flex items-center space-x-1.5 px-4 py-1.5 rounded-full text-xs font-semibold text-white"
         >
           <Sparkles className="h-3.5 w-3.5" />
           <span>AI Prescriptions</span>
@@ -72,7 +72,7 @@ export default function Navbar({ onMenuToggle }) {
           href="http://localhost:8000/docs"
           target="_blank"
           rel="noopener noreferrer"
-          className="p-2 rounded-xl text-slate-400 hover:text-cyan-300 hover:bg-white/[0.08] border border-transparent hover:border-white/10 transition-colors"
+          className="p-2 rounded-full text-slate-400 hover:text-white hover:bg-white/[0.08] border border-transparent hover:border-white/15 backdrop-blur-sm transition-all"
           title="FastAPI Swagger Documentation"
         >
           <Terminal className="h-4 w-4" />

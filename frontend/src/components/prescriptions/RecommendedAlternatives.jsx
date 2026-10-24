@@ -29,8 +29,8 @@ export default function RecommendedAlternatives({
   if (loading) {
     return (
       <div className="glass-card p-8 rounded-2xl border border-white/[0.08] text-center flex flex-col items-center justify-center min-h-[360px] animate-pulse">
-        <div className="p-4 rounded-2xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 mb-4">
-          <Sparkles className="h-8 w-8 animate-spin text-cyan-400" />
+        <div className="p-4 rounded-2xl bg-red-500/10 text-red-400 border border-red-500/20 mb-4">
+          <Sparkles className="h-8 w-8 animate-spin text-red-400" />
         </div>
         <h3 className="text-base font-bold text-white tracking-tight">
           Solving Prescriptive Optimization Engine
@@ -62,7 +62,7 @@ export default function RecommendedAlternatives({
     return (
       <div className="glass-card p-8 rounded-2xl border border-white/[0.08] text-center flex flex-col items-center justify-center min-h-[280px]">
         <div className="p-4 rounded-2xl bg-white/[0.04] text-slate-400 border border-white/[0.08] mb-3">
-          <Layers className="h-8 w-8 text-cyan-400/70" />
+          <Layers className="h-8 w-8 text-red-400/70" />
         </div>
         <h3 className="text-base font-bold text-white tracking-tight">
           Awaiting Shipment Selection
@@ -112,7 +112,7 @@ export default function RecommendedAlternatives({
       {/* Header Banner */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-white/[0.08] gap-2">
         <div className="flex items-center space-x-3">
-          <div className="p-2.5 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400">
+          <div className="p-2.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400">
             <Sparkles className="h-5 w-5" />
           </div>
           <div>
@@ -120,7 +120,7 @@ export default function RecommendedAlternatives({
               Recommended Alternative Decisions
             </h2>
             <p className="text-xs text-slate-400">
-              Evaluated for Shipment <span className="font-mono text-cyan-300 font-semibold">{shipment_id}</span> ({baseline?.product_name || 'Product'})
+              Evaluated for Shipment <span className="font-mono text-red-300 font-semibold">{shipment_id}</span> ({baseline?.product_name || 'Product'})
             </p>
           </div>
         </div>
@@ -191,11 +191,11 @@ export default function RecommendedAlternatives({
               {/* Card Header */}
               <div className="flex items-center justify-between pb-3 border-b border-white/[0.06]">
                 <div className="flex items-center space-x-2">
-                  <div className="p-2 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                  <div className="p-2 rounded-xl bg-red-500/10 text-red-400 border border-red-500/20">
                     <Plane className="h-4 w-4" />
                   </div>
                   <div>
-                    <span className="text-xs font-mono font-bold text-cyan-400 uppercase tracking-wider">
+                    <span className="text-xs font-mono font-bold text-red-400 uppercase tracking-wider">
                       Option A
                     </span>
                     <h4 className="text-sm font-bold text-white leading-tight">
@@ -218,7 +218,7 @@ export default function RecommendedAlternatives({
                       {formatCost(optA.estimated_total_cost)}
                     </span>
                     {optA.additional_cost != null && (
-                      <span className="text-xs font-mono text-cyan-300">
+                      <span className="text-xs font-mono text-red-300">
                         ({optA.additional_cost_percentage >= 0 ? '+' : ''}{optA.additional_cost_percentage}%)
                       </span>
                     )}
@@ -459,7 +459,7 @@ export default function RecommendedAlternatives({
       {/* Comparative Trade-off Matrix */}
       <div className="glass-card p-5 rounded-2xl border border-white/[0.08]">
         <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center space-x-2">
-          <Layers className="h-4 w-4 text-cyan-400" />
+          <Layers className="h-4 w-4 text-red-400" />
           <span>Strategic Decision Trade-off Comparison</span>
         </h4>
         <div className="overflow-x-auto">
@@ -525,7 +525,7 @@ export default function RecommendedAlternatives({
 
       {/* Disclaimers & Model Notices */}
       <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.06] flex items-start space-x-2 text-[11px] text-slate-400">
-        <Info className="h-4 w-4 text-cyan-400 shrink-0 mt-0.5" />
+        <Info className="h-4 w-4 text-red-400 shrink-0 mt-0.5" />
         <div>
           <span className="font-semibold text-slate-300">Operational Decision Notice: </span>
           Prescriptive alternatives are computed deterministically via mathematical programming and verified against hard budget, supplier capacity, and delivery constraints. Recommendations are advisory estimates designed for operations planners; they do not automatically execute financial transactions or carrier bookings.

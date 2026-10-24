@@ -5,7 +5,9 @@ import Navbar from './components/Navbar';
 // 5 Core Day 10 Pages
 import Dashboard from './pages/Dashboard';
 import CommandCenter from './pages/CommandCenter';
+import DecisionROI from './pages/DecisionROI';
 import Predictions from './pages/Predictions';
+import FeedbackPipeline from './pages/FeedbackPipeline';
 import Shipments from './pages/Shipments';
 import Suppliers from './pages/Suppliers';
 import Inventory from './pages/Inventory';
@@ -33,17 +35,21 @@ export default function App() {
   return (
     <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <ScrollToTop />
-      <div className="relative min-h-screen bg-[#07111F] text-slate-100 flex font-sans selection:bg-cyan-500 selection:text-white overflow-x-hidden">
-        {/* Layered Ambient Atmospheric Background */}
+      <div className="relative min-h-screen bg-[#0C0406] text-slate-100 flex font-sans selection:bg-red-600 selection:text-white overflow-x-hidden">
+        {/* Apple visionOS Style Multi-Orb Dynamic Atmospheric Background */}
         <div className="fixed inset-0 pointer-events-none overflow-hidden z-0" aria-hidden="true">
-          {/* Cyan Glow Orb */}
-          <div className="absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full bg-cyan-500/10 blur-[130px] ambient-glow-1" />
-          {/* Blue Glow Orb */}
-          <div className="absolute top-1/3 -right-48 w-[650px] h-[650px] rounded-full bg-blue-600/10 blur-[150px] ambient-glow-2" />
-          {/* Center Subtle Violet Glow */}
-          <div className="absolute top-2/3 left-1/4 w-[500px] h-[500px] rounded-full bg-indigo-600/08 blur-[140px] ambient-glow-1" />
-          {/* Radial Mesh */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(34,211,238,0.08),transparent)]" />
+          {/* Top-Left Radiant Crimson Orb */}
+          <div className="absolute -top-32 -left-32 w-[680px] h-[680px] rounded-full bg-gradient-to-br from-red-600/20 to-rose-600/10 blur-[140px] ambient-glow-1" />
+          {/* Top-Right Vivid Rose & Ruby Orb */}
+          <div className="absolute -top-20 -right-32 w-[720px] h-[720px] rounded-full bg-gradient-to-bl from-rose-600/18 via-red-600/12 to-transparent blur-[160px] ambient-glow-2" />
+          {/* Mid-Left Wine & Carmine Atmosphere */}
+          <div className="absolute top-1/2 -left-48 w-[600px] h-[600px] rounded-full bg-red-700/14 blur-[150px] ambient-glow-2" />
+          {/* Bottom-Right Deep Ember Glow */}
+          <div className="absolute -bottom-32 right-1/4 w-[750px] h-[750px] rounded-full bg-gradient-to-tr from-rose-700/16 via-red-800/10 to-transparent blur-[160px] ambient-glow-1" />
+          {/* Apple Sub-surface Radial Light Falloff */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_100%_80%_at_50%_-10%,rgba(244,63,94,0.12),transparent_65%)]" />
+          {/* Apple Ambient Vignette */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(12,4,6,0.40)_100%)]" />
         </div>
 
         {/* Mobile Navigation Backdrop */}
@@ -83,7 +89,10 @@ export default function App() {
               {/* 5 Core Day 10 Pages */}
               <Route path="/" element={<Dashboard />} />
               <Route path="/command-center" element={<CommandCenter />} />
+              <Route path="/decision-roi" element={<DecisionROI />} />
               <Route path="/predictions" element={<Predictions />} />
+              <Route path="/feedback" element={<FeedbackPipeline />} />
+              <Route path="/retraining" element={<FeedbackPipeline />} />
               <Route path="/shipments" element={<Shipments />} />
               <Route path="/suppliers" element={<Suppliers />} />
               <Route path="/inventory" element={<Inventory />} />
@@ -104,7 +113,7 @@ export default function App() {
           <footer className="glass-nav py-6 px-4 sm:px-8 text-xs text-slate-400 mt-auto">
             <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
               <div className="flex items-center space-x-2">
-                <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+                <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
                 <span className="font-medium text-slate-300">
                   SupplyPrescript &copy; {new Date().getFullYear()}
                 </span>
@@ -112,8 +121,8 @@ export default function App() {
                 <span className="text-slate-500">Autonomous Supply Chain Intelligence Matrix</span>
               </div>
               <div className="flex items-center space-x-3 text-[11px] font-mono text-slate-500">
-                <span className="glass-badge px-2.5 py-1 text-cyan-300/80">
-                  Glassmorphism Architecture Active
+                <span className="glass-badge px-2.5 py-1 text-red-300/80">
+                  Crimson Glassmorphism Active
                 </span>
                 <span className="text-slate-600">FastAPI &bull; XGBoost &bull; React 18</span>
               </div>

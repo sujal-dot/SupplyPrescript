@@ -90,7 +90,7 @@ export default function DashboardPage() {
               Operating in telemetry inspection mode with verified architecture parameters.
             </div>
           </div>
-          <Link to="/health" className="text-xs font-semibold text-cyan-300 hover:underline shrink-0">
+          <Link to="/health" className="text-xs font-semibold text-red-300 hover:underline shrink-0">
             Check Diagnostics &rarr;
           </Link>
         </div>
@@ -101,10 +101,10 @@ export default function DashboardPage() {
         <LoadingSkeleton variant="card" count={4} />
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          <GlassCard interactive glow="cyan" className="rounded-2xl">
+          <GlassCard interactive glow="red" className="rounded-2xl">
             <div className="flex items-center justify-between text-slate-400 mb-3">
               <span className="text-xs font-medium uppercase tracking-wider">Active Shipments</span>
-              <div className="p-2 rounded-xl bg-cyan-500/10 border border-cyan-400/20 text-cyan-400">
+              <div className="p-2 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400">
                 <Truck className="h-4 w-4" />
               </div>
             </div>
@@ -118,16 +118,16 @@ export default function DashboardPage() {
             </div>
             <div className="mt-3 flex items-center justify-between text-[11px] text-slate-400">
               <span>Delayed: {dashboardData?.delayed_shipments || 18}</span>
-              <span className="text-cyan-300 font-mono">
+              <span className="text-red-300 font-mono">
                 {dashboardData?.delay_rate ? `${(dashboardData.delay_rate * 100).toFixed(1)}%` : '6.3%'}
               </span>
             </div>
           </GlassCard>
 
-          <GlassCard interactive glow="blue" className="rounded-2xl">
+          <GlassCard interactive glow="rose" className="rounded-2xl">
             <div className="flex items-center justify-between text-slate-400 mb-3">
               <span className="text-xs font-medium uppercase tracking-wider">Logistics Efficiency</span>
-              <div className="p-2 rounded-xl bg-blue-500/10 border border-blue-400/20 text-blue-400">
+              <div className="p-2 rounded-xl bg-rose-500/10 border border-rose-400/20 text-rose-400">
                 <TrendingUp className="h-4 w-4" />
               </div>
             </div>
@@ -141,7 +141,7 @@ export default function DashboardPage() {
             </div>
             <div className="mt-3 flex items-center justify-between text-[11px] text-slate-400">
               <span>Avg Lead Time:</span>
-              <span className="text-blue-300 font-mono">
+              <span className="text-rose-300 font-mono">
                 {dashboardData?.average_lead_time ? `${dashboardData.average_lead_time.toFixed(1)}d` : '4.2 days'}
               </span>
             </div>
@@ -158,7 +158,7 @@ export default function DashboardPage() {
               <span className="text-3xl font-extrabold text-white">
                 {dashboardData ? `${(100 - (dashboardData.inventory_shortage_rate || 0.05) * 100).toFixed(1)}%` : '95.2%'}
               </span>
-              <span className="text-xs font-semibold text-cyan-400 bg-cyan-500/10 border border-cyan-500/20 px-2 py-0.5 rounded-md">
+              <span className="text-xs font-semibold text-red-400 bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded-md">
                 Optimal
               </span>
             </div>
@@ -181,7 +181,7 @@ export default function DashboardPage() {
               <span className="text-3xl font-extrabold text-white">
                 {dashboardData?.total_shipping_cost ? `$${(dashboardData.total_shipping_cost / 1000).toFixed(1)}k` : '$128.4k'}
               </span>
-              <span className="text-xs font-semibold text-cyan-400 bg-cyan-500/10 border border-cyan-500/20 px-2 py-0.5 rounded-md">
+              <span className="text-xs font-semibold text-red-400 bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded-md">
                 Prescribed
               </span>
             </div>
@@ -214,7 +214,7 @@ export default function DashboardPage() {
             <DataChart
               data={forecastTrendData}
               series={[
-                { key: 'value1', label: 'Actual Demand (Units)', color: '#22D3EE' },
+                { key: 'value1', label: 'Actual Demand (Units)', color: '#EF4444' },
                 { key: 'value2', label: 'Prescribed Allocation', color: '#3B82F6', dashed: true },
               ]}
               height={260}
@@ -256,7 +256,7 @@ export default function DashboardPage() {
                       ]
                   ).map((sup, idx) => (
                     <tr key={idx} className="hover:bg-white/[0.02] transition-colors">
-                      <td className="py-3 pl-2 font-mono text-cyan-300 font-semibold">
+                      <td className="py-3 pl-2 font-mono text-red-300 font-semibold">
                         {sup.supplier_id}
                       </td>
                       <td className="py-3 text-slate-300">{sup.shipment_count}</td>
@@ -289,16 +289,16 @@ export default function DashboardPage() {
             icon={Sparkles}
             actions={
               <Link to="/prescriptions">
-                <span className="text-xs font-semibold text-cyan-400 hover:text-cyan-300">
+                <span className="text-xs font-semibold text-red-400 hover:text-red-300">
                   Execute &rarr;
                 </span>
               </Link>
             }
           >
             <div className="space-y-4">
-              <div className="p-3.5 rounded-2xl bg-white/[0.02] border border-cyan-400/20 hover:border-cyan-400/40 transition-all">
+              <div className="p-3.5 rounded-2xl bg-white/[0.02] border border-red-500/20 hover:border-red-500/40 transition-all">
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-xs font-bold text-cyan-300">Re-route Shenzhen &rarr; LA Hub</span>
+                  <span className="text-xs font-bold text-red-300">Re-route Shenzhen &rarr; LA Hub</span>
                   <StatusBadge status="High Impact" variant="info" dot={false} />
                 </div>
                 <p className="text-xs text-slate-400 leading-relaxed">

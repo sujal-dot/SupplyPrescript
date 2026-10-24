@@ -49,7 +49,7 @@ export default function ShipmentTable({
             onChange={(e) => setSearchTerm(e.target.value)}
             onBlur={() => onSearchChange && onSearchChange(searchTerm)}
             placeholder="Search shipment ID (e.g. SHIP000100)..."
-            className="w-full glass-input text-xs pl-10 pr-4 py-2 bg-slate-900/60 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400"
+            className="w-full glass-input text-xs pl-10 pr-4 py-2 bg-slate-900/60 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-red-500"
           />
         </form>
 
@@ -59,7 +59,7 @@ export default function ShipmentTable({
           <select
             value={filters.transport_mode || ''}
             onChange={(e) => onFilterChange && onFilterChange('transport_mode', e.target.value)}
-            className="glass-input text-xs px-3 py-2 bg-slate-900/60 border border-white/10 rounded-xl text-slate-300 focus:outline-none focus:border-cyan-400"
+            className="glass-input text-xs px-3 py-2 bg-slate-900/60 border border-white/10 rounded-xl text-slate-300 focus:outline-none focus:border-red-500"
           >
             <option value="">All Modes</option>
             <option value="Road">Road</option>
@@ -75,7 +75,7 @@ export default function ShipmentTable({
               const val = e.target.value;
               onFilterChange && onFilterChange('is_delayed', val === '' ? null : val === 'true');
             }}
-            className="glass-input text-xs px-3 py-2 bg-slate-900/60 border border-white/10 rounded-xl text-slate-300 focus:outline-none focus:border-cyan-400"
+            className="glass-input text-xs px-3 py-2 bg-slate-900/60 border border-white/10 rounded-xl text-slate-300 focus:outline-none focus:border-red-500"
           >
             <option value="">All Delivery Statuses</option>
             <option value="false">On-Time Only</option>
@@ -86,7 +86,7 @@ export default function ShipmentTable({
           <select
             value={filters.sort_by || 'order_date'}
             onChange={(e) => onSortChange && onSortChange(e.target.value)}
-            className="glass-input text-xs px-3 py-2 bg-slate-900/60 border border-white/10 rounded-xl text-slate-300 focus:outline-none focus:border-cyan-400"
+            className="glass-input text-xs px-3 py-2 bg-slate-900/60 border border-white/10 rounded-xl text-slate-300 focus:outline-none focus:border-red-500"
           >
             <option value="order_date">Sort: Order Date</option>
             <option value="quantity">Sort: Quantity</option>
@@ -232,7 +232,7 @@ export default function ShipmentTable({
                       {onSelectShipment && (
                         <button
                           onClick={() => onSelectShipment(s)}
-                          className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] text-cyan-300 border border-white/[0.08] hover:border-cyan-400/30 transition-all"
+                          className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] text-red-300 border border-white/[0.08] hover:border-red-500/30 transition-all"
                         >
                           <span>Inspect</span>
                           <ExternalLink className="h-3 w-3" />

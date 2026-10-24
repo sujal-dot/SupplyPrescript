@@ -23,6 +23,8 @@ from sqlalchemy import or_, cast, String
 from sqlalchemy.orm import Session
 
 from app.database.connection import get_db
+from app.core.auth import Role, get_current_user
+from app.models.user import User
 from app.models.decision import Decision
 from app.models.outcome import Outcome
 from app.models.prediction import Prediction
@@ -36,6 +38,8 @@ from app.schemas.outcome import (
     OutcomeRecordResponse,
 )
 from app.services.outcome_comparison import compute_outcome_comparison
+from app.schemas.roi import DecisionROIResponse
+from app.services.decision_roi import calculate_decision_roi
 from optimization.alternative_evaluator import evaluate_alternatives
 from optimization.alternatives import generate_alternatives_for_shipment
 from optimization.config import ScenarioConfig, get_baseline_scenario, load_scenario_config
@@ -93,8 +97,15 @@ def execute_decision_endpoint(
     request: ExecuteDecisionRequest,
     response: Response,
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ) -> ExecuteDecisionResponse:
     """POST /api/decisions handler."""
+    # RBAC Authorization: Operator or Admin required
+    if current_user.role not in [Role.OPERATOR.value, Role.ADMIN.value]:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=f"Forbidden: role '{current_user.role}' lacks permission to record decisions.",
+        )
     # 1. Authoritative Shipment Resolution
     shipment_dict = _resolve_shipment_dict(request.shipment_id, db)
     clean_shipment_id = shipment_dict["shipment_id"]
@@ -298,8 +309,14 @@ def execute_decision_endpoint(
     delivery_dec = Decimal(str(round(matched_option.estimated_delivery_days, 2))) if matched_option.estimated_delivery_days is not None else None
     prob_dec = Decimal(str(round(matched_option.delay_probability, 4))) if matched_option.delay_probability is not None else None
 
-    # Derive user_id (In dev unauthenticated mode, derived from principal/header or fallback)
-    resolved_user_id = request.user_id or request.approved_by or "usr_ops_manager"
+    # Derive user_id: When authenticated via JWT, strictly derive from principal.
+    # When in dev fallback mode without token, allow legacy request.user_id for test compatibility.
+    if current_user and current_user.username != "dev_admin":
+        resolved_user_id = current_user.user_id or current_user.username
+        resolved_approved_by = current_user.full_name or current_user.username
+    else:
+        resolved_user_id = request.user_id or request.approved_by or "usr_ops_manager"
+        resolved_approved_by = request.approved_by or "Operations Manager"
 
     constraint_snapshot = {
         "budget": "PASS",
@@ -315,7 +332,7 @@ def execute_decision_endpoint(
         decision=f"Execute Decision: Option {matched_option.option_id} ({matched_option.name})",
         decision_reason=request.notes or matched_option.explanation or f"Approved Option {matched_option.option_id}",
         decision_source="Optimization",
-        approved_by=request.approved_by or "Operations Manager",
+        approved_by=resolved_approved_by,
         status="RECORDED",
         shipment_id=clean_shipment_id,
         optimization_run_id=request.optimization_run_id or f"OPT-RUN-{uuid.uuid4().hex[:8].upper()}",
@@ -560,8 +577,15 @@ def record_decision_outcome_endpoint(
     decision_id: str,
     request: RecordOutcomeRequest,
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ) -> OutcomeComparisonResponse:
     """POST /api/decisions/{decision_id}/outcome handler."""
+    # RBAC Authorization: Operator or Admin required
+    if current_user.role not in [Role.OPERATOR.value, Role.ADMIN.value]:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=f"Forbidden: role '{current_user.role}' lacks permission to record outcomes.",
+        )
     clean_id = decision_id.strip()
     if not clean_id:
         raise HTTPException(
@@ -788,4 +812,75 @@ def get_decision_outcome_endpoint(
     comparison["outcome"] = outcome_schema
 
     return OutcomeComparisonResponse(**comparison)
+
+
+@router.get(
+    "/{decision_id}/roi",
+    response_model=DecisionROIResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Retrieve Decision ROI & Success Evaluation (Day 20 Decision ROI Engine)",
+    description=(
+        "Retrieves authoritative financial variance, predicted vs causal money saved, delay difference, "
+        "transparent Return on Investment (ROI), and multi-dimensional decision success evaluation for a "
+        "persisted decision. If no actual outcome is recorded, returns a documented pending response with "
+        "unavailable actual-dependent metrics without fabricating zeros."
+    ),
+    responses={
+        200: {"description": "Decision ROI and success evaluation generated successfully."},
+        404: {"description": "Decision record not found."},
+    },
+)
+def get_decision_roi_endpoint(
+    decision_id: str,
+    investment_cost: Optional[Decimal] = Query(None, description="Documented incremental investment denominator override"),
+    additional_decision_costs: Optional[Decimal] = Query(None, description="Documented additional decision execution costs"),
+    db: Session = Depends(get_db),
+) -> DecisionROIResponse:
+    """GET /api/decisions/{decision_id}/roi handler."""
+    clean_id = decision_id.strip()
+    if not clean_id:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="A valid decision identifier is required.",
+        )
+
+    # 1. Retrieve the Persisted Decision
+    decision = (
+        db.query(Decision)
+        .filter(or_(Decision.decision_id == clean_id, cast(Decision.id, String) == clean_id))
+        .first()
+    )
+    if not decision:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Decision record '{clean_id}' was not found in operational database.",
+        )
+
+    # 2. Retrieve Associated Outcome (if any)
+    outcome = (
+        db.query(Outcome)
+        .filter(Outcome.decision_id == decision.id)
+        .first()
+    )
+
+    # 3. Retrieve Baseline Shipment (if any)
+    shipment = None
+    if decision.shipment_id:
+        shipment = (
+            db.query(Shipment)
+            .filter(Shipment.shipment_id == decision.shipment_id)
+            .first()
+        )
+
+    # 4. Compute Comprehensive ROI and Evaluation
+    roi_result = calculate_decision_roi(
+        decision=decision,
+        outcome=outcome,
+        shipment=shipment,
+        investment_cost_override=investment_cost,
+        additional_decision_costs=additional_decision_costs,
+    )
+
+    return DecisionROIResponse(**roi_result)
+
 

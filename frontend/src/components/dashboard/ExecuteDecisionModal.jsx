@@ -110,18 +110,18 @@ export default function ExecuteDecisionModal({
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-title"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-md animate-in fade-in duration-200"
     >
-      <div className="glass-card w-full max-w-xl max-h-[90vh] rounded-3xl border border-white/[0.12] bg-[#0c1626]/95 flex flex-col shadow-2xl shadow-cyan-950/60 overflow-hidden">
+      <div className="glass-card w-full max-w-xl max-h-[90vh] rounded-[28px] border border-white/[0.16] flex flex-col shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8),inset_0_1px_1.5px_rgba(255,255,255,0.35)] overflow-hidden">
         {/* Modal Header */}
         <div className="p-6 border-b border-white/[0.08] flex items-start justify-between bg-white/[0.02]">
           <div className="flex items-center space-x-3.5">
-            <div className="p-3 rounded-2xl bg-cyan-500/20 text-cyan-300 border border-cyan-400/30 shadow-lg shadow-cyan-500/10">
+            <div className="p-3 rounded-2xl bg-red-500/20 text-red-300 border border-red-500/30 shadow-lg shadow-red-500/10">
               <StrategyIcon className="h-6 w-6" />
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-cyan-300 font-bold bg-cyan-500/10 px-2 py-0.5 rounded-full border border-cyan-400/20">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-red-300 font-bold bg-red-500/10 px-2 py-0.5 rounded-full border border-red-500/20">
                   Option {optionId}
                 </span>
                 <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400">
@@ -167,7 +167,7 @@ export default function ExecuteDecisionModal({
             </div>
             <div className="flex items-center justify-between">
               <span className="text-slate-400 font-medium">Selected Alternative</span>
-              <span className="font-mono font-bold text-cyan-300">
+              <span className="font-mono font-bold text-red-300">
                 Option {optionId}: {strategyName}
               </span>
             </div>
@@ -209,7 +209,7 @@ export default function ExecuteDecisionModal({
               <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 block">
                 Expected Delivery
               </span>
-              <span className="text-lg font-bold font-mono text-cyan-300 block">
+              <span className="text-lg font-bold font-mono text-red-300 block">
                 {option.estimated_delivery_days != null
                   ? `${Number(option.estimated_delivery_days).toFixed(1)} days`
                   : '—'}
@@ -306,7 +306,7 @@ export default function ExecuteDecisionModal({
           {option.assumptions && option.assumptions.length > 0 && (
             <div className="space-y-1.5">
               <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 block font-bold flex items-center space-x-1">
-                <Layers className="h-3 w-3 text-cyan-400" />
+                <Layers className="h-3 w-3 text-red-400" />
                 <span>Model Assumptions &amp; Prerequisites</span>
               </span>
               <ul className="list-disc list-inside space-y-1 text-slate-400 bg-white/[0.02] p-3 rounded-xl border border-white/[0.04] text-[11px]">
@@ -320,17 +320,17 @@ export default function ExecuteDecisionModal({
           )}
 
           {/* Operational Governance Notice: No Automated External Booking */}
-          <div className="p-3.5 rounded-xl bg-cyan-500/10 border border-cyan-500/25 text-slate-300 space-y-1.5 text-[11px] leading-relaxed">
-            <div className="flex items-center space-x-1.5 text-cyan-300 font-bold">
-              <ShieldCheck className="h-4 w-4 text-cyan-400 shrink-0" />
+          <div className="p-3.5 rounded-xl bg-red-500/10 border border-red-500/25 text-slate-300 space-y-1.5 text-[11px] leading-relaxed">
+            <div className="flex items-center space-x-1.5 text-red-300 font-bold">
+              <ShieldCheck className="h-4 w-4 text-red-400 shrink-0" />
               <span>Safe Operational Protocol (No Automated External Booking)</span>
             </div>
             <p>
               Confirming this action records the authorized prescriptive decision in SupplyPrescript with status{' '}
-              <strong className="text-cyan-200 font-mono">RECORDED</strong>. In accordance with system safety boundaries, this action{' '}
+              <strong className="text-red-200 font-mono">RECORDED</strong>. In accordance with system safety boundaries, this action{' '}
               <strong className="text-white">does NOT automatically disburse funds, charge accounts, or dispatch physical carriers</strong>.
               The external execution status will be set to{' '}
-              <span className="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-600 font-mono text-[10px] text-cyan-300 font-bold">
+              <span className="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-600 font-mono text-[10px] text-red-300 font-bold">
                 NOT_EXECUTED
               </span>{' '}
               pending dispatch coordination.
@@ -350,7 +350,7 @@ export default function ExecuteDecisionModal({
                 value={approvedBy}
                 onChange={(e) => setApprovedBy(e.target.value)}
                 disabled={loading}
-                className="w-full bg-white/[0.04] border border-white/[0.08] focus:border-cyan-400/40 rounded-xl px-3 py-2 text-xs text-white focus:outline-none transition-colors"
+                className="w-full bg-white/[0.04] border border-white/[0.08] focus:border-red-500/40 rounded-xl px-3 py-2 text-xs text-white focus:outline-none transition-colors"
                 required
               />
             </div>
@@ -367,7 +367,7 @@ export default function ExecuteDecisionModal({
                 onChange={(e) => setNotes(e.target.value)}
                 disabled={loading}
                 placeholder="e.g. Authorized expedited transit to mitigate tier-1 customer line-down penalty."
-                className="w-full bg-white/[0.04] border border-white/[0.08] focus:border-cyan-400/40 rounded-xl p-2.5 text-xs text-white placeholder-slate-500 focus:outline-none resize-none transition-colors"
+                className="w-full bg-white/[0.04] border border-white/[0.08] focus:border-red-500/40 rounded-xl p-2.5 text-xs text-white placeholder-slate-500 focus:outline-none resize-none transition-colors"
               />
             </div>
           </form>

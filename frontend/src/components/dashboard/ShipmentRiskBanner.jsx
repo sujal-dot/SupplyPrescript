@@ -98,7 +98,7 @@ export default function ShipmentRiskBanner({
               <h2 className="text-xl font-bold text-white tracking-tight">
                 {product_name || product_id || 'Industrial SKU'}
               </h2>
-              <span className="text-xs font-mono text-cyan-300 font-bold bg-white/[0.04] px-2 py-0.5 rounded border border-white/[0.08]">
+              <span className="text-xs font-mono text-red-300 font-bold bg-white/[0.04] px-2 py-0.5 rounded border border-white/[0.08]">
                 {shipment_id}
               </span>
             </div>

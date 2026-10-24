@@ -12,7 +12,7 @@ export default function EmptyState({
 }) {
   return (
     <div className={`glass-card p-10 rounded-2xl text-center flex flex-col items-center justify-center max-w-lg mx-auto my-8 ${className}`}>
-      <div className="w-14 h-14 rounded-2xl bg-cyan-500/10 border border-cyan-400/20 flex items-center justify-center text-cyan-400 mb-4 shadow-lg shadow-cyan-500/15">
+      <div className="w-14 h-14 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 mb-4 shadow-lg shadow-red-500/20">
         <Icon className="h-7 w-7" />
       </div>
       <h3 className="text-lg font-bold text-white mb-2">{title}</h3>

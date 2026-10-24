@@ -34,12 +34,12 @@ export default function ShipmentSummary({ baseline = null, shipment = null }) {
     <div className="glass-card p-5 rounded-2xl border border-white/[0.08] bg-white/[0.02]">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-white/[0.06]">
         <div className="flex items-center space-x-2.5">
-          <div className="p-2 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+          <div className="p-2 rounded-xl bg-red-500/10 text-red-400 border border-red-500/20">
             <Package className="h-4 w-4" />
           </div>
           <div>
             <div className="flex items-center space-x-2">
-              <span className="text-xs font-mono font-bold text-cyan-300">{shipmentId}</span>
+              <span className="text-xs font-mono font-bold text-red-300">{shipmentId}</span>
               <StatusBadge status={riskLevel} />
             </div>
             <h3 className="text-sm font-bold text-white tracking-tight mt-0.5">{productName}</h3>
@@ -75,7 +75,7 @@ export default function ShipmentSummary({ baseline = null, shipment = null }) {
         </div>
         <div>
           <span className="text-[10px] font-mono text-slate-500 uppercase tracking-wider block">Base Expenditure</span>
-          <span className="font-semibold text-cyan-300 font-mono font-bold">{totalCost}</span>
+          <span className="font-semibold text-red-300 font-mono font-bold">{totalCost}</span>
         </div>
         <div>
           <span className="text-[10px] font-mono text-slate-500 uppercase tracking-wider block">Modal Transit</span>

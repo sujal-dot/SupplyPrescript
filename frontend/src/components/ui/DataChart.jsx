@@ -5,7 +5,7 @@ export default function DataChart({
   subtitle,
   data = [], // [{ label: 'Mon', value1: 45, value2: 52 }, ...]
   series = [
-    { key: 'value1', label: 'Actual Demand', color: '#22D3EE' },
+    { key: 'value1', label: 'Actual Demand', color: '#EF4444' },
     { key: 'value2', label: 'Predicted Demand', color: '#3B82F6', dashed: true },
   ],
   height = 260,
@@ -154,7 +154,7 @@ export default function DataChart({
                     cy={getY(Number(d[s.key]) || 0)}
                     r={hoverIndex === i ? 5 : 3}
                     fill={hoverIndex === i ? '#ffffff' : s.color}
-                    stroke="#0B1426"
+                    stroke="#16070B"
                     strokeWidth="2"
                     className="transition-all duration-150"
                   />
@@ -192,7 +192,7 @@ export default function DataChart({
               y1={paddingTop}
               x2={getX(hoverIndex)}
               y2={chartHeight - paddingBottom}
-              stroke="rgba(34, 211, 238, 0.45)"
+              stroke="rgba(239, 68, 68, 0.45)"
               strokeWidth="1.5"
               strokeDasharray="3 3"
             />

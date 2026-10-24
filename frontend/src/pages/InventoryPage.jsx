@@ -114,7 +114,7 @@ export default function InventoryPage() {
           <p className="text-xs text-slate-400 mt-2">Across 4 regional warehouses</p>
         </GlassCard>
 
-        <GlassCard interactive glow="cyan" className="rounded-2xl">
+        <GlassCard interactive glow="red" className="rounded-2xl">
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-xs font-medium uppercase tracking-wider">Healthy Stock Level</span>
             <StatusBadge status="92.4%" variant="success" dot={false} />
@@ -215,7 +215,7 @@ export default function InventoryPage() {
               <tbody className="divide-y divide-white/[0.04]">
                 {inventoryList.map((item, idx) => (
                   <tr key={item.id || idx} className="hover:bg-white/[0.02] transition-colors">
-                    <td className="py-3.5 pl-2 font-mono text-cyan-300 font-semibold">
+                    <td className="py-3.5 pl-2 font-mono text-red-300 font-semibold">
                       {item.product_id}
                     </td>
                     <td className="py-3.5 text-slate-300">

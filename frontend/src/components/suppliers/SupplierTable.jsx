@@ -46,7 +46,7 @@ export default function SupplierTable({
             onChange={(e) => setSearchTerm(e.target.value)}
             onBlur={() => onSearchChange && onSearchChange(searchTerm)}
             placeholder="Search supplier name or ID (e.g. Apex, SUP001)..."
-            className="w-full glass-input text-xs pl-10 pr-4 py-2 bg-slate-900/60 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400"
+            className="w-full glass-input text-xs pl-10 pr-4 py-2 bg-slate-900/60 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-red-500"
           />
         </form>
 
@@ -58,7 +58,7 @@ export default function SupplierTable({
               const val = e.target.value;
               onFilterChange && onFilterChange('min_reliability', val === '' ? null : parseFloat(val));
             }}
-            className="glass-input text-xs px-3 py-2 bg-slate-900/60 border border-white/10 rounded-xl text-slate-300 focus:outline-none focus:border-cyan-400"
+            className="glass-input text-xs px-3 py-2 bg-slate-900/60 border border-white/10 rounded-xl text-slate-300 focus:outline-none focus:border-red-500"
           >
             <option value="">All Reliability Tiers</option>
             <option value="0.95">&ge; 95% High Reliability</option>
@@ -70,7 +70,7 @@ export default function SupplierTable({
           <select
             value={filters.sort_by || 'supplier_id'}
             onChange={(e) => onSortChange && onSortChange(e.target.value)}
-            className="glass-input text-xs px-3 py-2 bg-slate-900/60 border border-white/10 rounded-xl text-slate-300 focus:outline-none focus:border-cyan-400"
+            className="glass-input text-xs px-3 py-2 bg-slate-900/60 border border-white/10 rounded-xl text-slate-300 focus:outline-none focus:border-red-500"
           >
             <option value="supplier_id">Sort: Supplier ID</option>
             <option value="reliability">Sort: Highest Reliability</option>
@@ -157,7 +157,7 @@ export default function SupplierTable({
                               relPct >= 95
                                 ? 'text-emerald-400 font-bold'
                                 : relPct >= 85
-                                ? 'text-cyan-300 font-semibold'
+                                ? 'text-red-300 font-semibold'
                                 : 'text-amber-400'
                             }
                           >
@@ -191,7 +191,7 @@ export default function SupplierTable({
                       {onSelectSupplier && (
                         <button
                           onClick={() => onSelectSupplier(s)}
-                          className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] text-cyan-300 border border-white/[0.08] hover:border-cyan-400/30 transition-all"
+                          className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] text-red-300 border border-white/[0.08] hover:border-red-500/30 transition-all"
                         >
                           <span>Profile</span>
                           <ExternalLink className="h-3 w-3" />

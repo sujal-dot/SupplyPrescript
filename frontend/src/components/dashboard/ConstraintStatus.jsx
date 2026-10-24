@@ -119,7 +119,7 @@ export default function ConstraintStatus({
               <h3 className="text-sm font-bold text-white tracking-tight">
                 Business Constraint Verification
               </h3>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 font-bold border border-cyan-400/30">
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-red-500/20 text-red-300 font-bold border border-red-500/30">
                 Day 15 Audit Gate
               </span>
             </div>

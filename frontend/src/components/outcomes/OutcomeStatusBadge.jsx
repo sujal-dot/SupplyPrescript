@@ -24,8 +24,8 @@ export default function OutcomeStatusBadge({ status = 'RECORDED' }) {
 
   if (norm === 'PARTIAL SUCCESS' || norm === 'PARTIAL') {
     return (
-      <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-sky-500/15 text-sky-300 border border-sky-500/30">
-        <AlertTriangle className="h-3 w-3 inline text-sky-400" />
+      <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-rose-500/15 text-rose-300 border border-rose-500/30">
+        <AlertTriangle className="h-3 w-3 inline text-rose-400" />
         <span>PARTIAL OUTCOME</span>
       </span>
     );
@@ -50,8 +50,8 @@ export default function OutcomeStatusBadge({ status = 'RECORDED' }) {
   }
 
   return (
-    <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
-      <ShieldCheck className="h-3 w-3 inline text-cyan-400" />
+    <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-red-500/15 text-red-300 border border-red-500/30">
+      <ShieldCheck className="h-3 w-3 inline text-red-400" />
       <span>{status || 'RECORDED'}</span>
     </span>
   );

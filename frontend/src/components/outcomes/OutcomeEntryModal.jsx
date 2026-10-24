@@ -76,9 +76,9 @@ export default function OutcomeEntryModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-md animate-in fade-in duration-200">
       <div
-        className="glass-card w-full max-w-xl rounded-2xl border border-white/[0.12] shadow-2xl overflow-hidden bg-slate-900/95"
+        className="glass-card w-full max-w-xl rounded-[28px] border border-white/[0.16] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8),inset_0_1px_1.5px_rgba(255,255,255,0.35)] overflow-hidden"
         role="dialog"
         aria-modal="true"
         aria-labelledby="outcome-modal-title"
@@ -86,7 +86,7 @@ export default function OutcomeEntryModal({
         {/* Header */}
         <div className="p-5 border-b border-white/[0.08] flex items-center justify-between bg-white/[0.02]">
           <div className="flex items-center space-x-3">
-            <div className="p-2.5 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+            <div className="p-2.5 rounded-xl bg-red-500/10 text-red-400 border border-red-500/20">
               <FileCheck2 className="h-5 w-5" />
             </div>
             <div>
@@ -94,7 +94,7 @@ export default function OutcomeEntryModal({
                 <h3 id="outcome-modal-title" className="text-sm font-bold text-white tracking-tight">
                   Record Actual Operational Outcome
                 </h3>
-                <span className="font-mono text-xs px-2 py-0.5 rounded bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
+                <span className="font-mono text-xs px-2 py-0.5 rounded bg-red-500/15 text-red-300 border border-red-500/30">
                   {decisionId}
                 </span>
               </div>
@@ -131,7 +131,7 @@ export default function OutcomeEntryModal({
             </div>
             <div>
               <span className="text-slate-500 block text-[10px]">Predicted Delay:</span>
-              <span className="font-bold text-cyan-300">
+              <span className="font-bold text-red-300">
                 {predDelay != null ? `${Number(predDelay).toFixed(1)} days` : '—'}
               </span>
             </div>
@@ -153,7 +153,7 @@ export default function OutcomeEntryModal({
                   placeholder="e.g. 16200.00"
                   value={actualCost}
                   onChange={(e) => setActualCost(e.target.value)}
-                  className="w-full bg-slate-800 border border-white/[0.08] text-white rounded-lg pl-9 pr-3 py-2 text-xs font-mono focus:outline-none focus:border-cyan-500"
+                  className="w-full bg-slate-800 border border-white/[0.08] text-white rounded-lg pl-9 pr-3 py-2 text-xs font-mono focus:outline-none focus:border-red-500"
                 />
               </div>
             </div>
@@ -166,7 +166,7 @@ export default function OutcomeEntryModal({
               <select
                 value={currency}
                 onChange={(e) => setCurrency(e.target.value)}
-                className="w-full bg-slate-800 border border-white/[0.08] text-white rounded-lg px-3 py-2 text-xs font-mono focus:outline-none focus:border-cyan-500"
+                className="w-full bg-slate-800 border border-white/[0.08] text-white rounded-lg px-3 py-2 text-xs font-mono focus:outline-none focus:border-red-500"
               >
                 <option value="USD">USD (US Dollar)</option>
                 <option value="EUR">EUR (Euro)</option>
@@ -185,7 +185,7 @@ export default function OutcomeEntryModal({
                   type="date"
                   value={actualDeliveryDate}
                   onChange={(e) => setActualDeliveryDate(e.target.value)}
-                  className="w-full bg-slate-800 border border-white/[0.08] text-white rounded-lg px-3 py-2 text-xs font-mono focus:outline-none focus:border-cyan-500"
+                  className="w-full bg-slate-800 border border-white/[0.08] text-white rounded-lg px-3 py-2 text-xs font-mono focus:outline-none focus:border-red-500"
                 />
               </div>
               <span className="text-[10px] text-slate-500 mt-0.5 block">
@@ -205,7 +205,7 @@ export default function OutcomeEntryModal({
                 placeholder="Auto-calculated if blank"
                 value={actualDelay}
                 onChange={(e) => setActualDelay(e.target.value)}
-                className="w-full bg-slate-800 border border-white/[0.08] text-white rounded-lg px-3 py-2 text-xs font-mono focus:outline-none focus:border-cyan-500"
+                className="w-full bg-slate-800 border border-white/[0.08] text-white rounded-lg px-3 py-2 text-xs font-mono focus:outline-none focus:border-red-500"
               />
               <span className="text-[10px] text-slate-500 mt-0.5 block">
                 Auto-calculated from shipment baseline date
@@ -222,7 +222,7 @@ export default function OutcomeEntryModal({
                 placeholder="e.g. SUPPLIER_EXPEDITED"
                 value={actualSupplier}
                 onChange={(e) => setActualSupplier(e.target.value)}
-                className="w-full bg-slate-800 border border-white/[0.08] text-white rounded-lg px-3 py-2 text-xs font-mono focus:outline-none focus:border-cyan-500"
+                className="w-full bg-slate-800 border border-white/[0.08] text-white rounded-lg px-3 py-2 text-xs font-mono focus:outline-none focus:border-red-500"
               />
             </div>
 
@@ -238,7 +238,7 @@ export default function OutcomeEntryModal({
                 placeholder="e.g. 1000"
                 value={actualQuantity}
                 onChange={(e) => setActualQuantity(e.target.value)}
-                className="w-full bg-slate-800 border border-white/[0.08] text-white rounded-lg px-3 py-2 text-xs font-mono focus:outline-none focus:border-cyan-500"
+                className="w-full bg-slate-800 border border-white/[0.08] text-white rounded-lg px-3 py-2 text-xs font-mono focus:outline-none focus:border-red-500"
               />
             </div>
 
@@ -250,7 +250,7 @@ export default function OutcomeEntryModal({
               <select
                 value={outcomeStatus}
                 onChange={(e) => setOutcomeStatus(e.target.value)}
-                className="w-full bg-slate-800 border border-white/[0.08] text-white rounded-lg px-3 py-2 text-xs font-mono focus:outline-none focus:border-cyan-500"
+                className="w-full bg-slate-800 border border-white/[0.08] text-white rounded-lg px-3 py-2 text-xs font-mono focus:outline-none focus:border-red-500"
               >
                 <option value="DELIVERED">DELIVERED (Final delivery received)</option>
                 <option value="AWAITING_DELIVERY">AWAITING_DELIVERY (In transit)</option>
@@ -268,7 +268,7 @@ export default function OutcomeEntryModal({
               <select
                 value={source}
                 onChange={(e) => setSource(e.target.value)}
-                className="w-full bg-slate-800 border border-white/[0.08] text-white rounded-lg px-3 py-2 text-xs font-mono focus:outline-none focus:border-cyan-500"
+                className="w-full bg-slate-800 border border-white/[0.08] text-white rounded-lg px-3 py-2 text-xs font-mono focus:outline-none focus:border-red-500"
               >
                 <option value="manual_entry">Manual Operational Entry</option>
                 <option value="erp_invoice">ERP Vendor Invoice</option>
@@ -288,13 +288,13 @@ export default function OutcomeEntryModal({
               placeholder="e.g. Fuel surcharge of $1,200 applied due to emergency weekend customs clearance."
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              className="w-full bg-slate-800 border border-white/[0.08] text-white rounded-lg p-2.5 text-xs focus:outline-none focus:border-cyan-500"
+              className="w-full bg-slate-800 border border-white/[0.08] text-white rounded-lg p-2.5 text-xs focus:outline-none focus:border-red-500"
             />
           </div>
 
           {/* Governance Notice */}
           <div className="p-3 rounded-lg bg-slate-800/80 border border-slate-700/80 flex items-start space-x-2 text-xs text-slate-400">
-            <ShieldCheck className="h-4 w-4 text-cyan-400 flex-shrink-0 mt-0.5" />
+            <ShieldCheck className="h-4 w-4 text-red-400 flex-shrink-0 mt-0.5" />
             <p className="text-[11px] leading-normal">
               Submitting this form persists an immutable outcome in PostgreSQL and locks the decision to one final outcome.
               Original predictions recorded at decision execution time remain unmodified.

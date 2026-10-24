@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Sparkles,
   History,
@@ -69,9 +70,16 @@ export default function Predictions() {
         subtitle="Execute active dual XGBoost classification and regression inference using authoritative database features."
         actions={
           <div className="flex items-center space-x-2">
-            <span className="text-xs font-mono px-3 py-1.5 rounded-xl bg-cyan-500/10 border border-cyan-400/20 text-cyan-300">
+            <span className="text-xs font-mono px-3 py-1.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-300">
               Active Model: v1.0 XGBoost
             </span>
+            <Link
+              to="/feedback"
+              className="flex items-center space-x-1.5 text-xs font-mono px-3 py-1.5 rounded-xl bg-violet-500/15 border border-violet-400/30 text-violet-300 hover:bg-violet-500/25 transition-colors"
+            >
+              <RefreshCw className="h-3.5 w-3.5" />
+              <span>Feedback Pipeline</span>
+            </Link>
             <GlassButton
               variant="secondary"
               size="md"
@@ -106,7 +114,7 @@ export default function Predictions() {
       <div className="glass-card rounded-2xl border border-white/[0.08] overflow-hidden">
         <div className="p-5 border-b border-white/[0.08] flex items-center justify-between">
           <div className="flex items-center space-x-2.5">
-            <div className="p-2 rounded-xl bg-cyan-500/15 border border-cyan-400/30 text-cyan-300">
+            <div className="p-2 rounded-xl bg-red-500/15 border border-red-500/30 text-red-300">
               <History className="h-4 w-4" />
             </div>
             <div>
@@ -161,7 +169,7 @@ export default function Predictions() {
                       key={pred.id || pred.prediction_id}
                       className="hover:bg-white/[0.03] transition-colors"
                     >
-                      <td className="py-3 px-4 font-mono font-bold text-cyan-300">
+                      <td className="py-3 px-4 font-mono font-bold text-red-300">
                         {pred.prediction_id}
                       </td>
                       <td className="py-3 px-4 font-mono text-white">

@@ -73,7 +73,7 @@ export default function ShipmentRiskTable({
               placeholder="Search shipment, supplier..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="bg-white/[0.04] border border-white/[0.08] focus:border-cyan-400/40 rounded-xl pl-9 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none w-48 sm:w-56"
+              className="bg-white/[0.04] border border-white/[0.08] focus:border-red-500/40 rounded-xl pl-9 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none w-48 sm:w-56"
             />
           </div>
 
@@ -85,7 +85,7 @@ export default function ShipmentRiskTable({
                 onClick={() => setFilterRisk(risk)}
                 className={`px-2.5 py-1 text-[11px] font-semibold rounded-lg transition-all ${
                   filterRisk === risk
-                    ? 'bg-cyan-500/20 text-cyan-300 shadow-sm'
+                    ? 'bg-red-500/20 text-red-300 shadow-sm'
                     : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
@@ -130,7 +130,7 @@ export default function ShipmentRiskTable({
                     key={s.shipment_id}
                     className={`transition-colors ${
                       isSelected
-                        ? 'bg-cyan-500/10 border-l-2 border-l-cyan-400'
+                        ? 'bg-red-500/15 border-l-2 border-l-red-500'
                         : 'hover:bg-white/[0.02]'
                     }`}
                   >
@@ -138,7 +138,7 @@ export default function ShipmentRiskTable({
                       <div className="flex items-center space-x-1.5">
                         <span>{s.shipment_id}</span>
                         {isSelected && (
-                          <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 animate-ping" />
+                          <span className="h-1.5 w-1.5 rounded-full bg-red-400 animate-ping" />
                         )}
                       </div>
                     </td>
@@ -181,8 +181,8 @@ export default function ShipmentRiskTable({
                         onClick={() => onSelectShipment?.(s)}
                         className={`inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs font-semibold transition-all ${
                           isSelected
-                            ? 'bg-cyan-500 text-white shadow-md shadow-cyan-500/30'
-                            : 'bg-white/[0.04] hover:bg-cyan-500/20 text-cyan-300 border border-white/[0.08] hover:border-cyan-400/30'
+                            ? 'bg-red-500 text-white shadow-md shadow-red-500/30'
+                            : 'bg-white/[0.04] hover:bg-red-500/20 text-red-300 border border-white/[0.08] hover:border-red-500/30'
                         }`}
                       >
                         <Sparkles className="h-3 w-3" />

@@ -118,10 +118,10 @@ export default function ShipmentsPage() {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        <GlassCard interactive glow="cyan" className="rounded-2xl">
+        <GlassCard interactive glow="red" className="rounded-2xl">
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-xs font-medium uppercase tracking-wider">Total Recorded</span>
-            <Truck className="h-4 w-4 text-cyan-400" />
+            <Truck className="h-4 w-4 text-red-400" />
           </div>
           <div className="text-3xl font-extrabold text-white">{totalCount || 1240}</div>
           <p className="text-xs text-slate-400 mt-2">Historical &amp; live orders</p>
@@ -145,10 +145,10 @@ export default function ShipmentsPage() {
           <p className="text-xs text-slate-400 mt-2">Exceeding estimated delivery date</p>
         </GlassCard>
 
-        <GlassCard interactive glow="blue" className="rounded-2xl">
+        <GlassCard interactive glow="rose" className="rounded-2xl">
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-xs font-medium uppercase tracking-wider">Average Transit Lead</span>
-            <Clock className="h-4 w-4 text-blue-400" />
+            <Clock className="h-4 w-4 text-rose-400" />
           </div>
           <div className="text-3xl font-extrabold text-white">4.6 Days</div>
           <p className="text-xs text-slate-400 mt-2">Mean door-to-door transit time</p>
@@ -214,13 +214,13 @@ export default function ShipmentsPage() {
           <div className="flex flex-wrap items-center justify-between pt-2 border-t border-white/[0.06] gap-3">
             <div className="flex items-center space-x-3 text-xs">
               <span className="text-slate-400 flex items-center space-x-1">
-                <ArrowUpDown className="h-3.5 w-3.5 text-cyan-400" />
+                <ArrowUpDown className="h-3.5 w-3.5 text-red-400" />
                 <span>Sort by:</span>
               </span>
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="bg-[#0B1426] border border-white/10 rounded-lg px-2.5 py-1 text-xs text-white"
+                className="bg-[#16070B] border border-white/10 rounded-lg px-2.5 py-1 text-xs text-white"
               >
                 <option value="order_date">Order Date</option>
                 <option value="shipping_cost">Freight Cost</option>
@@ -231,7 +231,7 @@ export default function ShipmentsPage() {
               <select
                 value={sortOrder}
                 onChange={(e) => setSortOrder(e.target.value)}
-                className="bg-[#0B1426] border border-white/10 rounded-lg px-2.5 py-1 text-xs text-white"
+                className="bg-[#16070B] border border-white/10 rounded-lg px-2.5 py-1 text-xs text-white"
               >
                 <option value="desc">Descending</option>
                 <option value="asc">Ascending</option>
@@ -295,7 +295,7 @@ export default function ShipmentsPage() {
                     <td className="py-3.5 pl-2 text-slate-400 font-mono">
                       {shp.order_date || '2026-10-09'}
                     </td>
-                    <td className="py-3.5 font-mono text-cyan-300 font-bold">
+                    <td className="py-3.5 font-mono text-red-300 font-bold">
                       {shp.shipment_id || `SHP-00${shp.id}`}
                     </td>
                     <td className="py-3.5 text-slate-300">{shp.supplier_id}</td>

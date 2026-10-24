@@ -15,7 +15,7 @@ export default function GlassPanel({
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between pb-5 mb-5 border-b border-white/[0.08] gap-3">
           <div className="flex items-center space-x-3">
             {Icon && (
-              <div className="p-2.5 rounded-xl bg-cyan-500/10 border border-cyan-400/20 text-cyan-400 shrink-0">
+              <div className="p-2.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 shrink-0">
                 <Icon className="h-5 w-5" />
               </div>
             )}

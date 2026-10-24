@@ -27,7 +27,7 @@ export default function StatusBadge({
     success: 'bg-emerald-500/10 border-emerald-400/25 text-emerald-300 shadow-[inset_0_1px_1px_rgba(52,211,153,0.15)]',
     warning: 'bg-amber-500/10 border-amber-400/25 text-amber-300 shadow-[inset_0_1px_1px_rgba(251,191,36,0.15)]',
     error: 'bg-rose-500/10 border-rose-400/25 text-rose-300 shadow-[inset_0_1px_1px_rgba(251,113,133,0.15)]',
-    info: 'bg-cyan-500/10 border-cyan-400/25 text-cyan-300 shadow-[inset_0_1px_1px_rgba(34,211,238,0.15)]',
+    info: 'bg-red-500/10 border-red-500/25 text-red-300 shadow-[inset_0_1px_1px_rgba(239,68,68,0.15)]',
     neutral: 'bg-slate-700/20 border-slate-600/30 text-slate-300 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]',
   };
 
@@ -35,7 +35,7 @@ export default function StatusBadge({
     success: 'bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]',
     warning: 'bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.8)]',
     error: 'bg-rose-400 shadow-[0_0_8px_rgba(251,113,133,0.8)]',
-    info: 'bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.8)]',
+    info: 'bg-red-400 shadow-[0_0_8px_rgba(239,68,68,0.8)]',
     neutral: 'bg-slate-400',
   };
 

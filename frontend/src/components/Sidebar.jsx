@@ -14,13 +14,16 @@ import {
   Radio,
   Layers,
   ExternalLink,
+  RefreshCw,
 } from 'lucide-react';
 import { getBackendHealth } from '../services/api';
 
 const navItems = [
   { path: '/', label: 'Dashboard', icon: LayoutDashboard },
   { path: '/command-center', label: 'Command Center', icon: Layers, badge: 'Opt' },
+  { path: '/decision-roi', label: 'Decision ROI', icon: TrendingUp, badge: 'ROI' },
   { path: '/predictions', label: 'Predictions', icon: Sparkles, badge: 'ML' },
+  { path: '/feedback', label: 'Model Feedback', icon: RefreshCw, badge: 'ML' },
   { path: '/shipments', label: 'Shipments', icon: Truck },
   { path: '/suppliers', label: 'Suppliers', icon: Building2 },
   { path: '/inventory', label: 'Inventory', icon: Package },
@@ -69,15 +72,15 @@ export default function Sidebar({ isOpen, setIsOpen, isMobile, closeMobile }) {
           onClick={isMobile ? closeMobile : undefined}
           className="flex items-center space-x-3 group overflow-hidden"
         >
-          <div className="h-10 w-10 rounded-2xl bg-gradient-to-tr from-cyan-500 via-sky-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/25 border border-white/20 shrink-0 group-hover:scale-105 transition-transform">
-            <Layers className="h-5 w-5 text-white" />
+          <div className="h-10 w-10 rounded-[14px] bg-gradient-to-tr from-red-600 via-rose-600 to-red-500 flex items-center justify-center shadow-lg shadow-red-500/35 border border-white/25 shrink-0 group-hover:scale-105 transition-transform">
+            <Layers className="h-5 w-5 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]" />
           </div>
           {(!collapsed || isMobile) && (
             <div className="leading-none transition-opacity duration-200">
               <span className="text-base font-bold text-white tracking-tight">
-                Supply<span className="text-cyan-400">Prescript</span>
+                Supply<span className="text-red-500">Prescript</span>
               </span>
-              <span className="block text-[10px] text-cyan-300/80 font-mono tracking-wider mt-1 uppercase">
+              <span className="block text-[10px] text-red-400/80 font-mono tracking-wider mt-1 uppercase">
                 Enterprise AI
               </span>
             </div>
@@ -111,33 +114,33 @@ export default function Sidebar({ isOpen, setIsOpen, isMobile, closeMobile }) {
               key={item.path}
               to={item.path}
               onClick={isMobile ? closeMobile : undefined}
-              className={`flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group relative ${
+              className={`flex items-center space-x-3 px-3 py-2.5 rounded-[14px] text-sm font-medium transition-all duration-200 group relative ${
                 isActive
-                  ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-400/30 shadow-[inset_0_1px_1px_rgba(34,211,238,0.25)]'
-                  : 'text-slate-400 hover:text-white hover:bg-white/[0.05] border border-transparent'
+                  ? 'bg-gradient-to-r from-red-500/22 via-rose-500/15 to-transparent text-white border border-white/20 shadow-[inset_0_1px_1px_rgba(255,255,255,0.30),0_2px_12px_rgba(239,68,68,0.25)] backdrop-blur-md'
+                  : 'text-slate-300 hover:text-white hover:bg-white/[0.06] border border-transparent hover:border-white/10'
               }`}
               title={collapsed && !isMobile ? item.label : undefined}
             >
               <Icon
                 className={`h-5 w-5 shrink-0 transition-transform duration-200 ${
                   isActive
-                    ? 'text-cyan-400'
+                    ? 'text-red-400 drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]'
                     : 'text-slate-400 group-hover:text-slate-200 group-hover:scale-105'
                 }`}
               />
               {(!collapsed || isMobile) && (
-                <span className="truncate flex-1">{item.label}</span>
+                <span className="truncate flex-1 tracking-tight">{item.label}</span>
               )}
 
               {(!collapsed || isMobile) && item.badge && (
-                <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-md bg-cyan-500/20 text-cyan-300 border border-cyan-400/30 shrink-0 font-bold">
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-red-500/25 text-red-200 border border-white/20 shrink-0 font-bold shadow-[inset_0_1px_0.5px_rgba(255,255,255,0.35)]">
                   {item.badge}
                 </span>
               )}
 
               {/* Collapsed Tooltip on Hover */}
               {collapsed && !isMobile && (
-                <div className="absolute left-full ml-3 px-2.5 py-1 rounded-lg glass-card text-xs text-white opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 border border-white/20">
+                <div className="absolute left-full ml-3 px-2.5 py-1 rounded-xl glass-card text-xs text-white opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 border border-white/20 shadow-xl">
                   {item.label}
                 </div>
               )}
@@ -151,27 +154,27 @@ export default function Sidebar({ isOpen, setIsOpen, isMobile, closeMobile }) {
         <NavLink
           to="/health"
           onClick={isMobile ? closeMobile : undefined}
-          className="flex items-center space-x-2.5 p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06] hover:border-cyan-400/30 transition-all group"
+          className="flex items-center space-x-2.5 p-2.5 rounded-[16px] bg-white/[0.03] backdrop-blur-md border border-white/[0.08] hover:border-red-400/40 shadow-[inset_0_1px_1px_rgba(255,255,255,0.12)] transition-all group"
         >
           <div
             className={`w-2.5 h-2.5 rounded-full shrink-0 ${
               isBackendHealthy === true
-                ? 'bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]'
+                ? 'bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.9)]'
                 : isBackendHealthy === false
-                ? 'bg-rose-400 shadow-[0_0_8px_rgba(251,113,133,0.8)]'
+                ? 'bg-rose-400 shadow-[0_0_10px_rgba(251,113,133,0.9)]'
                 : 'bg-amber-400 animate-pulse'
             }`}
           />
           {(!collapsed || isMobile) && (
             <div className="truncate flex-1 text-left">
-              <div className="text-xs font-semibold text-slate-200 group-hover:text-cyan-300">
+              <div className="text-xs font-semibold text-slate-200 group-hover:text-red-300">
                 {isBackendHealthy === true
                   ? 'Core Online'
                   : isBackendHealthy === false
                   ? 'Core Offline'
                   : 'Probing Core...'}
               </div>
-              <div className="text-[10px] text-slate-500 font-mono">
+              <div className="text-[10px] text-slate-400 font-mono">
                 FastAPI Port 8000
               </div>
             </div>

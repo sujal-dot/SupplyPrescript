@@ -76,7 +76,7 @@ export default function ForecastingPage() {
 
       {/* Model Performance Telemetry Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        <GlassCard interactive glow="cyan" className="rounded-2xl">
+        <GlassCard interactive glow="red" className="rounded-2xl">
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-xs font-medium uppercase tracking-wider">Model MAPE</span>
             <StatusBadge status="Optimal" variant="success" dot={false} />
@@ -143,14 +143,14 @@ export default function ForecastingPage() {
             <label className="block text-xs font-medium text-slate-300 mb-1.5">
               Forecast Horizon
             </label>
-            <div className="flex items-center space-x-1.5 bg-[#0B1426] p-1 rounded-xl border border-white/10">
+            <div className="flex items-center space-x-1.5 bg-[#16070B] p-1 rounded-xl border border-white/10">
               {['7d', '14d', '30d', '90d'].map((h) => (
                 <button
                   key={h}
                   onClick={() => setHorizon(h)}
                   className={`flex-1 py-1.5 text-xs font-medium rounded-lg transition-all ${
                     horizon === h
-                      ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 shadow-sm'
+                      ? 'bg-red-500/20 text-red-300 border border-red-500/40 shadow-sm'
                       : 'text-slate-400 hover:text-white'
                   }`}
                 >
@@ -177,7 +177,7 @@ export default function ForecastingPage() {
         <DataChart
           data={currentChartData}
           series={[
-            { key: 'value1', label: 'Historical Actual Demand', color: '#22D3EE' },
+            { key: 'value1', label: 'Historical Actual Demand', color: '#EF4444' },
             { key: 'value2', label: 'ML Projected Demand', color: '#3B82F6', dashed: true },
           ]}
           height={320}
@@ -212,7 +212,7 @@ export default function ForecastingPage() {
                 { sku: 'PROD-004', cat: 'Modules', curr: 310, proj: 380, diff: '+22.5%', buffer: '+80 units', conf: '91.4%' },
               ].map((row, i) => (
                 <tr key={i} className="hover:bg-white/[0.02] transition-colors">
-                  <td className="py-3 pl-2 font-mono text-cyan-300 font-semibold">
+                  <td className="py-3 pl-2 font-mono text-red-300 font-semibold">
                     {row.sku}
                   </td>
                   <td className="py-3 text-slate-300">{row.cat}</td>

@@ -9,6 +9,9 @@ from app.models.prediction import Prediction
 from app.models.recommendation import Recommendation
 from app.models.decision import Decision
 from app.models.outcome import Outcome
+from app.models.feedback import Feedback
+from app.models.retraining_job import RetrainingJob
+from app.models.user import User
 
 __all__ = [
     "Supplier",
@@ -20,4 +23,7 @@ __all__ = [
     "Recommendation",
     "Decision",
     "Outcome",
+    "Feedback",
+    "RetrainingJob",
+    "User",
 ]

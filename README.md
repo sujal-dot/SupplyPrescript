@@ -1,303 +1,162 @@
-# SupplyPrescript
+# SupplyPrescript — AI-Powered Supply Chain Decision Intelligence Platform
 
-SupplyPrescript is an enterprise-grade prescriptive supply chain intelligence and analytics platform designed to model demand dynamics, optimize multi-echelon inventory, and provide actionable operational recommendations.
+[![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen.svg)]()
+[![Backend Tests](https://img.shields.io/badge/Backend%20Tests-303%2F303%20Passing%20(100%25)-brightgreen.svg)]()
+[![Frontend Tests](https://img.shields.io/badge/Frontend%20Tests-64%2F64%20Passing%20(100%25)-brightgreen.svg)]()
+[![Python](https://img.shields.io/badge/Python-3.10%20%7C%203.11-blue.svg)]()
+[![Node.js](https://img.shields.io/badge/Node.js-18.x%20%7C%2020.x-green.svg)]()
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-teal.svg)]()
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15+-blue.svg)]()
+[![License](https://img.shields.io/badge/License-Proprietary%20%2F%20Portfolio-lightgrey.svg)]()
 
----
+SupplyPrescript is an enterprise-grade prescriptive supply chain intelligence platform. It bridges predictive machine learning, mathematical prescriptive optimization, operational write-back, closed-loop financial verification, and continuous model learning:
 
-## Technology Stack
-
-### Frontend
-- **React** (v18)
-- **Vite**
-- **Tailwind CSS**
-- **React Router** (v6)
-- **Axios**
-
-### Backend
-- **FastAPI**
-- **SQLAlchemy** (v2)
-- **Pydantic** (v2)
-- **PostgreSQL** (v16)
-- **psycopg2-binary**
-- **python-dotenv**
-
-### Machine Learning
-- **Pandas**
-- **NumPy**
-- **Scikit-learn**
-- **XGBoost**
-- **Joblib**
-
-### Optimization
-- **SciPy**
-- **PuLP**
+$$\text{Shipment} \longrightarrow \text{ML Delay Prediction} \longrightarrow \text{Optimization} \longrightarrow \text{Safety Gate} \longrightarrow \text{Decision Write-Back} \longrightarrow \text{Actual Outcome} \longrightarrow \text{ROI Engine} \longrightarrow \text{Feedback Loop} \longrightarrow \text{Retraining \& Safe Rollback}$$
 
 ---
 
-## Project Structure
+## 🚀 1-Click Automated Demonstration
 
-```text
-SupplyPrescript/
-├── frontend/             # React + Vite frontend application
-│   ├── src/
-│   │   ├── components/   # Reusable UI components (Navbar, StatusCard)
-│   │   ├── pages/        # Route pages (LandingPage, HealthPage)
-│   │   ├── services/     # API service layer using Axios
-│   │   ├── App.jsx       # Routing layout
-│   │   └── main.jsx      # React entry point
-│   ├── package.json
-│   ├── vite.config.js
-│   └── tailwind.config.js
-├── backend/              # FastAPI application
-│   ├── app/
-│   │   ├── api/routes/   # API endpoints (/health, /health/db)
-│   │   ├── core/         # Settings and environment configuration
-│   │   ├── database/     # SQLAlchemy connection and engine setup
-│   │   └── main.py       # FastAPI application and CORS setup
-│   ├── requirements.txt  # Backend Python dependencies
-│   └── .venv/            # Local virtual environment
-├── ml/                   # Machine learning pipelines and environments
-│   ├── models/           # Trained models storage
-│   ├── notebooks/        # Jupyter exploration notebooks
-│   ├── scripts/          # ML preprocessing and training routines
-│   └── requirements.txt  # ML package dependencies
-├── optimization/         # Prescriptive optimization modeling
-│   ├── models/           # Linear & integer programming models
-│   ├── scripts/          # Optimization solving scripts
-│   └── requirements.txt  # Optimization package dependencies
-├── data/                 # Data storage tiers
-│   ├── raw/              # Untransformed source inputs
-│   ├── processed/        # Normalized & cleansed data
-│   └── synthetic/        # Synthesized scenario datasets
-├── database/             # Relational database setup
-│   ├── migrations/       # Schema migration scripts
-│   └── seeds/            # Initial database seed fixtures
-├── tests/                # Automated tests
-│   ├── backend/          # Backend API & DB integration tests
-│   └── frontend/         # Frontend component tests
-├── docs/                 # System architecture and API documentation
-├── docker/               # Container support configurations
-├── .env                  # Local environment variables
-├── .env.example          # Environment variable template
-├── .gitignore            # Git exclusions
-├── docker-compose.yml    # PostgreSQL container definition
-└── README.md             # Project documentation
+Run the automated 12-stage closed-loop demonstration runner directly from your terminal:
+
+```bash
+# Standalone in-process execution (FastAPI + PostgreSQL Local)
+PYTHONPATH=backend:optimization python3 scripts/demo_lifecycle.py
+```
+
+Or run against a live running backend server:
+```bash
+PYTHONPATH=backend:optimization python3 scripts/demo_lifecycle.py --api-url http://localhost:8000
 ```
 
 ---
 
-## Local Setup
+## 🏛 System Architecture
+
+```mermaid
+flowchart TD
+    subgraph UI ["Frontend (React + Vite + Tailwind)"]
+        CC["Command Center (Predictions & Alternatives)"]
+        DH["Decision History & Audit Trail"]
+        OT["Outcome Tracking & Variance"]
+        ROI["Decision ROI Dashboard"]
+        MLD["Continuous Retraining Hub"]
+    end
+
+    subgraph API ["FastAPI Application Gateway"]
+        Auth["JWT / RBAC Middleware"]
+        ReqID["Correlation ID (X-Request-ID)"]
+        Routes["RESTful Routers"]
+    end
+
+    subgraph Core ["Platform Engines"]
+        MLPred["Dual XGBoost Inference (Classifier + Regressor)"]
+        OptSolver["Prescriptive Optimizer (PuLP MILP)"]
+        SafetyGate["Day 15 Safety Gate (Hard Constraints)"]
+        ROIEngine["Decision ROI & Variance Engine"]
+        RetrainService["Continuous Retraining & Validation"]
+    end
+
+    subgraph Storage ["PostgreSQL Relational Store"]
+        DB_Shipments[(Shipments - 15,000 Records)]
+        DB_Decisions[(Decisions & Idempotency)]
+        DB_Outcomes[(Actual Operational Outcomes)]
+        DB_Feedback[(Model Feedbacks)]
+        DB_Users[(Users & RBAC)]
+    end
+
+    UI -->|Bearer JWT + Request ID| API
+    API --> Core
+    Core <--> Storage
+```
+
+---
+
+## 📚 Portfolio Documentation
+
+Comprehensive architectural, operational, and engineering reports are available in [`docs/`](docs/):
+
+| Document | Description |
+| :--- | :--- |
+| **[Final Integration Report](docs/final_integration_report.md)** | Complete 16-point Day 25 integration audit, lifecycle trace, test summaries, and release assessment. |
+| **[System Architecture](docs/architecture.md)** | Component architecture, data flow diagrams, ER schemas, and technology stack. |
+| **[Demonstration Runbook](docs/demo_runbook.md)** | Step-by-step setup, database migrations, CLI demo runner, UI walkthrough, and test verification. |
+| **[API Specification Overview](docs/api_overview.md)** | Comprehensive REST API contract reference, schemas, error envelopes, and RBAC matrix. |
+| **[Known Limitations](docs/known_limitations.md)** | Documented architectural boundaries, model assumptions, and enterprise scaling prerequisites. |
+| **[Security Review](docs/security_review.md)** | Threat model, authentication hardening, RBAC matrix, and mitigation evidence. |
+| **[Production Readiness Audit](docs/production_readiness_audit.md)** | Day 24 hardening audit, anti-spoofing guarantees, and failure mode analysis. |
+| **[Decision ROI Engine](docs/decision_roi_engine.md)** | Mathematical formulation of financial variance, money saved, and decision success scoring. |
+| **[Automatic Retraining](docs/automatic_retraining.md)** | Drift monitoring, candidate validation rules, and emergency rollback mechanics. |
+
+---
+
+## 🛠 Technology Stack
+
+- **Frontend:** React 18, Vite 5, Tailwind CSS 3, Recharts, Lucide React, Vitest.
+- **Backend:** FastAPI, Python 3.10+, Pydantic v2, SQLAlchemy 2, Alembic, PyJWT, Passlib, Pytest.
+- **Data & ML:** PostgreSQL 15, XGBoost 2.0, Scikit-learn, Pandas, NumPy.
+- **Prescriptive Optimization:** PuLP MILP Solver (COIN-OR CBC).
+
+---
+
+## ⚡ Quickstart
 
 ### 1. Database Setup
-
-Start PostgreSQL in Docker with healthcheck and persistent volume:
-
 ```bash
+# Start local PostgreSQL instance via Docker Compose
 docker compose up -d postgres
+
+# Apply database migrations to head
+alembic upgrade head
 ```
 
-Verify the container is healthy:
-
+### 2. Start Backend API
 ```bash
-docker compose ps
+# Install Python dependencies and run Uvicorn
+pip install -r backend/requirements.txt
+PYTHONPATH=backend:optimization uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
+- Interactive API Documentation: [http://localhost:8000/docs](http://localhost:8000/docs)
+- Health Check: [http://localhost:8000/api/health](http://localhost:8000/api/health)
 
-### 2. Backend Setup
-
-Create virtual environment, install dependencies, and start the FastAPI server:
-
-```bash
-cd backend
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-uvicorn app.main:app --reload --port 8000
-```
-
-### 3. Frontend Setup
-
-Install dependencies and start the Vite development server:
-
+### 3. Start Frontend UI
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
+- Web Application: [http://localhost:5173](http://localhost:5173)
 
 ---
 
-## Service URLs
+## 🧪 Automated Testing
 
-| Service | URL |
-| :--- | :--- |
-| **Frontend** | [http://localhost:5173](http://localhost:5173) |
-| **Backend** | [http://localhost:8000](http://localhost:8000) |
-| **Swagger UI** | [http://localhost:8000/docs](http://localhost:8000/docs) |
-| **ReDoc** | [http://localhost:8000/redoc](http://localhost:8000/redoc) |
-| **PostgreSQL** | `localhost:5432` |
+### Backend Test Suite (303 Tests)
+```bash
+PYTHONPATH=backend:optimization pytest tests/ -v
+```
+All 303 tests pass across 24 test suites covering authentication, shipments, predictions, decisions, outcomes, ROI calculations, model retraining, and end-to-end regression.
+
+### Frontend Test Suite (64 Tests)
+```bash
+cd frontend
+npm test -- --run
+```
+All 64 unit and integration tests pass across 17 component test suites.
+
+### Production Build
+```bash
+cd frontend
+npm run build
+```
+Production build bundles cleanly in ~1.5 seconds.
 
 ---
 
-## API Documentation
+## 👥 Demo User Credentials
 
-Swagger Interactive UI:
-[http://localhost:8000/docs](http://localhost:8000/docs)
-
-OpenAPI Specification JSON:
-[http://localhost:8000/openapi.json](http://localhost:8000/openapi.json)
-
-### Available Endpoints
-
-#### 1. Suppliers
-- `GET /api/suppliers`
-- **Pagination**: `page` (default 1, minimum 1), `page_size` (default 20, 1-100).
-- **Filtering**:
-  - `origin`: Filter by origin city (e.g. `?origin=Mumbai`)
-  - `min_reliability`: Filter by minimum reliability (e.g. `?min_reliability=0.90`)
-- **Example**:
-  ```bash
-  curl "http://localhost:8000/api/suppliers?page=1&page_size=20&origin=Mumbai&min_reliability=0.90"
-  ```
-
-#### 2. Shipments
-- `GET /api/shipments`
-- **Pagination**: `page` (default 1, minimum 1), `page_size` (default 50, 1-100).
-- **Filtering**:
-  - `supplier_id`: Filter by supplier ID (e.g. `?supplier_id=SUP001`)
-  - `product_id`: Filter by product ID (e.g. `?product_id=PROD001`)
-  - `priority`: Filter by priority (`Low`, `Medium`, `High`, `Critical`)
-  - `transport_mode`: Filter by transport mode (`Road`, `Rail`, `Air`, `Sea`)
-  - `is_delayed`: Filter by delay status (`true` or `false`)
-  - `start_date` / `end_date`: Filter by `order_date` range (YYYY-MM-DD, e.g. `?start_date=2024-01-01&end_date=2024-03-31`)
-- **Sorting**:
-  - `sort_by`: Field allowlist (`order_date`, `quantity`, `shipping_cost`, `lead_time`, `delay_days`)
-  - `sort_order`: Direction (`asc` or `desc`)
-- **Example**:
-  ```bash
-  curl "http://localhost:8000/api/shipments?page=1&page_size=50&is_delayed=true&transport_mode=Road&sort_by=delay_days&sort_order=desc"
-  ```
-
-#### 3. Inventory
-- `GET /api/inventory`
-- **Pagination**: `page` (default 1, minimum 1), `page_size` (default 20, 1-100).
-- **Filtering**:
-  - `product_id`: Filter by product ID (e.g. `?product_id=PROD001`)
-  - `inventory_status`: Filter by status (`Healthy`, `Low`, `Critical`, `Out of Stock`)
-- **Example**:
-  ```bash
-  curl "http://localhost:8000/api/inventory?page=1&page_size=20&inventory_status=Critical"
-  ```
-
-#### 4. Dashboard
-- `GET /api/dashboard`
-- **Description**: Returns database-aggregated supply-chain KPIs, status breakdowns, and top delayed suppliers computed directly inside PostgreSQL.
-- **Example**:
-  ```bash
-  curl "http://localhost:8000/api/dashboard"
-  ```
-
-#### 5. ML Shipment Delay Prediction
-- `POST /api/predictions/shipment-delay`
-- **Description**: Real-time dual XGBoost model inference returning delay risk probability, classification alert (with tuned threshold `0.150`), and expected delay duration in days (clipped $\ge 0$).
-- **Request Body**:
-  ```json
-  {
-    "supplier_reliability": 0.85,
-    "historical_avg_delay": 1.2,
-    "lead_time": 7,
-    "inventory_level": 350,
-    "demand": 400,
-    "quantity": 150,
-    "shipping_cost": 120.0,
-    "distance": 450.0,
-    "transport_mode": "Road",
-    "season": "Monsoon",
-    "priority": "High"
-  }
-  ```
-- **Response**:
-  ```json
-  {
-    "task": "dual",
-    "model_version": "1.0.0",
-    "delay_probability": 0.2854,
-    "predicted_delayed": 1,
-    "classification_threshold": 0.150,
-    "predicted_delay_days": 1.62,
-    "disagreement_warning": null
-  }
-  ```
-
----
-
-## Machine Learning Engine
-
-SupplyPrescript features a leak-free predictive ML engine for shipment delay intelligence:
-
-1. **Classification Model (`XGBClassifier`):** Predicts binary delay event risk `delayed` $\in \{0, 1\}$.
-   - Evaluated on test split: ROC-AUC: `0.6197`, PR-AUC: `0.3291`, Recall: `0.7725`, F1: `0.4073` (at optimal threshold `0.150`).
-2. **Regression Model (`XGBRegressor`):** Predicts expected delay magnitude in days `delay_days` $\ge 0$.
-   - Evaluated on test split: MAE: `1.5961` days, Median AE: `0.9840` days, RMSE: `2.7642` days.
-3. **Leakage Protection:** Strictly order-creation features (`lead_time` is planned lead time `(expected - order).days`, never realized transit duration).
-
-### Train Models via CLI
-
-```bash
-# Train both classification and regression models
-python -m ml.train --model all
-
-# Train individual models
-python -m ml.train --model classification
-python -m ml.train --model regression
-```
-
-### Evaluate Models & Manage Model Versioning (Day 8)
-
-```bash
-# Evaluate models on the untouched chronological test set
-python -m ml.evaluate
-
-# Evaluate and register a release version (e.g. v1.0)
-python -m ml.evaluate --register-version v1.0
-
-# Manage model versions via the registry CLI
-python -m ml.model_registry --list
-python -m ml.model_registry --active
-python -m ml.model_registry --verify v1.0
-python -m ml.model_registry --promote v1.0
-```
-
-### Artifacts and Versioning Layout
-
-Model artifacts and evaluation diagnostics are saved automatically:
-- Primary Compatibility Artifact: `models/xgboost_delay_model.pkl` (production `XGBClassifier`)
-- Release Versions: `models/versions/v1.0/` (`classifier.pkl`, `regressor.pkl`, `preprocessor.pkl`, `metadata.json`, `metrics.json`)
-- Active Pointer: `models/versions/active.json`
-- Legacy Single-Task Artifacts: `ml/artifacts/classification/`, `ml/artifacts/regression/`
-- Visual Diagnostic Reports:
-  - `ml/reports/classification/` (`confusion_matrix.png`, `roc_curve.png`, `precision_recall_curve.png`, `classification_report.json`)
-  - `ml/reports/regression/` (`actual_vs_predicted.png`, `residuals.png`, `metrics.json`)
-- Detailed Documentation: [`docs/ml_evaluation.md`](docs/ml_evaluation.md)
-
----
-
-## Running Tests
-
-Run the full automated test suite:
-
-```bash
-pytest -v
-```
-
-Target specific test modules:
-
-```bash
-pytest tests/ml -v          # Day 7 ML pipeline, training, inference, persistence, and leakage
-pytest ml/tests -v          # Day 6 Feature engineering, validation, and leakage tests
-pytest tests/api -v         # Day 5 API endpoints test suite
-pytest tests/backend -v     # Health and DB connectivity
-pytest tests/database -v    # Day 4 Database schema & relationships
-pytest tests/data -v        # Day 3 Data cleaning pipeline
-pytest tests/test_dataset.py -v # Day 2 Synthetic dataset integrity
-```
-
+| Role | Username | Password | Operational Scope |
+| :--- | :--- | :--- | :--- |
+| **Operator** | `operator` | `Operator123!` | Ingestion, predictions, decision execution, outcome recording. |
+| **Analyst** | `analyst` | `Analyst123!` | Read analytics, ROI dashboard, generate feedback snapshots. |
+| **Admin** | `admin` | `Admin123!` | Retraining execution, candidate model promotion, emergency rollback. |

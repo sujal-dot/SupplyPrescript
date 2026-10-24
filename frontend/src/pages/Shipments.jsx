@@ -159,7 +159,7 @@ export default function Shipments() {
           </div>
           <button
             onClick={fetchShipments}
-            className="font-semibold text-cyan-300 hover:underline shrink-0"
+            className="font-semibold text-red-300 hover:underline shrink-0"
           >
             Retry
           </button>
@@ -198,7 +198,7 @@ export default function Shipments() {
 
             {/* Header */}
             <div className="flex items-center space-x-3 mb-6">
-              <div className="p-2.5 rounded-xl bg-cyan-500/20 border border-cyan-400/30 text-cyan-300">
+              <div className="p-2.5 rounded-xl bg-red-500/20 border border-red-500/30 text-red-300">
                 <Truck className="h-5 w-5" />
               </div>
               <div>
@@ -257,7 +257,7 @@ export default function Shipments() {
             <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.08] mb-6">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center space-x-2">
-                  <Sparkles className="h-4 w-4 text-cyan-400" />
+                  <Sparkles className="h-4 w-4 text-red-400" />
                   <span className="text-xs font-mono font-bold text-white uppercase tracking-wider">
                     XGBoost ML Risk Evaluation
                   </span>
@@ -298,7 +298,7 @@ export default function Shipments() {
                   <div className="grid grid-cols-2 gap-3 text-xs font-mono pt-1">
                     <div>
                       <span className="text-slate-400 block text-[10px]">Delay Probability</span>
-                      <span className="text-xl font-extrabold text-cyan-300">
+                      <span className="text-xl font-extrabold text-red-300">
                         {Math.round(shipmentPrediction.delay_probability * 100)}%
                       </span>
                     </div>

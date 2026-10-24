@@ -134,7 +134,7 @@ export default function HealthPage() {
 
           <div className="flex items-center space-x-3 text-xs font-mono">
             <span className="text-slate-400">Probe Latency:</span>
-            <span className="text-cyan-300 font-bold bg-white/[0.04] px-2.5 py-1 rounded-lg border border-white/10">
+            <span className="text-red-300 font-bold bg-white/[0.04] px-2.5 py-1 rounded-lg border border-white/10">
               {latency ? `${latency}ms` : 'Measuring...'}
             </span>
           </div>
@@ -143,7 +143,7 @@ export default function HealthPage() {
         {!isAllHealthy && (
           <div className="mt-4 pt-4 border-t border-white/[0.08] text-xs text-slate-400 space-y-1">
             <div className="font-semibold text-rose-300">To start backend services locally:</div>
-            <code className="block bg-[#07111F] p-2.5 rounded-xl border border-white/10 text-cyan-300 font-mono text-[11px]">
+            <code className="block bg-[#0C0406] p-2.5 rounded-xl border border-white/10 text-red-300 font-mono text-[11px]">
               cd backend && source .venv/bin/activate && uvicorn app.main:app --reload --port 8000
             </code>
           </div>
@@ -156,7 +156,7 @@ export default function HealthPage() {
         <GlassCard interactive className="p-6 rounded-2xl space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="p-2 rounded-xl bg-blue-500/10 border border-blue-400/20 text-blue-400">
+              <div className="p-2 rounded-xl bg-rose-500/10 border border-rose-400/20 text-rose-400">
                 <Globe className="h-5 w-5" />
               </div>
               <div>
@@ -179,7 +179,7 @@ export default function HealthPage() {
         <GlassCard interactive className="p-6 rounded-2xl space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="p-2 rounded-xl bg-cyan-500/10 border border-cyan-400/20 text-cyan-400">
+              <div className="p-2 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400">
                 <Server className="h-5 w-5" />
               </div>
               <div>

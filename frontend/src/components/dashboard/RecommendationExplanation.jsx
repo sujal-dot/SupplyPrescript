@@ -11,7 +11,7 @@ export default function RecommendationExplanation({
     return (
       <div className="glass-card p-6 rounded-2xl border border-white/[0.08] text-xs text-slate-400">
         <div className="flex items-center space-x-2 text-slate-300 font-bold mb-1">
-          <Info className="h-4 w-4 text-cyan-400" />
+          <Info className="h-4 w-4 text-red-400" />
           <span>Decision Methodology</span>
         </div>
         <p>
@@ -32,7 +32,7 @@ export default function RecommendationExplanation({
       {/* Header */}
       <div className="p-5 border-b border-white/[0.08] flex items-center justify-between">
         <div className="flex items-center space-x-2.5">
-          <div className="p-2 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+          <div className="p-2 rounded-xl bg-red-500/10 text-red-400 border border-red-500/20">
             <Sparkles className="h-4 w-4" />
           </div>
           <div>
@@ -48,7 +48,7 @@ export default function RecommendationExplanation({
         {/* Objective Function Badge */}
         <div className="hidden sm:flex items-center space-x-2 bg-white/[0.03] border border-white/[0.06] px-3 py-1.5 rounded-xl text-xs font-mono">
           <span className="text-slate-400">Objective:</span>
-          <span className="text-cyan-300 font-bold">
+          <span className="text-red-300 font-bold">
             min Z = C_total + C_delay + C_risk
           </span>
         </div>
@@ -56,9 +56,9 @@ export default function RecommendationExplanation({
 
       <div className="p-5 space-y-4 text-xs">
         {/* Recommendation Justification Callout */}
-        <div className="p-4 rounded-xl bg-cyan-500/5 border border-cyan-500/20 space-y-2">
-          <div className="flex items-center space-x-2 text-cyan-300 font-bold">
-            <CheckCircle2 className="h-4 w-4 text-cyan-400" />
+        <div className="p-4 rounded-xl bg-red-500/5 border border-red-500/20 space-y-2">
+          <div className="flex items-center space-x-2 text-red-300 font-bold">
+            <CheckCircle2 className="h-4 w-4 text-red-400" />
             <span>Recommended Option {optionId}: {optionName}</span>
             {objectiveScore && (
               <span className="text-[11px] font-mono font-normal text-slate-400 ml-auto">

@@ -1,7 +1,7 @@
 {
   "active_version": "v1.0",
-  "promoted_at_utc": "2026-10-22T06:32:05.827736+00:00",
-  "previous_version": "v1.1-test",
+  "promoted_at_utc": "2026-10-24T06:36:27.778734+00:00",
+  "previous_version": "v1.0",
   "verified_checksums": {
     "classifier.pkl": true,
     "regressor.pkl": true,

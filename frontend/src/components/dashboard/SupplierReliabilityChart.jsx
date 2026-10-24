@@ -134,7 +134,7 @@ export default function SupplierReliabilityChart({
                     entry.reliabilityPct >= 95
                       ? '#34D399'
                       : entry.reliabilityPct >= 85
-                      ? '#22D3EE'
+                      ? '#EF4444'
                       : '#F59E0B'
                   }
                 />

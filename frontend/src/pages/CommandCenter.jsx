@@ -7,6 +7,7 @@ import {
   X,
   RefreshCw,
   Sliders,
+  TrendingUp,
 } from 'lucide-react';
 import CommandCenterHeader from '../components/dashboard/CommandCenterHeader';
 import ShipmentRiskBanner from '../components/dashboard/ShipmentRiskBanner';
@@ -26,6 +27,7 @@ import {
 import RecommendationDetailsModal from '../components/dashboard/RecommendationDetailsModal';
 import ExecuteDecisionModal from '../components/dashboard/ExecuteDecisionModal';
 import ProposeDecisionModal from '../components/dashboard/ProposeDecisionModal';
+import DecisionROISummary from '../components/roi/DecisionROISummary';
 import {
   optimizeShipment,
   proposeDecision,
@@ -35,6 +37,8 @@ import {
 import {
   executeDecision,
   getDecisions,
+  getDecisionROI,
+  getPortfolioROI,
 } from '../services/decisionService';
 
 export default function CommandCenter() {
@@ -69,6 +73,43 @@ export default function CommandCenter() {
   const [historyPage, setHistoryPage] = useState(1);
   const [historyLimit, setHistoryLimit] = useState(10);
   const [historyTotal, setHistoryTotal] = useState(0);
+
+  // Day 20 Decision ROI Engine State
+  const [activeDecisionROI, setActiveDecisionROI] = useState(null);
+  const [loadingROI, setLoadingROI] = useState(false);
+  const [portfolioROI, setPortfolioROI] = useState(null);
+  const [loadingPortfolioROI, setLoadingPortfolioROI] = useState(false);
+
+  // Load Active Decision ROI
+  const loadActiveDecisionROI = useCallback(async (decisionId) => {
+    if (!decisionId) {
+      setActiveDecisionROI(null);
+      return;
+    }
+    setLoadingROI(true);
+    try {
+      const data = await getDecisionROI(decisionId);
+      setActiveDecisionROI(data);
+    } catch (err) {
+      console.warn('Unable to load decision ROI:', err);
+      setActiveDecisionROI(null);
+    } finally {
+      setLoadingROI(false);
+    }
+  }, []);
+
+  // Load Portfolio-Level ROI Summary
+  const loadPortfolioROI = useCallback(async () => {
+    setLoadingPortfolioROI(true);
+    try {
+      const data = await getPortfolioROI();
+      setPortfolioROI(data);
+    } catch (err) {
+      console.warn('Unable to load portfolio ROI:', err);
+    } finally {
+      setLoadingPortfolioROI(false);
+    }
+  }, []);
 
   // Load Decision History from PostgreSQL
   const loadDecisionHistory = useCallback(async (
@@ -133,11 +174,14 @@ export default function CommandCenter() {
       setLoadingInitial(false);
 
       if (highRisk) {
-        // Automatically optimize selected shipment
+        // Automatically optimize selected shipment & fetch portfolio ROI
         await Promise.all([
           runOptimization(highRisk.shipment_id, 'baseline'),
           loadDecisionHistory(highRisk.shipment_id, false),
+          loadPortfolioROI(),
         ]);
+      } else {
+        await loadPortfolioROI();
       }
     } catch (err) {
       console.error('Failed to load initial Command Center data:', err);
@@ -213,6 +257,10 @@ export default function CommandCenter() {
 
       setExecuteModalOption(null);
       await loadDecisionHistory(selectedShipment?.shipment_id, showAllHistory);
+      await Promise.all([
+        loadPortfolioROI(),
+        response.decision_id ? loadActiveDecisionROI(response.decision_id) : Promise.resolve(),
+      ]);
     } catch (err) {
       console.error('Decision execution failed:', err);
       const errMsg =
@@ -300,6 +348,14 @@ export default function CommandCenter() {
     ? proposedDecisionsByShipment[selectedShipment.shipment_id] || null
     : null;
 
+  useEffect(() => {
+    if (currentExecutedDecision?.decision_id) {
+      loadActiveDecisionROI(currentExecutedDecision.decision_id);
+    } else {
+      setActiveDecisionROI(null);
+    }
+  }, [currentExecutedDecision?.decision_id, loadActiveDecisionROI]);
+
   return (
     <div className="space-y-6 pb-12 animate-in fade-in duration-300">
       {/* Toast Notification Alert */}
@@ -342,6 +398,10 @@ export default function CommandCenter() {
           if (selectedShipment) {
             runOptimization(selectedShipment.shipment_id, scenarioId);
             loadDecisionHistory(selectedShipment.shipment_id, showAllHistory);
+            loadPortfolioROI();
+            if (currentExecutedDecision?.decision_id) {
+              loadActiveDecisionROI(currentExecutedDecision.decision_id);
+            }
           } else {
             loadInitialData();
           }
@@ -389,7 +449,7 @@ export default function CommandCenter() {
           <div className="flex items-center justify-between pt-2">
             <div>
               <h2 className="text-lg font-bold text-white tracking-tight flex items-center space-x-2">
-                <Sparkles className="h-5 w-5 text-cyan-400" />
+                <Sparkles className="h-5 w-5 text-red-400" />
                 <span>Prescriptive Decision Alternatives</span>
               </h2>
               <p className="text-xs text-slate-400 mt-0.5">
@@ -397,7 +457,7 @@ export default function CommandCenter() {
               </p>
             </div>
             {scenarioId !== 'baseline' && (
-              <span className="text-xs font-mono px-2.5 py-1 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-400/30 font-bold">
+              <span className="text-xs font-mono px-2.5 py-1 rounded-full bg-red-500/20 text-red-300 border border-red-500/30 font-bold">
                 Scenario: {scenarioId}
               </span>
             )}
@@ -451,7 +511,54 @@ export default function CommandCenter() {
         />
       )}
 
-      {/* 6. Decision Execution Audit Trail (PostgreSQL Ledger) */}
+      {/* 6. Decision ROI Engine & Portfolio Analytics */}
+      <div className="space-y-4">
+        <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
+          <div>
+            <h2 className="text-lg font-bold text-white tracking-tight flex items-center space-x-2">
+              <TrendingUp className="h-5 w-5 text-emerald-400" />
+              <span>Decision ROI Engine & Closed-Loop Analytics</span>
+            </h2>
+            <p className="text-xs text-slate-400 mt-0.5">
+              Empirical return on investment, variance calculations, and decision success diagnostics
+            </p>
+          </div>
+
+          {portfolioROI && (
+            <div className="flex items-center space-x-2 text-xs font-mono">
+              <span className="px-2.5 py-1 rounded-lg bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">
+                Portfolio ROI: {portfolioROI.aggregate_roi?.status === 'CALCULATED' ? `${portfolioROI.aggregate_roi.roi_percentage}%` : 'N/A'}
+              </span>
+              <span className="px-2.5 py-1 rounded-lg bg-white/[0.04] text-slate-300 border border-white/[0.08]">
+                {portfolioROI.decisions_with_outcomes}/{portfolioROI.total_decisions} Completed
+              </span>
+            </div>
+          )}
+        </div>
+
+        {currentExecutedDecision ? (
+          <DecisionROISummary
+            roiData={activeDecisionROI}
+            loading={loadingROI}
+            onRefresh={() => loadActiveDecisionROI(currentExecutedDecision.decision_id)}
+          />
+        ) : (
+          <div className="p-6 text-center flex flex-col items-center justify-center rounded-2xl bg-white/[0.02] border border-white/[0.06] space-y-2">
+            <div className="p-2.5 rounded-xl bg-white/[0.04] text-slate-400 border border-white/[0.06]">
+              <TrendingUp className="h-5 w-5 text-slate-400" />
+            </div>
+            <h4 className="text-xs font-bold text-white font-mono uppercase tracking-wider">
+              No Decision Executed for {selectedShipment?.shipment_id || 'Active Shipment'}
+            </h4>
+            <p className="text-xs text-slate-400 max-w-md">
+              Authorize an alternative above to write the immutable decision to PostgreSQL.
+              Once operational actuals are recorded, the Decision ROI Engine will compute financial impact and decision success.
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* 7. Decision Execution Audit Trail (PostgreSQL Ledger) */}
       <DecisionHistory
         decisions={decisionHistory}
         loading={loadingHistory}

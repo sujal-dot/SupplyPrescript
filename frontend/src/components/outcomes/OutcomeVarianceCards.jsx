@@ -35,7 +35,7 @@ export default function OutcomeVarianceCards({ variance = {}, predicted = {}, ac
       <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.06] flex flex-col justify-between">
         <div className="flex items-center justify-between">
           <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400">Cost Variance</span>
-          <div className="p-1.5 rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+          <div className="p-1.5 rounded-lg bg-red-500/10 text-red-400 border border-red-500/20">
             <DollarSign className="h-3.5 w-3.5" />
           </div>
         </div>
@@ -72,7 +72,7 @@ export default function OutcomeVarianceCards({ variance = {}, predicted = {}, ac
       <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.06] flex flex-col justify-between">
         <div className="flex items-center justify-between">
           <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400">Delay Variance</span>
-          <div className="p-1.5 rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+          <div className="p-1.5 rounded-lg bg-red-500/10 text-red-400 border border-red-500/20">
             <Clock className="h-3.5 w-3.5" />
           </div>
         </div>
@@ -100,7 +100,7 @@ export default function OutcomeVarianceCards({ variance = {}, predicted = {}, ac
       <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.06] flex flex-col justify-between">
         <div className="flex items-center justify-between">
           <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400">Milestone Date Diff</span>
-          <div className="p-1.5 rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+          <div className="p-1.5 rounded-lg bg-red-500/10 text-red-400 border border-red-500/20">
             <Calendar className="h-3.5 w-3.5" />
           </div>
         </div>
@@ -128,7 +128,7 @@ export default function OutcomeVarianceCards({ variance = {}, predicted = {}, ac
       <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.06] flex flex-col justify-between">
         <div className="flex items-center justify-between">
           <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400">Quantity Variance</span>
-          <div className="p-1.5 rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+          <div className="p-1.5 rounded-lg bg-red-500/10 text-red-400 border border-red-500/20">
             <Package className="h-3.5 w-3.5" />
           </div>
         </div>
@@ -143,7 +143,7 @@ export default function OutcomeVarianceCards({ variance = {}, predicted = {}, ac
               ) : qtyVar < 0 ? (
                 <span className="text-amber-300">Partial delivery shortage</span>
               ) : (
-                <span className="text-sky-300">Over-delivery</span>
+                <span className="text-rose-300">Over-delivery</span>
               )
             ) : (
               <span className="text-slate-500">Quantity pending</span>

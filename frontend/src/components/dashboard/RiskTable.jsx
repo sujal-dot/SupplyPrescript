@@ -59,7 +59,7 @@ export default function RiskTable({
 
         <Link
           to="/shipments"
-          className="text-xs font-semibold text-cyan-300 hover:text-cyan-200 flex items-center space-x-1 transition-colors"
+          className="text-xs font-semibold text-red-300 hover:text-red-200 flex items-center space-x-1 transition-colors"
         >
           <span>View all shipments</span>
           <ArrowRight className="h-3.5 w-3.5" />
@@ -119,7 +119,7 @@ export default function RiskTable({
                   <td className="py-3.5 px-4 text-right">
                     <Link
                       to={`/shipments?search=${shipment.shipment_id}`}
-                      className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] text-cyan-300 border border-white/[0.08] hover:border-cyan-400/30 transition-all"
+                      className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] text-red-300 border border-white/[0.08] hover:border-red-500/30 transition-all"
                     >
                       <span>Details</span>
                       <ExternalLink className="h-3 w-3" />

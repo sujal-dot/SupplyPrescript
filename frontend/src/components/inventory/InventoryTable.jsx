@@ -47,7 +47,7 @@ export default function InventoryTable({
             onChange={(e) => setSearchTerm(e.target.value)}
             onBlur={() => onSearchChange && onSearchChange(searchTerm)}
             placeholder="Search product ID or name (e.g. PROD001, STM32)..."
-            className="w-full glass-input text-xs pl-10 pr-4 py-2 bg-slate-900/60 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400"
+            className="w-full glass-input text-xs pl-10 pr-4 py-2 bg-slate-900/60 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-red-500"
           />
         </form>
 
@@ -56,7 +56,7 @@ export default function InventoryTable({
           <select
             value={filters.inventory_status || ''}
             onChange={(e) => onFilterChange && onFilterChange('inventory_status', e.target.value)}
-            className="glass-input text-xs px-3 py-2 bg-slate-900/60 border border-white/10 rounded-xl text-slate-300 focus:outline-none focus:border-cyan-400"
+            className="glass-input text-xs px-3 py-2 bg-slate-900/60 border border-white/10 rounded-xl text-slate-300 focus:outline-none focus:border-red-500"
           >
             <option value="">All Inventory Statuses</option>
             <option value="Healthy">Healthy Stock</option>
@@ -69,7 +69,7 @@ export default function InventoryTable({
           <select
             value={filters.sort_by || 'product_id'}
             onChange={(e) => onSortChange && onSortChange(e.target.value)}
-            className="glass-input text-xs px-3 py-2 bg-slate-900/60 border border-white/10 rounded-xl text-slate-300 focus:outline-none focus:border-cyan-400"
+            className="glass-input text-xs px-3 py-2 bg-slate-900/60 border border-white/10 rounded-xl text-slate-300 focus:outline-none focus:border-red-500"
           >
             <option value="product_id">Sort: Product ID</option>
             <option value="inventory_level">Sort: Stock Quantity</option>
@@ -189,7 +189,7 @@ export default function InventoryTable({
                       {onSelectProduct && (
                         <button
                           onClick={() => onSelectProduct(item)}
-                          className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] text-cyan-300 border border-white/[0.08] hover:border-cyan-400/30 transition-all"
+                          className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] text-red-300 border border-white/[0.08] hover:border-red-500/30 transition-all"
                         >
                           <span>Inspect</span>
                           <ExternalLink className="h-3 w-3" />

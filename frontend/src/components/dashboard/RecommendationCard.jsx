@@ -139,13 +139,13 @@ export default function RecommendationCard({
     <div
       className={`glass-card p-6 rounded-2xl flex flex-col justify-between transition-all duration-300 relative ${
         isRecommended && isFeasible
-          ? 'border-cyan-400/50 bg-gradient-to-b from-cyan-500/10 via-slate-900/60 to-transparent shadow-xl shadow-cyan-950/40 ring-1 ring-cyan-400/30'
+          ? 'border-red-500/50 bg-gradient-to-b from-red-500/10 via-slate-900/60 to-transparent shadow-xl shadow-red-950/40 ring-1 ring-red-500/30'
           : 'border-white/[0.08] hover:border-white/[0.18]'
       }`}
     >
       {/* Recommended Winning Badge */}
       {isRecommended && isFeasible && (
-        <div className="absolute -top-3 left-6 px-3 py-1 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-[11px] font-bold tracking-wide shadow-md shadow-cyan-500/30 flex items-center space-x-1.5 border border-white/20">
+        <div className="absolute -top-3 left-6 px-3 py-1 rounded-full bg-gradient-to-r from-red-600 to-rose-600 text-white text-[11px] font-bold tracking-wide shadow-md shadow-red-500/30 flex items-center space-x-1.5 border border-white/20">
           <Sparkles className="h-3 w-3 animate-pulse" />
           <span>RECOMMENDED ACTION</span>
         </div>
@@ -158,7 +158,7 @@ export default function RecommendationCard({
             <div
               className={`p-2.5 rounded-xl border shrink-0 ${
                 isRecommended && isFeasible
-                  ? 'bg-cyan-500/20 text-cyan-300 border-cyan-400/40 shadow-lg shadow-cyan-500/20'
+                  ? 'bg-red-500/20 text-red-300 border-red-500/40 shadow-lg shadow-red-500/20'
                   : 'bg-white/[0.05] text-slate-300 border-white/[0.1]'
               }`}
             >
@@ -214,7 +214,7 @@ export default function RecommendationCard({
             <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 block">
               Estimated Delivery
             </span>
-            <span className="text-base font-bold text-cyan-300 font-mono mt-0.5 block">
+            <span className="text-base font-bold text-red-300 font-mono mt-0.5 block">
               {formatDays(estimated_delivery_days)}
             </span>
             {schedule_impact_days != null && (

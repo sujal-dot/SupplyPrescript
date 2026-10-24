@@ -6,9 +6,9 @@ export function DashboardLoadingState({ message = 'Loading optimization telemetr
   return (
     <div className="glass-card p-12 rounded-2xl border border-white/[0.08] flex flex-col items-center justify-center text-center space-y-4">
       <div className="relative">
-        <div className="h-12 w-12 rounded-full border-2 border-cyan-400/20 border-t-cyan-400 animate-spin" />
+        <div className="h-12 w-12 rounded-full border-2 border-red-500/20 border-t-red-500 animate-spin" />
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="h-2 w-2 rounded-full bg-cyan-400" />
+          <div className="h-2 w-2 rounded-full bg-red-400" />
         </div>
       </div>
       <div>
@@ -52,7 +52,7 @@ export function DashboardEmptyState({
 }) {
   return (
     <div className="glass-card p-10 rounded-2xl border border-white/[0.08] text-center flex flex-col items-center justify-center space-y-3">
-      <div className="p-3 rounded-2xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+      <div className="p-3 rounded-2xl bg-red-500/10 text-red-400 border border-red-500/20">
         <Layers className="h-6 w-6" />
       </div>
       <div>

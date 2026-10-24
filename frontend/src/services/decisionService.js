@@ -105,6 +105,31 @@ export async function getOutcomes(params = {}) {
   return response.data;
 }
 
+/**
+ * Retrieve comprehensive Decision ROI & Success Evaluation (Day 20 Decision ROI Engine)
+ * @param {string|number} decisionId - target decision identifier
+ * @param {Object} params - optional { investment_cost, additional_decision_costs }
+ * @returns {Promise<Object>} DecisionROIResponse schema
+ */
+export async function getDecisionROI(decisionId, params = {}) {
+  if (decisionId == null) {
+    throw new Error('decisionId is required');
+  }
+  const cleanId = String(decisionId).trim();
+  const response = await apiClient.get(`/api/decisions/${encodeURIComponent(cleanId)}/roi`, { params });
+  return response.data;
+}
+
+/**
+ * Retrieve portfolio-level aggregated Decision ROI summary (Day 20)
+ * @param {Object} params - { shipment_id, status, supplier, start_date, end_date, currency }
+ * @returns {Promise<Object>} PortfolioROISummaryResponse schema
+ */
+export async function getPortfolioROI(params = {}) {
+  const response = await apiClient.get('/api/analytics/decision-roi', { params });
+  return response.data;
+}
+
 export { formatApiError };
 
 export default {
@@ -114,6 +139,8 @@ export default {
   recordOutcome,
   getOutcome,
   getOutcomes,
+  getDecisionROI,
+  getPortfolioROI,
   formatApiError,
 };
 

@@ -1,0 +1,43 @@
+{
+  "version": "v1.1",
+  "model_name": "supplyprescript_delay_engine",
+  "trained_at_utc": "2026-10-24T06:36:27.669838+00:00",
+  "random_seed": 42,
+  "framework_versions": {
+    "python": "3.10.13",
+    "joblib": "1.2.0"
+  },
+  "features": {
+    "feature_names": [
+      "supplier_reliability",
+      "historical_avg_delay",
+      "lead_time",
+      "inventory_level",
+      "demand",
+      "quantity",
+      "shipping_cost",
+      "distance",
+      "transport_mode",
+      "season",
+      "priority"
+    ],
+    "feature_count": 11
+  },
+  "targets": {
+    "classification": "delayed",
+    "regression": "delay_days"
+  },
+  "classification_threshold": 0.37,
+  "row_counts": {
+    "train": 10502,
+    "val": 2250,
+    "test": 2251,
+    "total": 15003
+  },
+  "checksums": {
+    "classifier.pkl": "05744f6457955d8dcaa2b283c4530f8a2bb7a75733cf5df1ffcb0638b4e802c2",
+    "regressor.pkl": "8cd04c72006831bfcb344325d1bdd556d04ef52a1cc6cc548a4b855f88053b8c",
+    "preprocessor.pkl": "122c8efb4d47521e3c56a8e0d551fa7e3331abc656a36bfa0feef60186b7873f"
+  },
+  "candidate_status": "TRAINED"
+}

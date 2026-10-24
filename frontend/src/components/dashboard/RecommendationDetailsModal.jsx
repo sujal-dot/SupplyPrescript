@@ -68,21 +68,21 @@ export default function RecommendationDetailsModal({
   const Icon = getStrategyIcon();
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="glass-card w-full max-w-2xl max-h-[90vh] rounded-3xl border border-white/[0.12] bg-[#0c1626]/95 flex flex-col shadow-2xl shadow-cyan-950/50 overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-md animate-in fade-in duration-200">
+      <div className="glass-card w-full max-w-2xl max-h-[90vh] rounded-[28px] border border-white/[0.16] flex flex-col shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8),inset_0_1px_1.5px_rgba(255,255,255,0.35)] overflow-hidden">
         {/* Modal Header */}
         <div className="p-6 border-b border-white/[0.08] flex items-start justify-between">
           <div className="flex items-center space-x-3.5">
-            <div className="p-3 rounded-2xl bg-cyan-500/20 text-cyan-300 border border-cyan-400/30">
+            <div className="p-3 rounded-2xl bg-red-500/20 text-red-300 border border-red-500/30">
               <Icon className="h-6 w-6" />
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-cyan-300 font-bold bg-cyan-500/10 px-2 py-0.5 rounded-full border border-cyan-400/20">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-red-300 font-bold bg-red-500/10 px-2 py-0.5 rounded-full border border-red-500/20">
                   Option {option_id}
                 </span>
                 {is_recommended && (
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-white bg-gradient-to-r from-cyan-500 to-blue-600 px-2 py-0.5 rounded-full shadow-sm">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-white bg-gradient-to-r from-red-600 to-rose-600 px-2 py-0.5 rounded-full shadow-sm">
                     Recommended
                   </span>
                 )}
@@ -137,7 +137,7 @@ export default function RecommendationDetailsModal({
               <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 block">
                 Delivery Duration
               </span>
-              <span className="text-sm font-bold text-cyan-300 font-mono mt-1 block">
+              <span className="text-sm font-bold text-red-300 font-mono mt-1 block">
                 {estimated_delivery_days != null ? `${Number(estimated_delivery_days).toFixed(1)} days` : '—'}
               </span>
             </div>
@@ -155,7 +155,7 @@ export default function RecommendationDetailsModal({
           {/* Business Rationale & Explanation */}
           <div className="space-y-2">
             <h4 className="text-xs font-bold uppercase tracking-wider text-slate-300 font-mono flex items-center space-x-1.5">
-              <FileText className="h-3.5 w-3.5 text-cyan-400" />
+              <FileText className="h-3.5 w-3.5 text-red-400" />
               <span>Operational Justification</span>
             </h4>
             <p className="text-slate-300 leading-relaxed bg-white/[0.02] p-4 rounded-xl border border-white/[0.04]">
@@ -215,7 +215,7 @@ export default function RecommendationDetailsModal({
           {assumptions && assumptions.length > 0 && (
             <div className="space-y-2">
               <h4 className="text-xs font-bold uppercase tracking-wider text-slate-300 font-mono flex items-center space-x-1.5">
-                <Layers className="h-3.5 w-3.5 text-cyan-400" />
+                <Layers className="h-3.5 w-3.5 text-red-400" />
                 <span>Key Assumptions &amp; Model Inputs</span>
               </h4>
               <ul className="list-disc list-inside space-y-1 text-slate-400 bg-white/[0.02] p-3.5 rounded-xl border border-white/[0.04]">

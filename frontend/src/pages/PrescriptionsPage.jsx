@@ -173,7 +173,7 @@ export default function PrescriptionsPage() {
                 value={targetShipmentId}
                 onChange={(e) => setTargetShipmentId(e.target.value)}
                 placeholder="SHIP001"
-                className="bg-transparent text-xs font-mono text-cyan-300 font-bold focus:outline-none w-24"
+                className="bg-transparent text-xs font-mono text-red-300 font-bold focus:outline-none w-24"
               />
             </div>
             <GlassButton
@@ -212,11 +212,11 @@ export default function PrescriptionsPage() {
           {recommendations.map((rec) => (
             <div
               key={rec.id}
-              className="p-5 rounded-2xl bg-white/[0.02] border border-white/[0.08] hover:border-cyan-400/30 transition-all space-y-3"
+              className="p-5 rounded-2xl bg-white/[0.02] border border-white/[0.08] hover:border-red-500/30 transition-all space-y-3"
             >
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                 <div className="flex items-center space-x-3">
-                  <span className="font-mono text-xs font-bold text-cyan-300 bg-cyan-500/10 border border-cyan-400/20 px-2 py-0.5 rounded-lg">
+                  <span className="font-mono text-xs font-bold text-red-300 bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded-lg">
                     {rec.id}
                   </span>
                   <h4 className="text-sm font-bold text-white">{rec.title}</h4>
@@ -397,7 +397,7 @@ export default function PrescriptionsPage() {
                 <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-300">
                   ML Prediction Result
                 </h4>
-                <span className="text-[10px] font-mono text-cyan-300 glass-badge px-2 py-0.5 rounded">
+                <span className="text-[10px] font-mono text-red-300 glass-badge px-2 py-0.5 rounded">
                   Dual-Model Output
                 </span>
               </div>
@@ -433,7 +433,7 @@ export default function PrescriptionsPage() {
                       <span className="text-slate-400 text-[10px] block uppercase">
                         Delay Probability
                       </span>
-                      <span className="text-lg font-bold font-mono text-cyan-300">
+                      <span className="text-lg font-bold font-mono text-red-300">
                         {(inferenceResult.delay_probability * 100).toFixed(1)}%
                       </span>
                     </div>

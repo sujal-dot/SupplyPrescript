@@ -14,6 +14,7 @@ import {
   ChevronRight,
   Eye,
   BarChart3,
+  TrendingUp,
 } from 'lucide-react';
 import GlassButton from '../ui/GlassButton';
 import DecisionDetailModal from './DecisionDetailModal';
@@ -83,7 +84,7 @@ export default function DecisionHistory({
       {/* Header */}
       <div className="p-5 border-b border-white/[0.06] flex flex-wrap items-center justify-between gap-3 bg-white/[0.01]">
         <div className="flex items-center space-x-3">
-          <div className="p-2 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+          <div className="p-2 rounded-xl bg-red-500/10 text-red-400 border border-red-500/20">
             <History className="h-5 w-5" />
           </div>
           <div>
@@ -103,7 +104,7 @@ export default function DecisionHistory({
           {onToggleShowAll && activeShipmentId && (
             <button
               onClick={onToggleShowAll}
-              className="text-xs text-cyan-300 hover:text-cyan-200 underline underline-offset-2 px-2 py-1 transition-colors"
+              className="text-xs text-red-300 hover:text-red-200 underline underline-offset-2 px-2 py-1 transition-colors"
             >
               {showAllShipments ? `Filter to ${activeShipmentId}` : 'Show all shipments'}
             </button>
@@ -124,7 +125,7 @@ export default function DecisionHistory({
       {/* Decision Table */}
       {loading && displayDecisions.length === 0 ? (
         <div className="p-8 text-center text-xs text-slate-400 space-y-2">
-          <RefreshCw className="h-5 w-5 animate-spin mx-auto text-cyan-400" />
+          <RefreshCw className="h-5 w-5 animate-spin mx-auto text-red-400" />
           <p>Retrieving decision audit trail from database...</p>
         </div>
       ) : displayDecisions.length === 0 ? (
@@ -171,7 +172,7 @@ export default function DecisionHistory({
                     className="hover:bg-white/[0.02] transition-colors"
                   >
                     {/* Decision ID */}
-                    <td className="py-3.5 px-4 font-mono font-bold text-cyan-300">
+                    <td className="py-3.5 px-4 font-mono font-bold text-red-300">
                       <button
                         onClick={() => handleOpenDetail(dec)}
                         className="hover:underline flex items-center space-x-1 text-left"
@@ -198,7 +199,7 @@ export default function DecisionHistory({
                     <td className="py-3.5 px-4">
                       <div className="flex items-center space-x-1.5">
                         {dec.option_id && (
-                          <span className="font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-cyan-500/10 text-cyan-300 border border-cyan-400/20">
+                          <span className="font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-red-500/10 text-red-300 border border-red-500/20">
                             {dec.option_id}
                           </span>
                         )}
@@ -219,7 +220,7 @@ export default function DecisionHistory({
                     </td>
 
                     {/* Delivery / Delay Time */}
-                    <td className="py-3.5 px-4 font-mono text-cyan-300">
+                    <td className="py-3.5 px-4 font-mono text-red-300">
                       {delay != null ? (
                         <span>{`${Number(delay).toFixed(1)}d delay`}</span>
                       ) : transit != null ? (
@@ -243,7 +244,7 @@ export default function DecisionHistory({
                         className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-slate-800 text-slate-300 border border-slate-700"
                         title="Decisions are logged for authorization and do not execute automated freight bookings or disbursements."
                       >
-                        <ShieldCheck className="h-3 w-3 text-cyan-400" />
+                        <ShieldCheck className="h-3 w-3 text-red-400" />
                         <span>{dec.external_action_status || 'NOT_EXECUTED'}</span>
                       </span>
                     </td>
@@ -258,7 +259,7 @@ export default function DecisionHistory({
                       <div className="flex items-center justify-end space-x-1.5">
                         <button
                           onClick={() => handleOpenDetail(dec, 'details')}
-                          className="inline-flex items-center space-x-1 px-2 py-1 rounded-lg text-xs font-medium text-cyan-300 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/20 transition-colors"
+                          className="inline-flex items-center space-x-1 px-2 py-1 rounded-lg text-xs font-medium text-red-300 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 transition-colors"
                           title="View Decision Write-Back Details"
                         >
                           <Eye className="h-3 w-3" />
@@ -271,6 +272,14 @@ export default function DecisionHistory({
                         >
                           <BarChart3 className="h-3 w-3" />
                           <span>Outcome</span>
+                        </button>
+                        <button
+                          onClick={() => handleOpenDetail(dec, 'roi')}
+                          className="inline-flex items-center space-x-1 px-2 py-1 rounded-lg text-xs font-medium text-purple-300 bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/20 transition-colors"
+                          title="View Decision ROI & Success Analytics"
+                        >
+                          <TrendingUp className="h-3 w-3" />
+                          <span>ROI</span>
                         </button>
                       </div>
                     </td>
@@ -298,7 +307,7 @@ export default function DecisionHistory({
                 <select
                   value={pageSize}
                   onChange={(e) => onPageSizeChange(Number(e.target.value))}
-                  className="bg-slate-800 border border-white/[0.08] text-slate-200 rounded px-2 py-1 text-xs focus:outline-none focus:border-cyan-500"
+                  className="bg-slate-800 border border-white/[0.08] text-slate-200 rounded px-2 py-1 text-xs focus:outline-none focus:border-red-500"
                 >
                   <option value={5}>5</option>
                   <option value={10}>10</option>

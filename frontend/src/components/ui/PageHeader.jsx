@@ -14,14 +14,14 @@ export default function PageHeader({
     <div className={`mb-8 ${className}`}>
       {breadcrumbs.length > 0 && (
         <nav aria-label="Breadcrumb" className="flex items-center space-x-1.5 text-xs text-slate-400 mb-3">
-          <Link to="/" className="hover:text-cyan-300 transition-colors">
+          <Link to="/" className="hover:text-red-300 transition-colors">
             Home
           </Link>
           {breadcrumbs.map((crumb, idx) => (
             <React.Fragment key={idx}>
               <ChevronRight className="h-3 w-3 text-slate-600" />
               {crumb.href ? (
-                <Link to={crumb.href} className="hover:text-cyan-300 transition-colors">
+                <Link to={crumb.href} className="hover:text-red-300 transition-colors">
                   {crumb.label}
                 </Link>
               ) : (
@@ -34,17 +34,17 @@ export default function PageHeader({
 
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">
             {title}
           </h1>
           {subtitle && (
-            <p className="text-sm text-slate-400 mt-1 max-w-3xl leading-relaxed">
+            <p className="text-sm text-slate-300/80 mt-1 max-w-3xl leading-relaxed">
               {subtitle}
             </p>
           )}
           {lastUpdated && (
-            <div className="flex items-center space-x-1.5 text-[11px] text-cyan-300/80 font-mono mt-2">
-              <Clock className="h-3 w-3" />
+            <div className="inline-flex items-center space-x-1.5 text-[11px] text-red-200/90 font-mono mt-2.5 px-2.5 py-0.5 rounded-full bg-white/[0.04] border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] backdrop-blur-md">
+              <Clock className="h-3 w-3 text-red-400" />
               <span>Telemetry synchronized: {lastUpdated}</span>
             </div>
           )}

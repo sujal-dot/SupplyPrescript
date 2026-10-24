@@ -62,7 +62,7 @@ export default function DelayTrendChart({
     <div className="glass-card p-6 rounded-2xl border border-white/[0.08] flex flex-col">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2">
         <div className="flex items-center space-x-2.5">
-          <div className="p-2 rounded-xl bg-cyan-500/15 border border-cyan-400/30 text-cyan-300">
+          <div className="p-2 rounded-xl bg-red-500/15 border border-red-500/30 text-red-300">
             <TrendingUp className="h-4 w-4" />
           </div>
           <div>
@@ -83,9 +83,9 @@ export default function DelayTrendChart({
         <ResponsiveContainer width="100%" height={height}>
           <LineChart data={chartData} margin={{ top: 10, right: 20, left: -10, bottom: 0 }}>
             <defs>
-              <linearGradient id="cyanLineGrad" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stopColor="#22D3EE" />
-                <stop offset="100%" stopColor="#38BDF8" />
+              <linearGradient id="redLineGrad" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stopColor="#EF4444" />
+                <stop offset="100%" stopColor="#F43F5E" />
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.07)" vertical={false} />
@@ -120,7 +120,7 @@ export default function DelayTrendChart({
                       <div className="font-semibold text-white border-b border-white/10 pb-1">
                         {label}
                       </div>
-                      <div className="flex items-center justify-between space-x-3 text-cyan-300">
+                      <div className="flex items-center justify-between space-x-3 text-red-300">
                         <span>Avg Delay:</span>
                         <span className="font-mono font-bold">{payload[0]?.value} days</span>
                       </div>
@@ -145,10 +145,10 @@ export default function DelayTrendChart({
               type="monotone"
               dataKey="avgDelay"
               name="Avg Delay Days"
-              stroke="#22D3EE"
+              stroke="#EF4444"
               strokeWidth={2.5}
-              dot={{ r: 3, fill: '#22D3EE', stroke: '#07111F', strokeWidth: 1.5 }}
-              activeDot={{ r: 5, fill: '#ffffff', stroke: '#22D3EE', strokeWidth: 2 }}
+              dot={{ r: 3, fill: '#EF4444', stroke: '#0C0406', strokeWidth: 1.5 }}
+              activeDot={{ r: 5, fill: '#ffffff', stroke: '#EF4444', strokeWidth: 2 }}
             />
             <Line
               yAxisId="right"

@@ -56,7 +56,7 @@ export function GlassSelect({
       )}
       <select
         id={selectId}
-        className={`glass-input w-full py-2 px-3.5 text-sm text-slate-100 bg-[#0B1426] focus:outline-none transition-all cursor-pointer ${
+        className={`glass-input w-full py-2 px-3.5 text-sm text-slate-100 bg-[#16070B] focus:outline-none transition-all cursor-pointer ${
           error ? 'border-rose-400/50' : ''
         } ${className}`}
         {...props}
@@ -66,7 +66,7 @@ export function GlassSelect({
             <option
               key={opt.value !== undefined ? opt.value : opt}
               value={opt.value !== undefined ? opt.value : opt}
-              className="bg-[#0B1426] text-slate-100"
+              className="bg-[#16070B] text-slate-100"
             >
               {opt.label || opt}
             </option>

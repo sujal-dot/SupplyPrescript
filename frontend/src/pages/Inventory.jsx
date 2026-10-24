@@ -122,7 +122,7 @@ export default function Inventory() {
           </div>
           <button
             onClick={fetchInventory}
-            className="font-semibold text-cyan-300 hover:underline shrink-0"
+            className="font-semibold text-red-300 hover:underline shrink-0"
           >
             Retry
           </button>
@@ -137,7 +137,7 @@ export default function Inventory() {
           subtitle="Active SKU inventory records"
           unit="SKUs"
           icon={Package}
-          variant="cyan"
+          variant="red"
           loading={loading}
         />
         <MetricCard
@@ -200,7 +200,7 @@ export default function Inventory() {
             </button>
 
             <div className="flex items-center space-x-3 mb-5">
-              <div className="p-3 rounded-2xl bg-cyan-500/20 border border-cyan-400/30 text-cyan-300">
+              <div className="p-3 rounded-2xl bg-red-500/20 border border-red-500/30 text-red-300">
                 <Package className="h-6 w-6" />
               </div>
               <div>

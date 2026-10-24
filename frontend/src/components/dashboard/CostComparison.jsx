@@ -73,7 +73,7 @@ export default function CostComparison({
       {/* Header */}
       <div className="p-5 border-b border-white/[0.08] flex items-center justify-between">
         <div className="flex items-center space-x-2.5">
-          <div className="p-2 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+          <div className="p-2 rounded-xl bg-red-500/10 text-red-400 border border-red-500/20">
             <DollarSign className="h-4 w-4" />
           </div>
           <div>
@@ -105,13 +105,13 @@ export default function CostComparison({
                   <th
                     key={opt.option_id}
                     className={`py-3.5 px-4 font-semibold ${
-                      isRec ? 'bg-cyan-500/10 text-cyan-300' : 'text-slate-300'
+                      isRec ? 'bg-red-500/10 text-red-300' : 'text-slate-300'
                     }`}
                   >
                     <div className="flex items-center space-x-1.5">
                       <span>Option {opt.option_id}: {opt.name || opt.strategy}</span>
                       {isRec && (
-                        <span className="p-0.5 rounded bg-cyan-400/20 text-cyan-300">
+                        <span className="p-0.5 rounded bg-red-500/20 text-red-300">
                           <Sparkles className="h-3 w-3" />
                         </span>
                       )}
@@ -200,7 +200,7 @@ export default function CostComparison({
                   <td
                     key={opt.option_id}
                     className={`py-3.5 px-4 font-mono text-sm ${
-                      isRec ? 'bg-cyan-500/15 text-cyan-300' : 'text-white'
+                      isRec ? 'bg-red-500/15 text-red-300' : 'text-white'
                     }`}
                   >
                     {total != null ? formatCurrency(total) : 'Unconfigured'}
